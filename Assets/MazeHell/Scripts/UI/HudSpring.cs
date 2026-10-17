@@ -1,6 +1,7 @@
 using System;
 using MazeHell.Configuration;
 using MazeHell.Presentation;
+using MazeHell.Player;
 using UnityEngine;
 
 namespace MazeHell.UI
@@ -54,6 +55,19 @@ namespace MazeHell.UI
         private bool _isCrosshairChildOfHud;
 
         private bool _isSetupFinished;
+        private PlayerMotor _motor;
+        private Vector3 _previousVelocity;
+        private SpringState _movementSpring;
+        private Vector3 _hudBaseLocalScale;
+        private Vector3 _weaponBaseLocalScale;
+        private Vector3 _crosshairBaseLocalScale;
+        private float _dashZoom;
+
+        public void BindMotor(PlayerMotor motor)
+        {
+            _motor = motor;
+            _previousVelocity = motor.Velocity;
+        }
 
         public void Setup(RectTransform hudRoot, RectTransform weaponRoot, RectTransform crosshairRoot,
             CameraMotion motion, HudMotionConfig config)
@@ -92,6 +106,9 @@ namespace MazeHell.UI
             _hudBaseAnchoredPosition = hudRoot.anchoredPosition;
             _weaponBaseAnchoredPosition = weaponRoot.anchoredPosition;
             _crosshairBaseAnchoredPosition = crosshairRoot.anchoredPosition;
+            _hudBaseLocalScale = hudRoot.localScale;
+            _weaponBaseLocalScale = weaponRoot.localScale;
+            _crosshairBaseLocalScale = crosshairRoot.localScale;
 
             _hudBaseLocalEulerAngles = hudRoot.localEulerAngles;
             _weaponBaseLocalEulerAngles = weaponRoot.localEulerAngles;
@@ -139,6 +156,7 @@ namespace MazeHell.UI
             _hudSpring = Integrate(_hudSpring, hudTarget, omega, dampingRatio, clampedDeltaTime);
             _weaponSpring = Integrate(_weaponSpring, weaponTarget, omega, dampingRatio, clampedDeltaTime);
             _crosshairSpring = Integrate(_crosshairSpring, crosshairTarget, omega, dampingRatio, clampedDeltaTime);
+            UpdateMovement(clampedDeltaTime, omega, dampingRatio);
 
             ApplyAll();
         }
@@ -150,6 +168,9 @@ namespace MazeHell.UI
             _hudSpring = new SpringState();
             _weaponSpring = new SpringState();
             _crosshairSpring = new SpringState();
+            _movementSpring = new SpringState();
+            _previousVelocity = Vector3.zero;
+            _dashZoom = 0f;
 
             ApplyAll();
         }
@@ -213,12 +234,53 @@ namespace MazeHell.UI
 
         private void ApplyAll()
         {
-            ApplyRoot(_hudRoot, _hudBaseAnchoredPosition, _hudBaseLocalEulerAngles, _hudSpring,
-                _config.MaxPixelDisplacement, _config.MaxPixelAngle);
+            SpringState combined = _hudSpring;
+            combined.Position += _movementSpring.Position;
+            ApplyRoot(_hudRoot, _hudBaseAnchoredPosition, _hudBaseLocalEulerAngles, combined,
+                _config.MaxPixelDisplacement + _config.MovementMaxDisplacement, _config.MaxPixelAngle);
             ApplyRoot(_weaponRoot, _weaponBaseAnchoredPosition, _weaponBaseLocalEulerAngles, _weaponSpring,
                 _config.WeaponMaxPixelDisplacement, _config.MaxPixelAngle);
             ApplyRoot(_crosshairRoot, _crosshairBaseAnchoredPosition, _crosshairBaseLocalEulerAngles,
                 _crosshairSpring, _config.MaxPixelDisplacement, _config.MaxPixelAngle);
+            float zoom = 1f + _dashZoom;
+            _hudRoot.localScale = _hudBaseLocalScale * zoom;
+
+            if (_isWeaponChildOfHud == false)
+            {
+                _weaponRoot.localScale = _weaponBaseLocalScale * zoom;
+            }
+
+            if (_isCrosshairChildOfHud == false)
+            {
+                _crosshairRoot.localScale = _crosshairBaseLocalScale * zoom;
+            }
+        }
+
+        private void UpdateMovement(float deltaTime, float omega, float damping)
+        {
+            if (_motor == null || deltaTime <= 0f)
+            {
+                return;
+            }
+
+            Vector3 localVelocity = _motor.transform.InverseTransformDirection(_motor.Velocity);
+            Vector3 acceleration = _motor.transform.InverseTransformDirection((_motor.Velocity - _previousVelocity) / deltaTime);
+            _previousVelocity = _motor.Velocity;
+            Vector3 target = new Vector3(-acceleration.x, -acceleration.z, 0f) * _config.InertiaPixelsPerAcceleration;
+            target.y -= localVelocity.y * _config.JumpLagPixelsPerSpeed;
+            float targetZoom = 0f;
+
+            if (_motor.IsDashing)
+            {
+                Vector3 direction = _motor.transform.InverseTransformDirection(_motor.DashDirection);
+                target += new Vector3(direction.x * _config.DashDisplacementPixels,
+                    direction.z * _config.DashForwardDisplacementPixels, 0f);
+                targetZoom = _config.DashScaleBoost;
+            }
+
+            target = Vector3.ClampMagnitude(target, _config.MovementMaxDisplacement);
+            _movementSpring = Integrate(_movementSpring, target, omega, damping, deltaTime);
+            _dashZoom = Mathf.Lerp(_dashZoom, targetZoom, 1f - Mathf.Exp(-_config.DashZoomResponse * deltaTime));
         }
 
         private static void ApplyRoot(RectTransform root, Vector2 baseAnchoredPosition,

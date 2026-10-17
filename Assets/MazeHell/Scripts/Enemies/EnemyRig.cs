@@ -1,4 +1,5 @@
 using MazeHell.Combat;
+using MazeHell.Configuration;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -7,6 +8,8 @@ namespace MazeHell.Enemies
     [DisallowMultipleComponent]
     public class EnemyRig : MonoBehaviour
     {
+        [Tooltip("Health, damage, movement and level growth settings for this enemy prefab.")]
+        [SerializeField] private EnemyConfig _config;
         [SerializeField] private NavMeshAgent _agent;
         [SerializeField] private CapsuleCollider _collider;
         [SerializeField] private Health _health;
@@ -18,6 +21,7 @@ namespace MazeHell.Enemies
         [SerializeField] private SpriteRenderer _renderer;
         [SerializeField] private EnemyPresentation _presentation;
 
+        public EnemyConfig Config => _config;
         public NavMeshAgent Agent => _agent;
         public CapsuleCollider Collider => _collider;
         public Health Health => _health;

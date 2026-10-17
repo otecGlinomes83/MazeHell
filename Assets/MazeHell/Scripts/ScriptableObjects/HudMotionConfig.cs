@@ -43,6 +43,23 @@ namespace MazeHell.Configuration
         [Range(0f, 300f)]
         [SerializeField] private float _weaponMaxPixelDisplacement = 60f;
 
+        [Header("Movement Inertia")]
+        [Min(0f)] [SerializeField] private float _dashDisplacementPixels = 32f;
+        [Min(0f)] [SerializeField] private float _dashForwardDisplacementPixels = 16f;
+        [Range(0f, 0.3f)] [SerializeField] private float _dashScaleBoost = 0.08f;
+        [Min(0.1f)] [SerializeField] private float _dashZoomResponse = 12f;
+        [Min(0f)] [SerializeField] private float _jumpLagPixelsPerSpeed = 2.5f;
+        [Min(0f)] [SerializeField] private float _inertiaPixelsPerAcceleration = 0.15f;
+        [Min(0f)] [SerializeField] private float _movementMaxDisplacement = 42f;
+
+        public float DashDisplacementPixels => _dashDisplacementPixels;
+        public float DashForwardDisplacementPixels => _dashForwardDisplacementPixels;
+        public float DashScaleBoost => _dashScaleBoost;
+        public float DashZoomResponse => _dashZoomResponse;
+        public float JumpLagPixelsPerSpeed => _jumpLagPixelsPerSpeed;
+        public float InertiaPixelsPerAcceleration => _inertiaPixelsPerAcceleration;
+        public float MovementMaxDisplacement => _movementMaxDisplacement;
+
         [Header("Face")]
         [Min(0.05f)]
         [SerializeField] private float _hitFaceOverrideDuration = 0.9f;

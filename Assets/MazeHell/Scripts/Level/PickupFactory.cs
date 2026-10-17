@@ -29,6 +29,12 @@ namespace MazeHell.Level
                 throw new ArgumentNullException(nameof(audio), "Game audio is required.");
             }
 
+            if (pickupPrefab.TryGetComponent<HealingPickup>(out _) == false ||
+                pickupPrefab.TryGetComponent(out SphereCollider trigger) == false || trigger.isTrigger == false)
+            {
+                throw new ArgumentException("Healing pickup prefab must contain HealingPickup and a trigger SphereCollider.", nameof(pickupPrefab));
+            }
+
             _pickupPrefab = pickupPrefab;
             _generation = generation;
             _audio = audio;
@@ -38,26 +44,10 @@ namespace MazeHell.Level
         {
             GameObject instance = UnityEngine.Object.Instantiate(_pickupPrefab, position, Quaternion.identity, parent);
             instance.name = "HealingPickup";
-            EnsureTrigger(instance);
-
-            HealingPickup pickup = instance.AddComponent<HealingPickup>();
+            instance.TryGetComponent(out HealingPickup pickup);
             pickup.Setup(playerHealth, _generation.HealPickupHealth, _audio, _generation.HealPickupBobAmplitude,
                 _generation.HealPickupBobSpeed, _generation.HealPickupSpinDegreesPerSecond);
             return pickup;
-        }
-
-        private void EnsureTrigger(GameObject instance)
-        {
-            if (instance.TryGetComponent(out SphereCollider sphereCollider))
-            {
-                sphereCollider.isTrigger = true;
-                sphereCollider.radius = _generation.HealPickupRadius;
-                return;
-            }
-
-            SphereCollider trigger = instance.AddComponent<SphereCollider>();
-            trigger.isTrigger = true;
-            trigger.radius = _generation.HealPickupRadius;
         }
     }
 }

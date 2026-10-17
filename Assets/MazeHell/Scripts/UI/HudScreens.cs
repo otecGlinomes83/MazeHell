@@ -9,364 +9,321 @@ namespace MazeHell.UI
     [DisallowMultipleComponent]
     public class HudScreens : MonoBehaviour
     {
-        private const string PauseTitleKey = "pause_title";
-
-        private const string ResumeKey = "pause_resume";
-
-        private const string RestartKey = "pause_restart";
-
-        private const string PauseMenuKey = "pause_menu";
-
-        private const string DeathTitleKey = "death_title";
-
-        private const string RetryKey = "death_retry";
-
-        private const string DeathMenuKey = "death_menu";
-
-        private const string SoundOnKey = "sound_on";
-
-        private const string SoundOffKey = "sound_off";
-
-        private const string SensitivityFormatKey = "hud_sensitivity_format";
-
-        private const string DeathLevelFormatKey = "death_level_format";
-
-        private const string DeathKillsFormatKey = "death_kills_format";
-
-        private const string DeathTimeFormatKey = "death_time_format";
-
-        private const string DeathBestFormatKey = "death_best_format";
-
-        private const string SecondsFormat = "0";
-
-        private const string LineSeparator = "\n";
-
-        [SerializeField] private HudView _view;
-
+        private HudView _view;
         private Localization _localization;
-
         private RecordStorage _records;
-
         private InterfaceConfig _interface;
-
-        private CameraMotionConfig _cameraConfig;
-
+        private CameraMotionConfig _camera;
+        private UiSpawner _spawner;
+        private MenuPopupStack _popups;
+        private PauseWindow _pause;
+        private DeathWindow _death;
+        private SettingsWindow _settings;
+        private NarrativePopup _narrative;
+        private float _narrativeRemaining;
         private float _sensitivity;
-
-        private bool _isSoundOn;
-
-        private bool _isSetupFinished;
+        private bool _soundOn;
+        private bool _resumeAfterClose;
 
         public event Action<HudScreens> ResumeRequested;
-
         public event Action<HudScreens> RestartRequested;
-
         public event Action<HudScreens> MenuRequested;
-
         public event Action<float> VolumeChanged;
-
         public event Action<float> SensitivityChanged;
+        public PauseWindow ActivePause => _pause;
+        public DeathWindow ActiveDeath => _death;
+        public SettingsWindow ActiveSettings => _settings;
 
-        public void Setup(HudView view, Localization localization, RecordStorage records, InterfaceConfig ui,
-            CameraMotionConfig camera)
+        public void Setup(HudView view, Localization localization, RecordStorage records, InterfaceConfig ui, CameraMotionConfig camera)
         {
-            if (view == null)
+            if (view == null || localization == null || records == null || ui == null || camera == null)
             {
-                throw new ArgumentNullException(nameof(view));
+                throw new ArgumentNullException(nameof(view), "HUD screen dependencies must be assigned.");
             }
-
-            if (localization == null)
-            {
-                throw new ArgumentNullException(nameof(localization));
-            }
-
-            if (records == null)
-            {
-                throw new ArgumentNullException(nameof(records));
-            }
-
-            if (ui == null)
-            {
-                throw new ArgumentNullException(nameof(ui));
-            }
-
-            if (camera == null)
-            {
-                throw new ArgumentNullException(nameof(camera));
-            }
-
-            if (view.HudPanel == null || view.PausePanel == null || view.DeathPanel == null ||
-                view.PauseTitle == null || view.DeathTitle == null || view.ResumeText == null ||
-                view.RestartText == null || view.PauseMenuText == null || view.SoundText == null ||
-                view.SensitivityText == null || view.RetryText == null || view.DeathMenuText == null ||
-                view.ResultText == null || view.ResumeButton == null || view.RestartButton == null ||
-                view.PauseMenuButton == null || view.SoundButton == null || view.SensitivityDownButton == null ||
-                view.SensitivityUpButton == null || view.RetryButton == null || view.DeathMenuButton == null)
-            {
-                throw new InvalidOperationException($"{name}: hud view has unassigned screen bindings.");
-            }
-
-            UnsubscribeButtons();
 
             _view = view;
             _localization = localization;
             _records = records;
             _interface = ui;
-            _cameraConfig = camera;
-
-            _isSoundOn = records.Volume > 0f;
-            _sensitivity = Mathf.Clamp(records.MouseSensitivity, camera.MinMouseSensitivity,
-                camera.MaxMouseSensitivity);
-
-            SetupButtons();
-
-            _view.ResumeButton.Clicked += OnResumeClicked;
-            _view.RestartButton.Clicked += OnRestartClicked;
-            _view.PauseMenuButton.Clicked += OnMenuClicked;
-            _view.SoundButton.Clicked += OnSoundClicked;
-            _view.SensitivityDownButton.Clicked += OnSensitivityDownClicked;
-            _view.SensitivityUpButton.Clicked += OnSensitivityUpClicked;
-            _view.RetryButton.Clicked += OnRestartClicked;
-            _view.DeathMenuButton.Clicked += OnMenuClicked;
-
-            _isSetupFinished = true;
-
-            RefreshTexts();
+            _camera = camera;
+            _soundOn = records.Volume > 0f;
+            _sensitivity = Mathf.Clamp(records.MouseSensitivity, camera.MinMouseSensitivity, camera.MaxMouseSensitivity);
+            _spawner = new UiSpawner(view.PopupRoot);
+            _popups = new MenuPopupStack(view.HudGroup);
         }
 
-        public void ShowPause(bool isVisible)
+        public void ShowPause(bool visible)
         {
-            AssertSetup();
-
-            _view.PausePanel.SetActive(isVisible);
-
-            if (isVisible)
+            if (visible == false)
             {
-                RefreshTexts();
+                ReleaseSettings();
+                ReleasePause();
+                return;
             }
+
+            if (_pause != null || _death != null)
+            {
+                return;
+            }
+
+            _pause = _spawner.Spawn(_view.PauseWindowPrefab);
+            _pause.Setup(_localization);
+            SetupButton(_pause.Resume);
+            SetupButton(_pause.Restart);
+            SetupButton(_pause.Menu);
+            SetupButton(_pause.Settings);
+            _pause.Resume.Clicked += OnResume;
+            _pause.Restart.Clicked += OnRestart;
+            _pause.Menu.Clicked += OnMenu;
+            _pause.Settings.Clicked += OnSettings;
+            _pause.CloseRequested += OnPauseCloseRequested;
+            _pause.Closed += OnPauseClosed;
+            _pause.Show();
+            _popups.Push(_pause);
         }
 
         public void ShowDeath(int level, int kills, float runTime)
         {
-            AssertSetup();
-
+            ReleaseSettings();
+            ReleasePause();
+            ReleaseNarrative();
             _view.HudPanel.SetActive(false);
-            _view.PausePanel.SetActive(false);
-            _view.DeathPanel.SetActive(true);
-
-            RefreshTexts();
-            _view.ResultText.text = BuildResultText(level, kills, runTime);
+            _death = _spawner.Spawn(_view.DeathWindowPrefab);
+            string result = string.Format(_localization.Get("death_level_format"), level) + "\n" +
+                string.Format(_localization.Get("death_kills_format"), kills) + "\n" +
+                string.Format(_localization.Get("death_time_format"), runTime.ToString("0"));
+            _death.Setup(_localization, result);
+            SetupButton(_death.Retry);
+            SetupButton(_death.Menu);
+            _death.Retry.Clicked += OnRestart;
+            _death.Menu.Clicked += OnMenu;
+            _death.Show();
+            _popups.Push(_death);
         }
 
-        public void HideScreens()
+        public void ShowMonologue(string text, float duration)
         {
-            AssertSetup();
+            ReleaseNarrative();
 
-            _view.DeathPanel.SetActive(false);
-            _view.PausePanel.SetActive(false);
-            _view.HudPanel.SetActive(true);
+            if (duration <= 0f)
+            {
+                return;
+            }
+
+            _narrative = _spawner.Spawn(_view.NarrativePrefab);
+            _narrative.Setup(text);
+            _narrativeRemaining = duration;
+            _narrative.Closed += OnNarrativeClosed;
+            _narrative.Show();
         }
 
-        private void OnResumeClicked(MenuClick clicked)
+        public void Tick(float deltaTime)
         {
-            AssertSetup();
+            if (_narrative == null)
+            {
+                return;
+            }
 
-            ResumeRequested?.Invoke(this);
+            _narrativeRemaining -= deltaTime;
+
+            if (_narrativeRemaining <= 0f)
+            {
+                _narrative.BeginClose();
+            }
         }
 
-        private void OnRestartClicked(MenuClick clicked)
+        public bool TryCloseTopPopup()
         {
-            AssertSetup();
+            if (_settings == null)
+            {
+                return false;
+            }
 
+            _settings.BeginClose();
+            return true;
+        }
+
+        private void OnResume(MenuClick button)
+        {
+            _resumeAfterClose = true;
+            _pause.BeginClose();
+        }
+
+        private void OnPauseCloseRequested(BaseWindow window)
+        {
+            _resumeAfterClose = true;
+            window.BeginClose();
+        }
+
+        private void OnPauseClosed(BaseWindow window)
+        {
+            bool resume = _resumeAfterClose;
+            ReleasePause();
+
+            if (resume)
+            {
+                ResumeRequested?.Invoke(this);
+            }
+        }
+
+        private void OnRestart(MenuClick button)
+        {
             RestartRequested?.Invoke(this);
         }
 
-        private void OnMenuClicked(MenuClick clicked)
+        private void OnMenu(MenuClick button)
         {
-            AssertSetup();
-
             MenuRequested?.Invoke(this);
         }
 
-        private void OnSoundClicked(MenuClick clicked)
+        private void OnSettings(MenuClick button)
         {
-            AssertSetup();
-
-            float newVolume = 0f;
-
-            if (_isSoundOn == false)
+            if (_settings != null)
             {
-                newVolume = _interface.DefaultVolume;
+                return;
             }
 
-            _isSoundOn = newVolume > 0f;
-            _records.SetVolume(newVolume);
-            VolumeChanged?.Invoke(newVolume);
-
-            RefreshSoundText();
+            _settings = _spawner.Spawn(_view.SettingsWindowPrefab);
+            SetupButton(_settings.Close);
+            SetupButton(_settings.Sound);
+            SetupButton(_settings.Decrease);
+            SetupButton(_settings.Increase);
+            _settings.Close.Clicked += OnSettingsClose;
+            _settings.Sound.Clicked += OnSound;
+            _settings.Decrease.Clicked += OnDecrease;
+            _settings.Increase.Clicked += OnIncrease;
+            _settings.Closed += OnSettingsClosed;
+            _settings.CloseRequested += OnSettingsCloseRequested;
+            _settings.Refresh(_localization, _soundOn, _sensitivity);
+            _settings.Show();
+            _popups.Push(_settings);
         }
 
-        private void OnSensitivityDownClicked(MenuClick clicked)
+        private void OnSettingsClose(MenuClick button)
         {
-            AssertSetup();
+            _settings.BeginClose();
+        }
 
+        private void OnSettingsCloseRequested(BaseWindow window)
+        {
+            window.BeginClose();
+        }
+
+        private void OnSettingsClosed(BaseWindow window)
+        {
+            ReleaseSettings();
+        }
+
+        private void OnSound(MenuClick button)
+        {
+            float volume = 0f;
+
+            if (_soundOn == false)
+            {
+                volume = _interface.DefaultVolume;
+            }
+
+            _soundOn = volume > 0f;
+            _records.SetVolume(volume);
+            VolumeChanged?.Invoke(volume);
+            _settings.Refresh(_localization, _soundOn, _sensitivity);
+        }
+
+        private void OnDecrease(MenuClick button)
+        {
             ChangeSensitivity(-_interface.SensitivityStep);
         }
 
-        private void OnSensitivityUpClicked(MenuClick clicked)
+        private void OnIncrease(MenuClick button)
         {
-            AssertSetup();
-
             ChangeSensitivity(_interface.SensitivityStep);
         }
 
         private void ChangeSensitivity(float delta)
         {
-            float clampedSensitivity = Mathf.Clamp(_sensitivity + delta, _cameraConfig.MinMouseSensitivity,
-                _cameraConfig.MaxMouseSensitivity);
-
-            if (clampedSensitivity == _sensitivity)
-            {
-                return;
-            }
-
-            _sensitivity = clampedSensitivity;
+            _sensitivity = Mathf.Clamp(_sensitivity + delta, _camera.MinMouseSensitivity, _camera.MaxMouseSensitivity);
             _records.SetMouseSensitivity(_sensitivity);
             SensitivityChanged?.Invoke(_sensitivity);
-
-            RefreshSensitivityText();
-        }
-
-        private void SetupButtons()
-        {
-            SetupButton(_view.ResumeButton);
-            SetupButton(_view.RestartButton);
-            SetupButton(_view.PauseMenuButton);
-            SetupButton(_view.SoundButton);
-            SetupButton(_view.SensitivityDownButton);
-            SetupButton(_view.SensitivityUpButton);
-            SetupButton(_view.RetryButton);
-            SetupButton(_view.DeathMenuButton);
+            _settings.Refresh(_localization, _soundOn, _sensitivity);
         }
 
         private void SetupButton(MenuClick button)
         {
-            if (button.TryGetComponent(out Graphic graphic) == false)
+            if (button == null || button.TryGetComponent(out Graphic graphic) == false)
             {
-                throw new InvalidOperationException($"{name}: hud button {button.name} has no graphic.");
+                throw new InvalidOperationException("Window prefab has an unassigned button graphic.");
             }
 
             button.Setup(graphic, _interface.ButtonNormalColor, _interface.ButtonHoverColor);
         }
 
-        private string BuildResultText(int level, int kills, float runTime)
+        private void ReleasePause()
         {
-            string levelLine = string.Format(_localization.Get(DeathLevelFormatKey), level);
-            string killsLine = string.Format(_localization.Get(DeathKillsFormatKey), kills);
-            string timeLine = string.Format(_localization.Get(DeathTimeFormatKey),
-                runTime.ToString(SecondsFormat));
-            string bestLine = string.Format(_localization.Get(DeathBestFormatKey), _records.BestLevel,
-                _records.BestKills);
-
-            return levelLine + LineSeparator + killsLine + LineSeparator + timeLine + LineSeparator + bestLine;
-        }
-
-        private void RefreshTexts()
-        {
-            _view.PauseTitle.text = _localization.Get(PauseTitleKey);
-            _view.ResumeText.text = _localization.Get(ResumeKey);
-            _view.RestartText.text = _localization.Get(RestartKey);
-            _view.PauseMenuText.text = _localization.Get(PauseMenuKey);
-            _view.DeathTitle.text = _localization.Get(DeathTitleKey);
-            _view.RetryText.text = _localization.Get(RetryKey);
-            _view.DeathMenuText.text = _localization.Get(DeathMenuKey);
-
-            RefreshSoundText();
-            RefreshSensitivityText();
-        }
-
-        private void RefreshSoundText()
-        {
-            if (_isSoundOn)
-            {
-                _view.SoundText.text = _localization.Get(SoundOnKey);
-
-                return;
-            }
-
-            _view.SoundText.text = _localization.Get(SoundOffKey);
-        }
-
-        private void RefreshSensitivityText()
-        {
-            string sensitivityValue = _sensitivity.ToString("F2");
-
-            _view.SensitivityText.text = string.Format(_localization.Get(SensitivityFormatKey), sensitivityValue);
-        }
-
-        private void UnsubscribeButtons()
-        {
-            if (_view == null)
+            if (_pause == null)
             {
                 return;
             }
 
-            if (_view.ResumeButton != null)
+            _pause.Resume.Clicked -= OnResume;
+            _pause.Restart.Clicked -= OnRestart;
+            _pause.Menu.Clicked -= OnMenu;
+            _pause.Settings.Clicked -= OnSettings;
+            _pause.CloseRequested -= OnPauseCloseRequested;
+            _pause.Closed -= OnPauseClosed;
+            _popups.Pop(_pause);
+            _spawner.Release(_pause);
+            _pause = null;
+            _resumeAfterClose = false;
+        }
+
+        private void ReleaseSettings()
+        {
+            if (_settings == null)
             {
-                _view.ResumeButton.Clicked -= OnResumeClicked;
+                return;
             }
 
-            if (_view.RestartButton != null)
+            _settings.Close.Clicked -= OnSettingsClose;
+            _settings.Sound.Clicked -= OnSound;
+            _settings.Decrease.Clicked -= OnDecrease;
+            _settings.Increase.Clicked -= OnIncrease;
+            _settings.Closed -= OnSettingsClosed;
+            _settings.CloseRequested -= OnSettingsCloseRequested;
+            _popups.Pop(_settings);
+            _spawner.Release(_settings);
+            _settings = null;
+        }
+
+        private void OnNarrativeClosed(BaseWindow window)
+        {
+            ReleaseNarrative();
+        }
+
+        private void ReleaseNarrative()
+        {
+            if (_narrative == null)
             {
-                _view.RestartButton.Clicked -= OnRestartClicked;
+                return;
             }
 
-            if (_view.PauseMenuButton != null)
-            {
-                _view.PauseMenuButton.Clicked -= OnMenuClicked;
-            }
-
-            if (_view.SoundButton != null)
-            {
-                _view.SoundButton.Clicked -= OnSoundClicked;
-            }
-
-            if (_view.SensitivityDownButton != null)
-            {
-                _view.SensitivityDownButton.Clicked -= OnSensitivityDownClicked;
-            }
-
-            if (_view.SensitivityUpButton != null)
-            {
-                _view.SensitivityUpButton.Clicked -= OnSensitivityUpClicked;
-            }
-
-            if (_view.RetryButton != null)
-            {
-                _view.RetryButton.Clicked -= OnRestartClicked;
-            }
-
-            if (_view.DeathMenuButton != null)
-            {
-                _view.DeathMenuButton.Clicked -= OnMenuClicked;
-            }
+            _narrative.Closed -= OnNarrativeClosed;
+            _spawner.Release(_narrative);
+            _narrative = null;
         }
 
         private void OnDisable()
         {
-            if (_isSetupFinished == false)
-            {
-                return;
-            }
+            ReleaseSettings();
+            ReleasePause();
+            ReleaseNarrative();
 
-            UnsubscribeButtons();
-        }
-
-        private void AssertSetup()
-        {
-            if (_isSetupFinished == false)
+            if (_death != null)
             {
-                throw new InvalidOperationException($"{name}: hud screens is not initialized, call Setup first.");
+                _death.Retry.Clicked -= OnRestart;
+                _death.Menu.Clicked -= OnMenu;
+                _popups.Pop(_death);
+                _spawner.Release(_death);
+                _death = null;
             }
         }
     }

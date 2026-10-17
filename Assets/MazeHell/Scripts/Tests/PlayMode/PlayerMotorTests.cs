@@ -146,6 +146,45 @@ namespace MazeHell.Tests
             _jumpCount += 1;
         }
 
+        [UnityTest]
+        public IEnumerator RepeatedJumpAgainstWallCannotClimbAboveJumpHeight()
+        {
+            _wall = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            _wall.transform.position = new Vector3(0f, 3f, 1f);
+            _wall.transform.localScale = new Vector3(8f, 6f, 0.5f);
+            Physics.SyncTransforms();
+            float maximum = 0f;
+            float elapsed = 0f;
+            InputSnapshot jumping = new InputSnapshot(Vector2.up, Vector2.zero, true, false, false, false, false);
+
+            while (elapsed < 3f)
+            {
+                _motor.Tick(jumping, Time.deltaTime);
+                maximum = Mathf.Max(maximum, _player.transform.position.y);
+                elapsed += Time.deltaTime;
+                yield return null;
+            }
+
+            Assert.Less(maximum, _config.JumpHeight + 0.3f);
+        }
+
+        [UnityTest]
+        public IEnumerator DiagonalMovementExceedsCardinalSpeed()
+        {
+            float elapsed = 0f;
+            InputSnapshot diagonal = new InputSnapshot(Vector2.one, Vector2.zero, false, false, false, false, false);
+
+            while (elapsed < 0.8f)
+            {
+                _motor.Tick(diagonal, Time.deltaTime);
+                elapsed += Time.deltaTime;
+                yield return null;
+            }
+
+            Assert.Greater(_motor.HorizontalSpeed, _config.BaseSpeed * 1.3f);
+            Assert.AreEqual(0f, _player.GetComponent<CharacterController>().stepOffset);
+        }
+
         private void OnDashed(float speed)
         {
             _dashCount += 1;

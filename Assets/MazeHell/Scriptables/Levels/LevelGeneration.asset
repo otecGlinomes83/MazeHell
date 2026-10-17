@@ -14,41 +14,42 @@ MonoBehaviour:
   m_EditorClassIdentifier: MazeHell.Runtime::MazeHell.Configuration.LevelGenerationConfig
   _baseSeed: 1
   _useFixedSeed: 0
-  _logicalSideStart: 16
-  _logicalSideGrowthPerLevel: 2
-  _logicalSideCap: 36
-  _cellSize: 4
-  _wallThickness: 0.4
-  _ceilingHeight: 4.5
-  _straightRunMinimumCells: 4
-  _arenaCountMin: 2
-  _arenaCountMax: 4
-  _arenaSizeMinCells: 5
-  _arenaSizeMaxCells: 8
-  _loopEdgeCountMin: 8
-  _loopEdgeCountMax: 14
-  _deadEndMinimum: 10
-  _deadEndBudgetMaximum: 18
-  _enemyCountStart: 8
-  _enemyCountGrowthPerLevel: 3
-  _enemyCountCap: 40
+  _roomGridSideStart: 4
+  _roomGridSideGrowthPerLevel: 1
+  _roomGridSideCap: 6
+  _loopEdgeCountMin: 1
+  _loopEdgeCountMax: 3
+  _deadEndMinimum: 3
+  _enemyCountStart: 24
+  _enemyCountGrowthPerLevel: 5
+  _enemyCountCap: 100
   _healPickupCount: 3
   _healPickupHealth: 25
-  _healPickupRadius: 1.2
   _healPickupBobAmplitude: 0.35
   _healPickupBobSpeed: 2
   _healPickupSpinDegreesPerSecond: 90
   _enemyMinSpawnDistance: 12
   _enemyMinSpacing: 3
   _pickupMinSpawnDistance: 8
-  _connectorLength: 24
-  _corridorWidth: 6
-  _corridorHeight: 6
-  _floorThickness: 0.2
-  _roomDoorWidth: 6
-  _roomDoorHeight: 4.5
-  _gateOpeningWidth: 10
-  _roomHeight: 8
+  _levelPrefab: {fileID: 11400000, guid: e0f4b92672f643d7aba1309ce18c45e0, type: 3}
+  _closedDoorPrefab: {fileID: 5455108439228643869, guid: 2dbe75e5522074232b99e2a3516f1069, type: 3}
+  _doorConfig: {fileID: 11400000, guid: 5c8d2eed4d89a8f4db08c33af1f26c86, type: 2}
+  _mainRoomIds:
+  - room_quarters
+  - room_ring
+  - room_comb
+  _sideRoomCountMin: 2
+  _sideRoomCountMax: 4
+  _decorationPrefabs:
+  - {fileID: 9033084025851967740, guid: ee9ed7484fe294449996a0fb774bc02d, type: 3}
+  - {fileID: 60110699629777371, guid: 77955f50c7d75ad48ad8bf0f0b4863fb, type: 3}
+  - {fileID: 200471985472480722, guid: 745387805c19d11408b246ff83288c12, type: 3}
+  _decorationsPerRoomMin: 3
+  _decorationsPerRoomMax: 6
+  _decorationWallInset: 2
+  _decorationSpacing: 4
+  _doorwayClearance: 5
+  _decorationRouteClearance: 2.5
   _moduleCatalog:
   - _moduleId: room_quarters
     _prefab: {fileID: 4391102051133032310, guid: 2da64404262d55b13a8486a8962d90ce, type: 3}
@@ -71,7 +72,6 @@ MonoBehaviour:
   - _moduleId: corridor_straight
     _prefab: {fileID: 4367345956030619378, guid: 1396027811bf08225a9f89ee57d35080, type: 3}
     _footprintSize: {x: 7, y: 6.2, z: 24}
-  _wallMaterial: {fileID: 2100000, guid: 25ac4bdae249f075e919b4c1e71794f4, type: 2}
-  _floorMaterial: {fileID: 2100000, guid: 9aa9f7f15fa37285a840a8c88650e29f, type: 2}
-  _ceilingMaterial: {fileID: 2100000, guid: 8e8c5d504cb457f54b420cd8d7ed3096, type: 2}
-  _exitCorridorMaterial: {fileID: 2100000, guid: 25ec54ef303796dcdb6341da19520628, type: 2}
+  - _moduleId: corridor_corner
+    _prefab: {fileID: 5138115515975107901, guid: 61006db4111f5f1a8a284072d68f9151, type: 3}
+    _footprintSize: {x: 15.5, y: 6.2, z: 15.5}

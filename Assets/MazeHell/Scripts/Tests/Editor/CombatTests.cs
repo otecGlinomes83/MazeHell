@@ -86,6 +86,9 @@ namespace MazeHell.Tests
             Assert.AreEqual(0, _gun.Ammo);
             Assert.AreEqual(ShotgunState.Reloading, _gun.State);
             _gun.Tick(new InputSnapshot(), _config.ReloadDuration);
+            Assert.AreEqual(1, _gun.Ammo);
+            Assert.AreEqual(ShotgunState.Reloading, _gun.State);
+            _gun.Tick(new InputSnapshot(), _config.ReloadDuration);
             Assert.AreEqual(2, _gun.Ammo);
             Assert.AreEqual(ShotgunState.Ready, _gun.State);
         }
@@ -126,6 +129,31 @@ namespace MazeHell.Tests
             float stun = defense.ReceiveMelee(20f, Vector3.back);
             Assert.Greater(stun, 0f);
             Assert.Greater(defense.BlockCooldownRemaining, 0f);
+        }
+
+        [Test]
+        public void ManualReloadTopsUpOneShell()
+        {
+            _gun.Tick(FireInput(), 0f);
+            Assert.AreEqual(1, _gun.Ammo);
+            InputSnapshot reload = new InputSnapshot(Vector2.zero, Vector2.zero, false, false, false, false, false, true);
+            _gun.Tick(reload, _config.MinShotInterval);
+            Assert.AreEqual(ShotgunState.Reloading, _gun.State);
+            _gun.Tick(new InputSnapshot(), _config.ReloadDuration);
+            Assert.AreEqual(2, _gun.Ammo);
+            Assert.AreEqual(ShotgunState.Ready, _gun.State);
+        }
+
+        [Test]
+        public void FireInterruptsReloadAfterFirstShell()
+        {
+            _gun.Tick(FireInput(), 0f);
+            _gun.Tick(FireInput(), _config.MinShotInterval);
+            _gun.Tick(new InputSnapshot(), _config.ReloadDuration);
+            Assert.AreEqual(1, _gun.Ammo);
+            _gun.Tick(FireInput(), 0f);
+            Assert.AreEqual(0, _gun.Ammo);
+            Assert.AreEqual(3, _noiseCount);
         }
 
         private PlayerDefense CreateDefense()

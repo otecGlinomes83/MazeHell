@@ -55,6 +55,9 @@ namespace MazeHell.Player
 
         public float DashCooldownRemaining => _dashCooldownRemaining;
 
+        public Vector3 DashDirection => _dashDirection;
+        public float BodyHeight => _controller.height;
+
         public void Setup(CharacterController controller, PlayerMovementConfig config)
         {
             if (controller == null)
@@ -103,7 +106,13 @@ namespace MazeHell.Player
             UpdateTimers(deltaTime);
 
             Vector3 wishDirection = ComputeWishDirection(input.Move);
-            float wishSpeed = _config.BaseSpeed;
+            float wishMagnitude = wishDirection.magnitude;
+            float wishSpeed = _config.BaseSpeed * wishMagnitude;
+
+            if (wishMagnitude > 0f)
+            {
+                wishDirection /= wishMagnitude;
+            }
 
             if (input.IsBlocking)
             {
@@ -223,7 +232,7 @@ namespace MazeHell.Player
             _timeSinceLanded += deltaTime;
             _isDashing = _dashTimer > 0f;
 
-            if (_wasGrounded)
+            if (_wasGrounded && _verticalSpeed <= 0f)
             {
                 _coyoteTimer = _config.CoyoteTime;
             }
@@ -251,6 +260,8 @@ namespace MazeHell.Player
             _jumpBufferTimer = 0f;
             _coyoteTimer = 0f;
             _verticalSpeed = Mathf.Sqrt(2f * _config.Gravity * _config.JumpHeight);
+            _wasGrounded = false;
+            _isGrounded = false;
 
             Jumped?.Invoke(_verticalSpeed);
 
@@ -286,7 +297,7 @@ namespace MazeHell.Player
         {
             Vector2 clampedInput = moveInput;
 
-            if (clampedInput.sqrMagnitude > 1f)
+            if (_config.NormalizeDiagonalMovement && clampedInput.sqrMagnitude > 1f)
             {
                 clampedInput.Normalize();
             }
@@ -299,7 +310,7 @@ namespace MazeHell.Player
                 return Vector3.zero;
             }
 
-            return wishDirection.normalized;
+            return wishDirection;
         }
 
         private void ApplyFriction(float deltaTime)
@@ -334,7 +345,8 @@ namespace MazeHell.Player
                 return;
             }
 
-            _moveVelocity += wishDirection * Mathf.Min(_config.GroundAcceleration * deltaTime, addSpeed);
+            float inputScale = wishSpeed / Mathf.Max(0.01f, _config.BaseSpeed);
+            _moveVelocity += wishDirection * Mathf.Min(_config.GroundAcceleration * inputScale * deltaTime, addSpeed);
         }
 
         private void ApplyAirAcceleration(Vector3 wishDirection, float wishSpeed, float deltaTime)
@@ -380,8 +392,7 @@ namespace MazeHell.Player
             float fallSpeed = Mathf.Max(0f, -_verticalSpeed);
 
             CollisionFlags collisionFlags = _controller.Move(displacement * deltaTime);
-            bool hitGround = _verticalSpeed <= 0f &&
-                ((collisionFlags & CollisionFlags.CollidedBelow) != 0 || ProbeGround());
+            bool hitGround = _verticalSpeed <= 0f && ProbeGround();
 
             if ((collisionFlags & CollisionFlags.CollidedAbove) != 0 && _verticalSpeed > 0f)
             {
@@ -415,6 +426,11 @@ namespace MazeHell.Player
 
         private void OnControllerColliderHit(ControllerColliderHit hit)
         {
+            if (Vector3.Angle(hit.normal, Vector3.up) <= _config.SlopeLimit)
+            {
+                return;
+            }
+
             Vector3 normal = hit.normal;
             normal.y = 0f;
 
@@ -444,7 +460,8 @@ namespace MazeHell.Player
             Vector3 origin = bottom + Vector3.up * _config.GroundedProbeSkin;
             float distance = _config.GroundedProbeSkin + _config.GroundedProbeDistance;
 
-            return Physics.Raycast(origin, Vector3.down, distance, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore);
+            return Physics.Raycast(origin, Vector3.down, out RaycastHit hit, distance, Physics.DefaultRaycastLayers,
+                QueryTriggerInteraction.Ignore) && Vector3.Angle(hit.normal, Vector3.up) <= _config.SlopeLimit;
         }
 
         private float HorizontalSpeedOf(Vector3 velocity)

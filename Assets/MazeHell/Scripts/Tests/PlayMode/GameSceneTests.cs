@@ -6,6 +6,7 @@ using MazeHell.Session;
 using NUnit.Framework;
 using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 
@@ -45,6 +46,36 @@ namespace MazeHell.Tests
             }
 
             Assert.IsNotNull(composition);
+            Assert.IsTrue(composition.TryGetComponent(out Pauser pauser));
+            pauser.RequestPause();
+            Assert.AreEqual(CursorLockMode.None, Cursor.lockState);
+            Assert.IsTrue(Cursor.visible);
+            Assert.IsNotNull(composition.Hud.Screens.ActivePause);
+            int firstPauseId = composition.Hud.Screens.ActivePause.GetInstanceID();
+            PointerEventData click = new PointerEventData(EventSystem.current);
+            composition.Hud.Screens.ActivePause.Settings.OnPointerClick(click);
+            Assert.IsNotNull(composition.Hud.Screens.ActiveSettings);
+            Assert.IsFalse(composition.Hud.Screens.ActivePause.Group.interactable);
+            composition.Hud.Screens.ActiveSettings.Close.OnPointerClick(click);
+            yield return new WaitForSecondsRealtime(0.25f);
+            Assert.IsNull(composition.Hud.Screens.ActiveSettings);
+            Assert.IsTrue(composition.Hud.Screens.ActivePause.Group.interactable);
+            pauser.Resume();
+            Assert.AreEqual(CursorLockMode.Locked, Cursor.lockState);
+            Assert.IsFalse(Cursor.visible);
+            Assert.IsNull(composition.Hud.Screens.ActivePause);
+            yield return null;
+            yield return null;
+            Cursor.lockState = CursorLockMode.None;
+            yield return null;
+            yield return null;
+            Assert.IsTrue(pauser.IsPaused);
+            Assert.IsNotNull(composition.Hud.Screens.ActivePause);
+            Assert.AreNotEqual(firstPauseId, composition.Hud.Screens.ActivePause.GetInstanceID());
+            Assert.IsTrue(Cursor.visible);
+            pauser.Resume();
+            Assert.AreEqual(CursorLockMode.Locked, Cursor.lockState);
+            Assert.IsFalse(Cursor.visible);
             RunSession session = composition.Session;
             Assert.AreEqual(RunState.Fighting, session.State);
             Assert.AreEqual(1, session.LevelNumber);
@@ -61,10 +92,13 @@ namespace MazeHell.Tests
                 enemies[i].Health.ApplyDamage(enemies[i].Health.MaxHealth);
             }
 
-            Assert.Less(enemies[0].Renderer.transform.localPosition.y, 0.1f);
+            Assert.Less(Mathf.Abs(Vector3.Dot(enemies[0].Renderer.transform.forward, Vector3.up)), 0.01f);
             Assert.AreEqual(enemies.Length, session.Kills);
             Assert.Greater(composition.Player.Health.CurrentHealth, 50f);
-            Assert.IsTrue(session.CurrentLevel.ExitGate.IsUnlocked);
+            Assert.IsFalse(session.CurrentLevel.ExitGate.IsUnlocked);
+            ExitGate gate = session.CurrentLevel.ExitGate;
+            gate.TickPlayer(gate.transform.position - gate.transform.forward, Vector3.zero, 1.8f, 0.1f);
+            Assert.IsTrue(gate.IsUnlocked);
             float health = composition.Player.Health.CurrentHealth;
             GeneratedLevel firstLevel = session.CurrentLevel;
             composition.Player.Motor.Teleport(firstLevel.CorridorStart + firstLevel.CorridorDirection,
@@ -85,8 +119,9 @@ namespace MazeHell.Tests
             composition.Player.Health.ApplyDamage(composition.Player.Health.MaxHealth);
             session.Tick(0.02f);
             Assert.AreEqual(RunState.Dead, session.State);
-            Assert.IsTrue(composition.Hud.DeathPanel.activeSelf);
+            Assert.IsNotNull(composition.Hud.Screens.ActiveDeath);
             Assert.AreEqual(CursorLockMode.None, Cursor.lockState);
+            Assert.IsTrue(Cursor.visible);
             yield return null;
         }
     }

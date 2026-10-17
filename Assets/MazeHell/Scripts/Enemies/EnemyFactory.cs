@@ -16,7 +16,7 @@ namespace MazeHell.Enemies
         private AnimationLibrary _animations;
         private ShotNoise _noise;
 
-        public EnemyFactory(EnemyRig enemyPrefab, EnemyConfig config, GameAudio audio, AudioConfig audioConfig,
+        public EnemyFactory(EnemyRig enemyPrefab, GameAudio audio, AudioConfig audioConfig,
             AnimationLibrary animations, ShotNoise noise)
         {
             if (enemyPrefab == null)
@@ -24,9 +24,9 @@ namespace MazeHell.Enemies
                 throw new ArgumentNullException(nameof(enemyPrefab), "Enemy prefab is required.");
             }
 
-            if (config == null)
+            if (enemyPrefab.Config == null)
             {
-                throw new ArgumentNullException(nameof(config), "Enemy config is required.");
+                throw new ArgumentException("Enemy prefab must have an assigned config.", nameof(enemyPrefab));
             }
 
             if (audio == null)
@@ -50,7 +50,7 @@ namespace MazeHell.Enemies
             }
 
             _enemyPrefab = enemyPrefab;
-            _config = config;
+            _config = enemyPrefab.Config;
             _audio = audio;
             _audioConfig = audioConfig;
             _animations = animations;

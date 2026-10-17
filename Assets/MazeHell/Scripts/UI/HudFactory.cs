@@ -3,6 +3,7 @@ using MazeHell.Configuration;
 using MazeHell.Player;
 using MazeHell.Session;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace MazeHell.UI
 {
@@ -67,6 +68,16 @@ namespace MazeHell.UI
         {
             HudView view = UnityEngine.Object.Instantiate(_hudPrefab, parent);
             view.name = "Hud";
+            if (view.TryGetComponent(out CanvasScaler scaler) == false)
+            {
+                throw new InvalidOperationException("HUD prefab must contain CanvasScaler.");
+            }
+
+            scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+            scaler.referenceResolution = _interface.ReferenceResolution;
+            scaler.matchWidthOrHeight = _interface.MatchWidthOrHeight;
+            view.CrosshairRoot.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, _interface.CrosshairSizePixels);
+            view.CrosshairRoot.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, _interface.CrosshairSizePixels);
             SafeArea safeArea = view.SafeRoot.GetComponent<SafeArea>();
             safeArea.Setup(view.SafeRoot);
 

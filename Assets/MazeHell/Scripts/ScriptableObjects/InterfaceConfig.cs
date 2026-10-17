@@ -27,7 +27,7 @@ namespace MazeHell.Configuration
         [SerializeField] private float _hudMarginPixels = 48f;
 
         [Min(0f)]
-        [SerializeField] private float _crosshairSizePixels = 18f;
+        [SerializeField] private float _crosshairSizePixels = 32f;
 
         [Header("Font Sizes")]
         [Min(1f)]

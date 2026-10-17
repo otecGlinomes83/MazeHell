@@ -16,15 +16,16 @@ namespace MazeHell.Configuration
         [SerializeField] private float _eyeHeight = 1.62f;
 
         [Min(0f)]
-        [SerializeField] private float _stepOffset = 0.3f;
+        [SerializeField] private float _stepOffset = 0f;
 
         [Min(0.001f)]
         [SerializeField] private float _skinWidth = 0.04f;
 
         [Range(0f, 90f)]
-        [SerializeField] private float _slopeLimit = 45f;
+        [SerializeField] private float _slopeLimit = 5f;
 
         [Header("Ground Movement")]
+        [SerializeField] private bool _normalizeDiagonalMovement = false;
         [Min(0.5f)]
         [SerializeField] private float _baseSpeed = 7f;
 
@@ -111,6 +112,8 @@ namespace MazeHell.Configuration
         public float SlopeLimit => _slopeLimit;
 
         public float BaseSpeed => _baseSpeed;
+
+        public bool NormalizeDiagonalMovement => _normalizeDiagonalMovement;
 
         public float GroundAcceleration => _groundAcceleration;
 

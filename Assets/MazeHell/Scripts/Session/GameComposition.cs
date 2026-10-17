@@ -21,7 +21,6 @@ namespace MazeHell.Session
         [SerializeField] private PlayerMovementConfig _movementConfig;
         [SerializeField] private PlayerCombatConfig _combatConfig;
         [SerializeField] private ShotgunConfig _shotgunConfig;
-        [SerializeField] private EnemyConfig _enemyConfig;
         [SerializeField] private LevelGenerationConfig _generationConfig;
         [SerializeField] private LevelPresentationConfig _presentationConfig;
         [SerializeField] private CameraMotionConfig _cameraConfig;
@@ -60,6 +59,7 @@ namespace MazeHell.Session
         private GameLoop _gameLoop;
         private float _sensitivity;
         private bool _isSubscribed;
+        private bool _skipGameplayInput;
 
         public PlayerRig Player => _player;
 
@@ -70,7 +70,7 @@ namespace MazeHell.Session
         private void Awake()
         {
             ValidateReferences();
-            RenderSettings.fog = true;
+            RenderSettings.fog = _presentationConfig.FogDensity > 0f;
             RenderSettings.fogMode = FogMode.ExponentialSquared;
             RenderSettings.fogColor = _presentationConfig.FogColor;
             RenderSettings.fogDensity = _presentationConfig.FogDensity;
@@ -80,9 +80,6 @@ namespace MazeHell.Session
             ambientProbe.AddAmbientLight(_presentationConfig.AmbientLightColor);
             RenderSettings.ambientProbe = ambientProbe;
             RenderSettings.skybox = null;
-
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
 
             _records = new RecordStorage(_audioConfig.MasterVolume, _cameraConfig.MouseSensitivity);
             _localization = new Localization();
@@ -100,7 +97,7 @@ namespace MazeHell.Session
 
             _playerFactory = new PlayerFactory(_playerPrefab, _movementConfig, _combatConfig, _shotgunConfig, _cameraConfig, _audio, _noise);
             _hudFactory = new HudFactory(_hudPrefab, _interfaceConfig, _animations, _hudConfig, _movementConfig, _shotgunConfig, _cameraConfig);
-            _enemyFactory = new EnemyFactory(_enemyPrefab, _enemyConfig, _audio, _audioConfig, _animations, _noise);
+            _enemyFactory = new EnemyFactory(_enemyPrefab, _audio, _audioConfig, _animations, _noise);
             _pickupFactory = new PickupFactory(_healingPickupPrefab, _generationConfig, _audio);
 
             _player = _playerFactory.Create(_worldRoot.position, Quaternion.identity, _worldRoot);
@@ -114,6 +111,7 @@ namespace MazeHell.Session
 
             Subscribe();
             _session.Start(1, ResolveRunSeed());
+            SetCursorLocked(_pauser.IsPaused == false);
         }
 
         private void Update()
@@ -125,15 +123,33 @@ namespace MazeHell.Session
                 return;
             }
 
+            if (_skipGameplayInput)
+            {
+                _skipGameplayInput = false;
+                return;
+            }
+
             InputSnapshot input = _input.Poll();
 
             if (input.PausePressed)
             {
+                if (_pauser.IsPaused && _screens.TryCloseTopPopup())
+                {
+                    return;
+                }
+
                 TogglePause();
+                return;
             }
 
             if (_pauser.IsPaused)
             {
+                return;
+            }
+
+            if (Cursor.lockState != CursorLockMode.Locked)
+            {
+                _pauser.RequestPause();
                 return;
             }
 
@@ -160,6 +176,7 @@ namespace MazeHell.Session
 
         private void OnDisable()
         {
+            SetCursorLocked(false);
             Unsubscribe();
 
             if (_session != null)
@@ -239,8 +256,7 @@ namespace MazeHell.Session
         private void OnSessionDied(RunSession session)
         {
             _records.TrySaveRecord(session.LevelNumber, session.Kills, session.RunTime);
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
+            SetCursorLocked(false);
             _pauser.RequestPause();
             _screens.ShowPause(false);
             _screens.ShowDeath(session.LevelNumber, session.Kills, session.RunTime);
@@ -276,22 +292,27 @@ namespace MazeHell.Session
 
         private void OnPauseChanged(bool isPaused)
         {
-            _screens.ShowPause(isPaused);
+            bool isDead = _session.State == RunState.Dead;
+            _screens.ShowPause(isPaused && isDead == false);
+            SetCursorLocked(isPaused == false && isDead == false);
 
-            if (isPaused)
+            if (isPaused == false && isDead == false)
             {
-                Cursor.lockState = CursorLockMode.None;
-                Cursor.visible = true;
+                _skipGameplayInput = true;
+            }
+        }
+
+        private void SetCursorLocked(bool isLocked)
+        {
+            if (isLocked)
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
                 return;
             }
 
-            if (_session.State == RunState.Dead)
-            {
-                return;
-            }
-
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
         }
 
         private void ValidateReferences()
@@ -299,7 +320,6 @@ namespace MazeHell.Session
             AssertReference(_movementConfig, nameof(_movementConfig));
             AssertReference(_combatConfig, nameof(_combatConfig));
             AssertReference(_shotgunConfig, nameof(_shotgunConfig));
-            AssertReference(_enemyConfig, nameof(_enemyConfig));
             AssertReference(_generationConfig, nameof(_generationConfig));
             AssertReference(_presentationConfig, nameof(_presentationConfig));
             AssertReference(_cameraConfig, nameof(_cameraConfig));

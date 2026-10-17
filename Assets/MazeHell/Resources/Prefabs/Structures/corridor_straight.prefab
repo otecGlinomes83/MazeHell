@@ -70,6 +70,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+  - component: {fileID: 11400000}
   - component: {fileID: 1559241510796930360}
   m_Layer: 0
   m_Name: corridor_straight
@@ -292,3 +293,20 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.005000001, y: 0.24, z: 0.06}
   m_Center: {x: 0.0325, y: 0, z: 0.03}
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4367345956030619378}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7a81cbeeb49431da96c176701d09f2a, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: MazeHell.Runtime::MazeHell.Level.LevelModule
+  _northPort: {fileID: 1476543490031581341}
+  _eastPort: {fileID: 0}
+  _southPort: {fileID: 4703716062024714951}
+  _westPort: {fileID: 0}
+  _transitionAnchor: {fileID: 0}

@@ -19,6 +19,12 @@ namespace MazeHell.Enemies
         private const float DirectionDotThreshold = 0.7071f;
         private const float MinDirectionSqrMagnitude = 0.0001f;
 
+        [Min(0.1f)]
+        [SerializeField] private float _worldHeight = 2.8f;
+
+        [Min(0.1f)]
+        [SerializeField] private float _corpseWorldHeight = 0.8f;
+
         private SpriteRenderer _spriteRenderer;
         private Transform _root;
         private Camera _viewCamera;
@@ -72,9 +78,9 @@ namespace MazeHell.Enemies
 
             if (_enemySet.WalkFrontSprites.Length > 0 && _enemySet.WalkFrontSprites[0] != null)
             {
-                float scale = _enemySet.WorldHeight / _enemySet.WalkFrontSprites[0].bounds.size.y;
+                float scale = _worldHeight / _enemySet.WalkFrontSprites[0].bounds.size.y;
                 _spriteRenderer.transform.localScale = Vector3.one * scale;
-                _spriteRenderer.transform.localPosition = Vector3.up * (_enemySet.WorldHeight * 0.5f);
+                _spriteRenderer.transform.localPosition = Vector3.up * (-_enemySet.WalkFrontSprites[0].bounds.min.y * scale);
             }
         }
 
@@ -92,14 +98,14 @@ namespace MazeHell.Enemies
                 throw new ArgumentOutOfRangeException(nameof(deltaTime), $"{name}: delta time must be non-negative, got {deltaTime}.");
             }
 
+            BillboardTowardsCamera();
+
             if (_mode == DisplayMode.Corpse)
             {
                 ShowSprite(_enemySet.CorpseSprite);
 
                 return;
             }
-
-            BillboardTowardsCamera();
 
             if (_painTimer > 0f)
             {
@@ -158,8 +164,16 @@ namespace MazeHell.Enemies
             _mode = DisplayMode.Corpse;
             _modeTimer = 0f;
             _painTimer = 0f;
-            _spriteRenderer.transform.localRotation = Quaternion.Euler(-90f, 0f, 0f);
-            _spriteRenderer.transform.localPosition = Vector3.up * _enemySet.CorpseGroundOffset;
+            if (_enemySet.CorpseSprite != null)
+            {
+                float scale = _corpseWorldHeight / _enemySet.CorpseSprite.bounds.size.y;
+                _spriteRenderer.transform.localScale = Vector3.one * scale;
+                _spriteRenderer.transform.localPosition = Vector3.up *
+                    (_enemySet.CorpseGroundOffset - _enemySet.CorpseSprite.bounds.min.y * scale);
+            }
+
+            BillboardTowardsCamera();
+            ShowSprite(_enemySet.CorpseSprite);
             _spriteRenderer.flipX = false;
         }
 

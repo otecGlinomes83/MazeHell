@@ -1615,7 +1615,6 @@ MonoBehaviour:
   _movementConfig: {fileID: 11400000, guid: bbdcf4fb66030d60b9a576f34b1b5b93, type: 2}
   _combatConfig: {fileID: 11400000, guid: bbb5f1570cd132faca2cf9a6a69f72c1, type: 2}
   _shotgunConfig: {fileID: 11400000, guid: 9e5a34a15eeb2c5f38d9523606da132d, type: 2}
-  _enemyConfig: {fileID: 11400000, guid: 2fb9308dc501f6e0899902f2cc1e6f15, type: 2}
   _generationConfig: {fileID: 11400000, guid: 7eb5ba2a610ace6ae8200b4842116686, type: 2}
   _presentationConfig: {fileID: 11400000, guid: ab605295a80db34638e55cd0d0ad8541, type: 2}
   _cameraConfig: {fileID: 11400000, guid: b2468d0f1f32dca31993d923dd25ce12, type: 2}

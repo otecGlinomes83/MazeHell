@@ -167,6 +167,8 @@ namespace MazeHell.Session
         public void Tick(float deltaTime)
         {
             AssertStarted();
+            _currentLevel.TickDoors(_player.transform.position, _player.Motor.Velocity,
+                _player.Motor.BodyHeight, deltaTime);
 
             if (_state == RunState.Dead)
             {
@@ -206,8 +208,6 @@ namespace MazeHell.Session
 
         private void UpdateFighting(float deltaTime)
         {
-            _exitGate.Tick(deltaTime);
-
             if (_exitGate.IsUnlocked && IsPlayerInDarkCorridor())
             {
                 EnterTransition();
@@ -216,7 +216,6 @@ namespace MazeHell.Session
 
         private void UpdateTransition(float deltaTime)
         {
-            _exitGate.Tick(deltaTime);
             _transitionProgress = ComputeCorridorProgress();
             _audio.SetTransition(_transitionProgress);
             float remainingDistance = Vector3.Distance(_currentLevel.CorridorStart, _currentLevel.CorridorEnd) * (1f - _transitionProgress);
@@ -344,7 +343,7 @@ namespace MazeHell.Session
             }
 
             Vector3 lateral = offset - _currentLevel.CorridorDirection * alongDistance;
-            float lateralHalfWidth = _generation.GateOpeningWidth * 0.5f + CorridorLateralTolerance;
+            float lateralHalfWidth = _currentLevel.CorridorHalfWidth + CorridorLateralTolerance;
 
             return lateral.sqrMagnitude <= lateralHalfWidth * lateralHalfWidth;
         }

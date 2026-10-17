@@ -19,7 +19,8 @@ namespace MazeHell.Input
             bool isBlocking = ReadBlocking(mouse);
             bool isPausePressed = ReadPausePressed(keyboard);
 
-            return new InputSnapshot(move, look, isJumpPressed, isDashPressed, isFirePressed, isBlocking, isPausePressed);
+            bool isReloadPressed = keyboard != null && keyboard.rKey.wasPressedThisFrame;
+            return new InputSnapshot(move, look, isJumpPressed, isDashPressed, isFirePressed, isBlocking, isPausePressed, isReloadPressed);
         }
 
         private Vector2 ReadMove(Keyboard keyboard)

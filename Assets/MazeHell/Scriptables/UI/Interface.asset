@@ -19,7 +19,7 @@ MonoBehaviour:
   _accentColor: {r: 1, g: 0.45, b: 0.15, a: 1}
   _dangerColor: {r: 0.85, g: 0.1, b: 0.05, a: 1}
   _hudMarginPixels: 48
-  _crosshairSizePixels: 18
+  _crosshairSizePixels: 32
   _splashFontSize: 72
   _menuFontSize: 36
   _buttonFontSize: 32

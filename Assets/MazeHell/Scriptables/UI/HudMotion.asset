@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39de5b6c3d9aaf4c2a798be555b6a0a5, type: 3}
   m_Name: HudMotion
   m_EditorClassIdentifier: MazeHell.Runtime::MazeHell.Configuration.HudMotionConfig
-  _springFrequency: 3
-  _springDampingRatio: 0.82
+  _springFrequency: 3.5
+  _springDampingRatio: 0.5
   _maxSimulationStep: 0.033
   _positionGainPixelsPerMeter: 240
   _angularGainPixelsPerDegree: 1.5
@@ -23,6 +23,13 @@ MonoBehaviour:
   _crosshairGainMultiplier: 0.25
   _weaponGainMultiplier: 3
   _weaponMaxPixelDisplacement: 28
+  _dashDisplacementPixels: 32
+  _dashForwardDisplacementPixels: 16
+  _dashScaleBoost: 0.08
+  _dashZoomResponse: 12
+  _jumpLagPixelsPerSpeed: 2.5
+  _inertiaPixelsPerAcceleration: 0.15
+  _movementMaxDisplacement: 42
   _hitFaceOverrideDuration: 0.34
   _scratchedHealthFraction: 0.75
   _bleedingHealthFraction: 0.5

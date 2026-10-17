@@ -88,6 +88,18 @@ namespace MazeHell.Combat
 
             UpdateBlockState(input.IsBlocking);
             UpdateReload(deltaTime);
+
+            if (input.ReloadPressed && _ammo < _config.BarrelCount && _reloadTimer <= 0f && _isBlocking == false)
+            {
+                StartReload();
+            }
+
+            if (input.FirePressed && _ammo > 0 && _reloadTimer > 0f && _isBlocking == false)
+            {
+                _reloadTimer = 0f;
+                Transition(ShotgunState.Ready);
+            }
+
             UpdateFire(input);
         }
 
@@ -129,7 +141,15 @@ namespace MazeHell.Combat
                 return;
             }
 
-            _ammo = _config.BarrelCount;
+            _ammo = Mathf.Min(_ammo + 1, _config.BarrelCount);
+
+            if (_ammo < _config.BarrelCount)
+            {
+                _reloadTimer = _config.ReloadDuration;
+                ReloadStarted?.Invoke(this);
+                Changed?.Invoke(this);
+                return;
+            }
 
             if (_isBlocking == false)
             {

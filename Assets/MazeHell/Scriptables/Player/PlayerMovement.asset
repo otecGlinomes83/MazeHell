@@ -15,9 +15,10 @@ MonoBehaviour:
   _bodyHeight: 1.8
   _bodyRadius: 0.35
   _eyeHeight: 1.62
-  _stepOffset: 0.3
+  _stepOffset: 0
   _skinWidth: 0.04
-  _slopeLimit: 45
+  _slopeLimit: 5
+  _normalizeDiagonalMovement: 0
   _baseSpeed: 7
   _groundAcceleration: 60
   _groundFriction: 8
@@ -36,7 +37,7 @@ MonoBehaviour:
   _dashCooldown: 1.5
   _dashInvulnerabilityTime: 0.2
   _minimumMoveDistance: 0
-  _groundedProbeDistance: 0.25
+  _groundedProbeDistance: 0.08
   _groundedProbeSkin: 0.08
   _knockbackDecay: 8
   _blockSpeedMultiplier: 0.6

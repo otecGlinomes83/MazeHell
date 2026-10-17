@@ -93,6 +93,7 @@ namespace MazeHell.UI
             _isSetupFinished = true;
 
             view.Spring.Setup(view.SpringRoot, view.WeaponRoot, view.CrosshairRoot, player.CameraMotion, hud);
+            view.Spring.BindMotor(player.Motor);
             view.Portrait.Setup(view.PortraitImage, player.Health, animations, hud);
             view.WeaponAnimator.Setup(view.WeaponImage, player.Shotgun, animations, gun);
 
@@ -120,6 +121,7 @@ namespace MazeHell.UI
             UpdateDashPip();
             UpdateVignette(clampedDeltaTime);
             UpdateSplash(clampedDeltaTime);
+            _view.Screens.Tick(clampedDeltaTime);
         }
 
         public void SetEnemyCount(int count)
@@ -153,6 +155,16 @@ namespace MazeHell.UI
             _view.SplashPanel.SetActive(true);
             _view.SplashText.text = string.Format(localization.Get(LevelSplashFormatKey), level);
             _splashRemaining = Mathf.Max(0f, presentation.LevelSplashDuration);
+
+            if (_view.ObjectiveText != null)
+            {
+                _view.ObjectiveText.text = presentation.ObjectiveText;
+            }
+
+            if (level == 1)
+            {
+                _view.Screens.ShowMonologue(presentation.FirstLevelMonologue, presentation.MonologueDuration);
+            }
         }
 
         private void OnHealthChanged(Health health)
@@ -165,13 +177,14 @@ namespace MazeHell.UI
             }
 
             _view.HealthFill.fillAmount = healthFraction;
-            _view.HealthText.text = Mathf.CeilToInt(health.CurrentHealth).ToString();
+            _view.HealthText.text = Mathf.CeilToInt(healthFraction * 100f).ToString() + "%";
         }
 
         private void OnShotgunChanged(Shotgun gun)
         {
             UpdateBarrel(_view.BarrelLeft, gun.Ammo >= 1);
             UpdateBarrel(_view.BarrelRight, gun.Ammo >= 2);
+
         }
 
         private void OnDefenseDamaged(float damage)

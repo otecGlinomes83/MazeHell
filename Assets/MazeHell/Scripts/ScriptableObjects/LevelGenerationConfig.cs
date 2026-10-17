@@ -1,4 +1,5 @@
 using System;
+using MazeHell.Level;
 using UnityEngine;
 
 namespace MazeHell.Configuration
@@ -12,36 +13,26 @@ namespace MazeHell.Configuration
 
         [SerializeField] private bool _useFixedSeed = false;
 
-        [Header("Logical Grid")]
-        [Range(8, 64)]
-        [SerializeField] private int _logicalSideStart = 16;
+        [Header("Room Grid")]
+        [Range(4, 8)]
+        [SerializeField] private int _roomGridSideStart = 4;
 
-        [Range(0, 8)]
-        [SerializeField] private int _logicalSideGrowthPerLevel = 2;
+        [Range(0, 2)]
+        [SerializeField] private int _roomGridSideGrowthPerLevel = 1;
 
-        [Range(8, 128)]
-        [SerializeField] private int _logicalSideCap = 36;
-
-        [Header("Physical Scale")]
-        [Min(0.5f)]
-        [SerializeField] private float _cellSize = 4f;
-
-        [Min(0.1f)]
-        [SerializeField] private float _wallThickness = 0.4f;
-
-        [Min(1f)]
-        [SerializeField] private float _ceilingHeight = 4.5f;
+        [Range(4, 8)]
+        [SerializeField] private int _roomGridSideCap = 6;
 
         [Header("Graph Loops")]
         [Range(0, 64)]
-        [SerializeField] private int _loopEdgeCountMin = 8;
+        [SerializeField] private int _loopEdgeCountMin = 1;
 
         [Range(0, 64)]
-        [SerializeField] private int _loopEdgeCountMax = 14;
+        [SerializeField] private int _loopEdgeCountMax = 3;
 
         [Header("Dead Ends")]
         [Range(0, 128)]
-        [SerializeField] private int _deadEndMinimum = 10;
+        [SerializeField] private int _deadEndMinimum = 3;
 
         [Header("Difficulty")]
         [Range(0, 120)]
@@ -59,9 +50,6 @@ namespace MazeHell.Configuration
 
         [Min(1f)]
         [SerializeField] private float _healPickupHealth = 25f;
-
-        [Min(0.1f)]
-        [SerializeField] private float _healPickupRadius = 1.2f;
 
         [Min(0f)]
         [SerializeField] private float _healPickupBobAmplitude = 0.35f;
@@ -82,58 +70,38 @@ namespace MazeHell.Configuration
         [Min(0f)]
         [SerializeField] private float _pickupMinSpawnDistance = 8f;
 
-        [Header("Connectors And Rooms")]
-        [Min(1f)]
-        [SerializeField] private float _connectorLength = 24f;
+        [Header("Level Prefabs")]
+        [SerializeField] private LevelRoot _levelPrefab;
 
-        [Min(1f)]
-        [SerializeField] private float _corridorWidth = 6f;
+        [SerializeField] private GameObject _closedDoorPrefab;
+        [SerializeField] private DoorConfig _doorConfig;
 
-        [Min(1f)]
-        [SerializeField] private float _corridorHeight = 6f;
+        [Header("Room Selection")]
+        [SerializeField] private string[] _mainRoomIds = new string[] { "room_quarters", "room_ring", "room_comb" };
+        [Min(0)] [SerializeField] private int _sideRoomCountMin = 2;
+        [Min(0)] [SerializeField] private int _sideRoomCountMax = 4;
 
-        [Min(0.05f)]
-        [SerializeField] private float _floorThickness = 0.2f;
-
-        [Min(1f)]
-        [SerializeField] private float _roomDoorWidth = 6f;
-
-        [Min(1f)]
-        [SerializeField] private float _roomDoorHeight = 4.5f;
-
-        [Min(1f)]
-        [SerializeField] private float _gateOpeningWidth = 10f;
-
-        [Min(1f)]
-        [SerializeField] private float _roomHeight = 8f;
+        [Header("Decoration")]
+        [SerializeField] private GameObject[] _decorationPrefabs = new GameObject[0];
+        [Min(0)] [SerializeField] private int _decorationsPerRoomMin = 3;
+        [Min(0)] [SerializeField] private int _decorationsPerRoomMax = 6;
+        [Min(0.5f)] [SerializeField] private float _decorationWallInset = 2f;
+        [Min(0.5f)] [SerializeField] private float _decorationSpacing = 4f;
+        [Min(0.5f)] [SerializeField] private float _doorwayClearance = 5f;
+        [Min(1f)] [SerializeField] private float _decorationRouteClearance = 2.5f;
 
         [Header("Module Catalog")]
         [SerializeField] private ModuleCatalogEntry[] _moduleCatalog = new ModuleCatalogEntry[0];
-
-        [Header("Materials")]
-        [SerializeField] private Material _wallMaterial;
-
-        [SerializeField] private Material _floorMaterial;
-
-        [SerializeField] private Material _ceilingMaterial;
-
-        [SerializeField] private Material _exitCorridorMaterial;
 
         public int BaseSeed => _baseSeed;
 
         public bool UseFixedSeed => _useFixedSeed;
 
-        public int LogicalSideStart => _logicalSideStart;
+        public int RoomGridSideStart => _roomGridSideStart;
 
-        public int LogicalSideGrowthPerLevel => _logicalSideGrowthPerLevel;
+        public int RoomGridSideGrowthPerLevel => _roomGridSideGrowthPerLevel;
 
-        public int LogicalSideCap => _logicalSideCap;
-
-        public float CellSize => _cellSize;
-
-        public float WallThickness => _wallThickness;
-
-        public float CeilingHeight => _ceilingHeight;
+        public int RoomGridSideCap => _roomGridSideCap;
 
         public int LoopEdgeCountMin => _loopEdgeCountMin;
 
@@ -151,8 +119,6 @@ namespace MazeHell.Configuration
 
         public float HealPickupHealth => _healPickupHealth;
 
-        public float HealPickupRadius => _healPickupRadius;
-
         public float HealPickupBobAmplitude => _healPickupBobAmplitude;
 
         public float HealPickupBobSpeed => _healPickupBobSpeed;
@@ -167,29 +133,20 @@ namespace MazeHell.Configuration
 
         public ModuleCatalogEntry[] ModuleCatalog => _moduleCatalog;
 
-        public Material WallMaterial => _wallMaterial;
+        public LevelRoot LevelPrefab => _levelPrefab;
 
-        public Material FloorMaterial => _floorMaterial;
-
-        public Material CeilingMaterial => _ceilingMaterial;
-
-        public Material ExitCorridorMaterial => _exitCorridorMaterial;
-
-        public float ConnectorLength => _connectorLength;
-
-        public float CorridorWidth => _corridorWidth;
-
-        public float CorridorHeight => _corridorHeight;
-
-        public float FloorThickness => _floorThickness;
-
-        public float RoomDoorWidth => _roomDoorWidth;
-
-        public float RoomDoorHeight => _roomDoorHeight;
-
-        public float GateOpeningWidth => _gateOpeningWidth;
-
-        public float RoomHeight => _roomHeight;
+        public GameObject ClosedDoorPrefab => _closedDoorPrefab;
+        public DoorConfig DoorConfig => _doorConfig;
+        public string[] MainRoomIds => _mainRoomIds;
+        public int SideRoomCountMin => _sideRoomCountMin;
+        public int SideRoomCountMax => _sideRoomCountMax;
+        public GameObject[] DecorationPrefabs => _decorationPrefabs;
+        public int DecorationsPerRoomMin => _decorationsPerRoomMin;
+        public int DecorationsPerRoomMax => _decorationsPerRoomMax;
+        public float DecorationWallInset => _decorationWallInset;
+        public float DecorationSpacing => _decorationSpacing;
+        public float DoorwayClearance => _doorwayClearance;
+        public float DecorationRouteClearance => _decorationRouteClearance;
     }
 
     [Serializable]

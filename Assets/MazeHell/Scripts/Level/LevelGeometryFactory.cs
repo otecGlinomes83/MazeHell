@@ -1,25 +1,17 @@
 using System;
 using System.Collections.Generic;
-using Unity.AI.Navigation;
+using MazeHell.Configuration;
 using UnityEngine;
 using UnityEngine.AI;
-using MazeHell.Configuration;
 
 namespace MazeHell.Level
 {
     public class LevelGeometryFactory
     {
-        private const string QuarterRoomModuleId = "room_quarters";
-        private const string GateRoomModuleId = "room_gate";
-        private const int MaxPlacementAttemptsPerPosition = 64;
+        private const int PlacementAttemptsPerSpawn = 128;
         private const float NavMeshSampleRadius = 2f;
-        private const float NavMeshSnapHeight = 1f;
-        private const float GridSampleInset = 1f;
-        private const float PortCapThicknessMultiplier = 4f;
-        private const float PortCapSizeMargin = 0.5f;
-        private const float MazeLightHeightOffset = 0.5f;
-        private const float GateGlowOffset = 2.5f;
-        private const float GateGlowHeight = 3f;
+        private const float SpawnInset = 2f;
+        private const float PortTolerance = 0.01f;
 
         private LevelGenerationConfig _generationConfig;
         private LevelPresentationConfig _presentationConfig;
@@ -45,8 +37,10 @@ namespace MazeHell.Level
             ValidateBuildState(levelNumber);
             int side = ComputeSide(levelNumber);
             System.Random random = new System.Random(seed);
-            float loopFraction = ComputeLoopFraction(random, side);
-            return new MazeGenerator().Generate(side, seed, loopFraction, _generationConfig.DeadEndMinimum);
+            int loopCount = random.Next(_generationConfig.LoopEdgeCountMin, _generationConfig.LoopEdgeCountMax + 1);
+            float loopFraction = Mathf.Clamp01(loopCount / (float)((side - 1) * (side - 1)));
+            MazeLayout layout = new MazeGenerator().Generate(side, seed, loopFraction, _generationConfig.DeadEndMinimum);
+            return SelectBoundaryEndpoints(layout);
         }
 
         public GeneratedLevel Build(int levelNumber, int seed, Transform parent)
@@ -57,623 +51,603 @@ namespace MazeHell.Level
         public GeneratedLevel Build(int levelNumber, int seed, Transform parent, MazeLayout preparedLayout)
         {
             ValidateBuildState(levelNumber);
-
-            int side = ComputeSide(levelNumber);
-            System.Random random = new System.Random(seed);
-            float loopFraction = ComputeLoopFraction(random, side);
             MazeLayout layout = preparedLayout;
 
             if (layout == null)
             {
-                layout = new MazeGenerator().Generate(side, seed, loopFraction, _generationConfig.DeadEndMinimum);
+                layout = PrepareLayout(levelNumber, seed);
             }
 
-            BoundaryEndpoints endpoints = SelectBoundaryEndpoints(layout, side);
-            layout = new MazeLayout(side, seed, endpoints.EntryCellIndex, endpoints.ExitCellIndex, layout.Cells);
-            LevelAnchors anchors = ComputeAnchors(side, endpoints);
+            if (layout.Seed != seed || layout.Side != ComputeSide(levelNumber) || layout.IsConnected() == false)
+            {
+                throw new ArgumentException("Prepared layout does not match the requested level.", nameof(preparedLayout));
+            }
 
-            GameObject root = CreateRoot(levelNumber, seed, parent);
-            Transform geometryRoot = CreateGeometryRoot(root.transform);
+            if (preparedLayout != null)
+            {
+                layout = SelectBoundaryEndpoints(layout);
+            }
+            LevelRoot root = UnityEngine.Object.Instantiate(_generationConfig.LevelPrefab, Vector3.zero, Quaternion.identity, parent);
+            root.name = $"Level_{levelNumber}_Seed_{seed}";
 
-            LevelGeometryBuilder builder = new LevelGeometryBuilder(_generationConfig.WallMaterial, _generationConfig.FloorMaterial, _generationConfig.CeilingMaterial);
-            BuildMazeShell(geometryRoot, layout, builder, anchors, endpoints);
-            BuildWestCorridor(geometryRoot, builder, anchors);
-            BuildEastCorridor(geometryRoot, builder, anchors);
-            BuildExitCorridor(geometryRoot, builder, anchors);
-            BuildQuarterRoom(geometryRoot, builder, anchors);
-            BuildGateRoom(geometryRoot, anchors);
-            ExitGate exitGate = BuildExitGateActor(root.transform, anchors);
-            BuildMazeLights(geometryRoot, anchors);
+            try
+            {
+                return PopulateLevel(root, layout, levelNumber, seed);
+            }
+            catch
+            {
+                root.gameObject.SetActive(false);
 
-            MarkStaticTree(geometryRoot.gameObject);
-            StaticBatchingUtility.Combine(geometryRoot.gameObject);
+                if (Application.isPlaying)
+                {
+                    UnityEngine.Object.Destroy(root.gameObject);
+                }
+                else
+                {
+                    UnityEngine.Object.DestroyImmediate(root.gameObject);
+                }
 
-            NavMeshSurface navMeshSurface = BakeNavMesh(geometryRoot.gameObject);
-            LevelResources resources = root.AddComponent<LevelResources>();
-            resources.Setup(builder.GetRuntimeMeshes(), navMeshSurface.navMeshData);
-            Vector3 navigationSpawn = SnapToNavMesh(anchors.SpawnPosition, seed);
-            Vector3[] enemySpawnPositions = SampleReachablePositions(navigationSpawn, ComputeEnemyCount(levelNumber), _generationConfig.EnemyMinSpawnDistance, _generationConfig.EnemyMinSpacing, random, anchors, levelNumber, seed, "enemy");
-            Vector3[] pickupPositions = SampleReachablePositions(navigationSpawn, _generationConfig.HealPickupCount, _generationConfig.PickupMinSpawnDistance, _generationConfig.EnemyMinSpacing, random, anchors, levelNumber, seed, "pickup");
+                throw;
+            }
+        }
 
-            return new GeneratedLevel(root, geometryRoot, navigationSpawn, Quaternion.LookRotation(Vector3.right), layout, exitGate, anchors.CorridorStart, anchors.CorridorEnd, Vector3.right, enemySpawnPositions, pickupPositions, navMeshSurface);
+        private GeneratedLevel PopulateLevel(LevelRoot root, MazeLayout layout, int levelNumber, int seed)
+        {
+            if (root.GeometryRoot == null || root.Navigation == null || root.Resources == null)
+            {
+                throw new InvalidOperationException("LevelRoot prefab has unassigned geometry, navigation or resource bindings.");
+            }
+
+            System.Random random = new System.Random(seed);
+            ModuleCatalogEntry straight = GetModuleEntry("corridor_straight");
+            List<ProximityDoor> doors = new List<ProximityDoor>();
+            ModuleCatalogEntry[] roomEntries = new ModuleCatalogEntry[_generationConfig.MainRoomIds.Length];
+
+            for (int roomIndex = 0; roomIndex < roomEntries.Length; roomIndex++)
+            {
+                roomEntries[roomIndex] = GetModuleEntry(_generationConfig.MainRoomIds[roomIndex]);
+            }
+            float pitch = ValidateGridModules(roomEntries, straight);
+            List<Bounds> spawnAreas = new List<Bounds>();
+            LevelModule[] rooms = PlaceGridRooms(root.GeometryRoot, layout, roomEntries, pitch, random, spawnAreas);
+            ConnectGridRooms(root.GeometryRoot, root.transform, layout, rooms, straight, doors);
+
+            Transform entryPort = rooms[layout.StartCellIndex].GetPort(MazeDirection.West);
+            LevelModule entryCorridor = Attach(straight, entryPort, MazeDirection.South, root.GeometryRoot);
+            ModuleCatalogEntry entranceEntry = GetModuleEntry("room_gate");
+            LevelModule entrance = Attach(entranceEntry, entryCorridor.GetPort(MazeDirection.North), MazeDirection.South, root.GeometryRoot);
+            AddSpawnArea(spawnAreas, entrance, entranceEntry);
+            PlacePassageDoor(entryPort, root.transform, doors);
+            PlacePassageDoor(entrance.GetPort(MazeDirection.South), root.transform, doors);
+            GameObject entranceGate = UnityEngine.Object.Instantiate(_presentationConfig.GateLeafPrefab,
+                entrance.GetPort(MazeDirection.North).position, entrance.GetPort(MazeDirection.North).rotation, root.transform);
+            if (entranceGate.TryGetComponent(out ProximityDoor entranceDoor) == false)
+            {
+                throw new InvalidOperationException("Gate prefab must contain ProximityDoor for the entrance.");
+            }
+
+            entranceDoor.Setup(_generationConfig.DoorConfig);
+            doors.Add(entranceDoor);
+            ModuleCatalogEntry black = new ModuleCatalogEntry("black_corridor", _presentationConfig.BlackCorridorPrefab, straight.FootprintSize);
+            Vector3 entranceEnd = PlaceExitCorridor(root.GeometryRoot, black, entrance.TransitionAnchor);
+            Vector3 entranceSpawn = entranceEnd - entrance.TransitionAnchor.forward * _presentationConfig.EntranceSpawnInset;
+            HashSet<int> branchCells = PlaceSideRooms(root, layout, rooms, straight, doors, spawnAreas, random);
+            Transform exitPort = rooms[layout.ExitCellIndex].GetPort(MazeDirection.East);
+            LevelModule exitConnector = Attach(straight, exitPort, MazeDirection.South, root.GeometryRoot);
+            ModuleCatalogEntry gateEntry = GetModuleEntry("room_gate");
+            LevelModule gateRoom = Attach(gateEntry, exitConnector.GetPort(MazeDirection.North), MazeDirection.South, root.GeometryRoot);
+            AddSpawnArea(spawnAreas, gateRoom, gateEntry);
+            CloseGridPorts(root.GeometryRoot, layout, rooms, branchCells);
+            PlacePassageDoor(exitPort, root.transform, doors);
+            PlacePassageDoor(gateRoom.GetPort(MazeDirection.South), root.transform, doors);
+
+            Transform gatePort = gateRoom.GetPort(MazeDirection.North);
+            GameObject gateObject = UnityEngine.Object.Instantiate(_presentationConfig.GateLeafPrefab, gatePort.position, gatePort.rotation, root.transform);
+
+            if (gateObject.TryGetComponent(out ExitGate exitGate) == false)
+            {
+                throw new InvalidOperationException("Exit gate prefab must contain ExitGate.");
+            }
+
+            exitGate.Setup(_presentationConfig);
+            Transform corridorStart = gateRoom.TransitionAnchor;
+
+            if (corridorStart == null)
+            {
+                throw new InvalidOperationException("Gate room prefab must have a transition anchor.");
+            }
+
+            Vector3 corridorEnd = PlaceExitCorridor(root.GeometryRoot, black, corridorStart);
+            Physics.SyncTransforms();
+            root.Navigation.BuildNavMesh();
+            root.Resources.Setup(root.Navigation.navMeshData);
+            Vector3 spawn = SnapToNavMesh(entranceSpawn, seed);
+            List<Vector3[]> protectedPaths = CollectProtectedPaths(root.GeometryRoot, spawn);
+            PlaceDecorations(root.GeometryRoot, protectedPaths, new System.Random(seed));
+            Physics.SyncTransforms();
+            Vector3[] enemies = SampleSpawnPositions(spawn, ComputeEnemyCount(levelNumber), _generationConfig.EnemyMinSpawnDistance,
+                _generationConfig.EnemyMinSpacing, spawnAreas, random, seed);
+            Vector3[] pickups = SampleSpawnPositions(spawn, _generationConfig.HealPickupCount, _generationConfig.PickupMinSpawnDistance,
+                _generationConfig.EnemyMinSpacing, spawnAreas, random, seed);
+            return new GeneratedLevel(root.gameObject, root.GeometryRoot, spawn, Quaternion.LookRotation(-entrance.TransitionAnchor.forward),
+                layout, exitGate, corridorStart.position, corridorEnd, corridorStart.forward, straight.FootprintSize.x * 0.5f,
+                enemies, pickups, root.Navigation, doors.ToArray());
+        }
+
+        private LevelModule[] PlaceGridRooms(Transform parent, MazeLayout layout, ModuleCatalogEntry[] entries, float pitch,
+            System.Random random, List<Bounds> spawnAreas)
+        {
+            LevelModule[] rooms = new LevelModule[layout.Size];
+            int variantOffset = random.Next(entries.Length);
+
+            for (int cellIndex = 0; cellIndex < layout.Size; cellIndex++)
+            {
+                int variant = random.Next(entries.Length);
+
+                if (cellIndex < entries.Length)
+                {
+                    variant = (cellIndex + variantOffset) % entries.Length;
+                }
+
+                ModuleCatalogEntry entry = entries[variant];
+                MazeCell cell = layout.Cells[cellIndex];
+                Vector3 position = new Vector3(cell.Coordinates.x * pitch, 0f, cell.Coordinates.y * pitch);
+                rooms[cellIndex] = InstantiateModule(entry, position, Quaternion.identity, parent);
+                AddSpawnArea(spawnAreas, rooms[cellIndex], entry);
+            }
+
+            return rooms;
+        }
+
+        private void ConnectGridRooms(Transform parent, Transform doorParent, MazeLayout layout, LevelModule[] rooms, ModuleCatalogEntry straight, List<ProximityDoor> doors)
+        {
+            for (int cellIndex = 0; cellIndex < layout.Size; cellIndex++)
+            {
+                for (int directionIndex = 0; directionIndex < 2; directionIndex++)
+                {
+                    MazeDirection direction = (MazeDirection)directionIndex;
+
+                    if (layout.TryGetNeighborIndex(cellIndex, direction, out int neighborIndex) == false)
+                    {
+                        continue;
+                    }
+
+                    LevelModule corridor = Attach(straight, rooms[cellIndex].GetPort(direction), MazeDirection.South, parent);
+                    Transform corridorEnd = corridor.GetPort(MazeDirection.North);
+                    Transform roomEnd = rooms[neighborIndex].GetPort(MazeDirections.Opposite(direction));
+                    PlacePassageDoor(rooms[cellIndex].GetPort(direction), doorParent, doors);
+                    PlacePassageDoor(roomEnd, doorParent, doors);
+
+                    if (Vector3.Distance(corridorEnd.position, roomEnd.position) > PortTolerance ||
+                        Vector3.Dot(corridorEnd.forward, roomEnd.forward) > -1f + PortTolerance)
+                    {
+                        throw new InvalidOperationException($"Prefab ports do not meet between rooms {cellIndex} and {neighborIndex}.");
+                    }
+                }
+            }
+        }
+
+        private void CloseGridPorts(Transform parent, MazeLayout layout, LevelModule[] rooms, HashSet<int> branchCells)
+        {
+            for (int cellIndex = 0; cellIndex < layout.Size; cellIndex++)
+            {
+                for (int directionIndex = 0; directionIndex < MazeDirections.Count; directionIndex++)
+                {
+                    MazeDirection direction = (MazeDirection)directionIndex;
+
+                    if (layout.Cells[cellIndex].HasPassage(direction) ||
+                        (cellIndex == layout.StartCellIndex && direction == MazeDirection.West) ||
+                        (cellIndex == layout.ExitCellIndex && direction == MazeDirection.East) ||
+                        (branchCells.Contains(cellIndex) && direction == MazeDirection.North))
+                    {
+                        continue;
+                    }
+
+                    PlaceClosedDoor(rooms[cellIndex].GetPort(direction), parent);
+                }
+            }
+        }
+
+        private void CloseUnusedPorts(LevelModule room, MazeDirection connectedDirection)
+        {
+            for (int directionIndex = 0; directionIndex < MazeDirections.Count; directionIndex++)
+            {
+                MazeDirection direction = (MazeDirection)directionIndex;
+
+                if (direction != connectedDirection)
+                {
+                    PlaceClosedDoor(room.GetPort(direction), room.transform);
+                }
+            }
+        }
+
+        private void PlacePassageDoor(Transform port, Transform parent, List<ProximityDoor> doors)
+        {
+            GameObject instance = UnityEngine.Object.Instantiate(_generationConfig.ClosedDoorPrefab, port.position, port.rotation, parent);
+
+            if (instance.TryGetComponent(out ProximityDoor door) == false)
+            {
+                throw new InvalidOperationException("Passage door prefab must contain ProximityDoor.");
+            }
+
+            door.Setup(_generationConfig.DoorConfig);
+            doors.Add(door);
+        }
+
+        private HashSet<int> PlaceSideRooms(LevelRoot root, MazeLayout layout, LevelModule[] rooms, ModuleCatalogEntry straight,
+            List<ProximityDoor> doors, List<Bounds> spawnAreas, System.Random random)
+        {
+            HashSet<int> branchCells = new HashSet<int>();
+            List<int> columns = new List<int>();
+
+            for (int column = 0; column < layout.Side; column++)
+            {
+                columns.Add(column);
+            }
+
+            int minimum = Mathf.Min(_generationConfig.SideRoomCountMin, layout.Side);
+            int maximum = Mathf.Clamp(_generationConfig.SideRoomCountMax, minimum, layout.Side);
+            int count = random.Next(minimum, maximum + 1);
+
+            for (int branchIndex = 0; branchIndex < count; branchIndex++)
+            {
+                int columnIndex = random.Next(columns.Count);
+                int cellIndex = (layout.Side - 1) * layout.Side + columns[columnIndex];
+                columns.RemoveAt(columnIndex);
+                branchCells.Add(cellIndex);
+                Transform port = rooms[cellIndex].GetPort(MazeDirection.North);
+                LevelModule corridor = Attach(straight, port, MazeDirection.South, root.GeometryRoot);
+                LevelModule corner = Attach(GetModuleEntry("corridor_corner"), corridor.GetPort(MazeDirection.North), MazeDirection.South, root.GeometryRoot);
+                string moduleId = "room_mini_cover";
+
+                if (branchIndex % 2 == 1)
+                {
+                    moduleId = "room_mini_pillars";
+                }
+
+                ModuleCatalogEntry entry = GetModuleEntry(moduleId);
+                LevelModule branch = Attach(entry, corner.GetPort(MazeDirection.West), MazeDirection.East, root.GeometryRoot);
+                CloseUnusedPorts(branch, MazeDirection.East);
+                PlacePassageDoor(port, root.transform, doors);
+                PlacePassageDoor(branch.GetPort(MazeDirection.East), root.transform, doors);
+                AddSpawnArea(spawnAreas, branch, entry);
+            }
+
+            return branchCells;
+        }
+
+        private void PlaceDecorations(Transform root, List<Vector3[]> protectedPaths, System.Random random)
+        {
+            GameObject[] prefabs = _generationConfig.DecorationPrefabs;
+
+            if (prefabs.Length == 0)
+            {
+                return;
+            }
+
+            LevelModule[] modules = root.GetComponentsInChildren<LevelModule>();
+            List<Vector3> placedPositions = new List<Vector3>();
+
+            for (int moduleIndex = 0; moduleIndex < modules.Length; moduleIndex++)
+            {
+                Transform[] points = modules[moduleIndex].DecorationPoints;
+                List<int> availablePoints = new List<int>(points.Length);
+
+                for (int pointIndex = 0; pointIndex < points.Length; pointIndex++)
+                {
+                    availablePoints.Add(pointIndex);
+                }
+
+                int minimum = _generationConfig.DecorationsPerRoomMin;
+                int count = random.Next(minimum, Mathf.Max(minimum, _generationConfig.DecorationsPerRoomMax) + 1);
+                int placed = 0;
+
+                while (availablePoints.Count > 0 && placed < count)
+                {
+                    int index = random.Next(availablePoints.Count);
+                    Transform point = points[availablePoints[index]];
+                    availablePoints.RemoveAt(index);
+
+                    if (HasNearbyPosition(point.position, placedPositions, _generationConfig.DecorationSpacing) ||
+                        IsNearRoute(point.position, protectedPaths) ||
+                        modules[moduleIndex].IsNearDoorway(point.position, _generationConfig.DoorwayClearance) ||
+                        Physics.CheckBox(point.position + Vector3.up * 1.4f,
+                            new Vector3(_generationConfig.DecorationWallInset * 0.5f, 1.3f, _generationConfig.DecorationWallInset * 0.5f), point.rotation,
+                            Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore))
+                    {
+                        continue;
+                    }
+
+                    GameObject prefab = prefabs[random.Next(prefabs.Length)];
+
+                    if (prefab == null)
+                    {
+                        throw new InvalidOperationException("Decoration catalog contains an unassigned prefab.");
+                    }
+
+                    UnityEngine.Object.Instantiate(prefab, point.position, point.rotation, root);
+                    placedPositions.Add(point.position);
+                    placed++;
+                }
+            }
+        }
+
+        private List<Vector3[]> CollectProtectedPaths(Transform root, Vector3 origin)
+        {
+            List<Vector3[]> paths = new List<Vector3[]>();
+            LevelModule[] modules = root.GetComponentsInChildren<LevelModule>();
+            NavMeshPath path = new NavMeshPath();
+
+            for (int moduleIndex = 0; moduleIndex < modules.Length; moduleIndex++)
+            {
+                Transform port = modules[moduleIndex].GetPort(MazeDirection.South);
+                Vector3 target = port.position - port.forward * SpawnInset + Vector3.up;
+
+                if (NavMesh.SamplePosition(target, out NavMeshHit hit, NavMeshSampleRadius, NavMesh.AllAreas) &&
+                    NavMesh.CalculatePath(origin, hit.position, NavMesh.AllAreas, path) && path.status == NavMeshPathStatus.PathComplete)
+                {
+                    paths.Add(path.corners);
+                }
+            }
+
+            return paths;
+        }
+
+        private bool IsNearRoute(Vector3 point, List<Vector3[]> paths)
+        {
+            point.y = 0f;
+
+            for (int pathIndex = 0; pathIndex < paths.Count; pathIndex++)
+            {
+                Vector3[] corners = paths[pathIndex];
+
+                for (int cornerIndex = 1; cornerIndex < corners.Length; cornerIndex++)
+                {
+                    Vector3 start = corners[cornerIndex - 1];
+                    Vector3 end = corners[cornerIndex];
+                    start.y = 0f;
+                    end.y = 0f;
+                    Vector3 span = end - start;
+                    float progress = Mathf.Clamp01(Vector3.Dot(point - start, span) / Mathf.Max(0.001f, span.sqrMagnitude));
+
+                    if (Vector3.Distance(point, start + span * progress) < _generationConfig.DecorationRouteClearance)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        private void PlaceClosedDoor(Transform port, Transform parent)
+        {
+            UnityEngine.Object.Instantiate(_generationConfig.ClosedDoorPrefab, port.position, port.rotation, parent);
+        }
+
+        private Vector3 PlaceExitCorridor(Transform parent, ModuleCatalogEntry straight, Transform start)
+        {
+            LevelModule prefab = GetModule(straight);
+            float length = Vector3.Distance(prefab.GetPort(MazeDirection.South).localPosition, prefab.GetPort(MazeDirection.North).localPosition);
+            int count = Mathf.Max(1, Mathf.CeilToInt(_presentationConfig.DarkCorridorLength / length));
+            Transform outlet = start;
+
+            for (int corridorIndex = 0; corridorIndex < count; corridorIndex++)
+            {
+                LevelModule corridor = Attach(straight, outlet, MazeDirection.South, parent);
+                outlet = corridor.GetPort(MazeDirection.North);
+            }
+
+            PlaceClosedDoor(outlet, parent);
+            float inset = Mathf.Clamp(_presentationConfig.TransitionEndInset, SpawnInset, length * 0.5f);
+            return outlet.position - outlet.forward * inset;
+        }
+
+        private LevelModule Attach(ModuleCatalogEntry entry, Transform outlet, MazeDirection inletDirection, Transform parent)
+        {
+            Transform inlet = GetModule(entry).GetPort(inletDirection);
+            Quaternion rotation = outlet.rotation * Quaternion.Euler(0f, 180f, 0f) * Quaternion.Inverse(inlet.localRotation);
+            Vector3 position = outlet.position - rotation * inlet.localPosition;
+            return InstantiateModule(entry, position, rotation, parent);
+        }
+
+        private LevelModule InstantiateModule(ModuleCatalogEntry entry, Vector3 position, Quaternion rotation, Transform parent)
+        {
+            LevelModule prefab = GetModule(entry);
+            return UnityEngine.Object.Instantiate(prefab, position, rotation, parent);
+        }
+
+        private LevelModule GetModule(ModuleCatalogEntry entry)
+        {
+            if (entry.Prefab.TryGetComponent(out LevelModule module) == false)
+            {
+                throw new InvalidOperationException($"{entry.ModuleId}: prefab must contain LevelModule.");
+            }
+
+            if (module.transform.localScale != Vector3.one)
+            {
+                throw new InvalidOperationException($"{entry.ModuleId}: module prefab must have unit scale.");
+            }
+
+            return module;
+        }
+
+        private float ValidateGridModules(ModuleCatalogEntry[] rooms, ModuleCatalogEntry straight)
+        {
+            LevelModule corridor = GetModule(straight);
+            float length = Vector3.Distance(corridor.GetPort(MazeDirection.North).localPosition, corridor.GetPort(MazeDirection.South).localPosition);
+            float roomWidth = rooms[0].FootprintSize.x;
+
+            for (int roomIndex = 0; roomIndex < rooms.Length; roomIndex++)
+            {
+                ModuleCatalogEntry entry = rooms[roomIndex];
+                LevelModule module = GetModule(entry);
+
+                if (Mathf.Abs(entry.FootprintSize.x - roomWidth) > PortTolerance ||
+                    Mathf.Abs(entry.FootprintSize.z - roomWidth) > PortTolerance)
+                {
+                    throw new InvalidOperationException($"{entry.ModuleId}: main grid room footprints must match.");
+                }
+
+                for (int directionIndex = 0; directionIndex < MazeDirections.Count; directionIndex++)
+                {
+                    MazeDirection direction = (MazeDirection)directionIndex;
+                    Vector2Int delta = MazeDirections.Delta(direction);
+                    Vector3 expected = new Vector3(delta.x, 0f, delta.y) * (roomWidth * 0.5f);
+                    Transform port = module.GetPort(direction);
+
+                    if (port.parent != module.transform || Vector3.Distance(port.localPosition, expected) > PortTolerance)
+                    {
+                        throw new InvalidOperationException($"{entry.ModuleId}: {direction} port must match the grid footprint.");
+                    }
+                }
+            }
+
+            return roomWidth + length;
+        }
+
+        private void AddSpawnArea(List<Bounds> areas, LevelModule module, ModuleCatalogEntry entry)
+        {
+            Vector3 size = entry.FootprintSize - new Vector3(SpawnInset * 2f, 0f, SpawnInset * 2f);
+            areas.Add(new Bounds(module.transform.position, size));
+        }
+
+        private Vector3 SnapToNavMesh(Vector3 position, int seed)
+        {
+            if (NavMesh.SamplePosition(position, out NavMeshHit hit, NavMeshSampleRadius * 2f, NavMesh.AllAreas))
+            {
+                return hit.position;
+            }
+
+            throw new InvalidOperationException($"Player spawn is not on NavMesh (seed {seed}).");
+        }
+
+        private Vector3[] SampleSpawnPositions(Vector3 origin, int count, float minimumDistance, float minimumSpacing,
+            List<Bounds> areas, System.Random random, int seed)
+        {
+            List<Vector3> positions = new List<Vector3>(count);
+            NavMeshPath path = new NavMeshPath();
+            int attemptLimit = PlacementAttemptsPerSpawn * count;
+
+            for (int attempt = 0; attempt < attemptLimit && positions.Count < count; attempt++)
+            {
+                Bounds area = areas[random.Next(areas.Count)];
+                Vector3 candidate = new Vector3(Mathf.Lerp(area.min.x, area.max.x, (float)random.NextDouble()), 1f,
+                    Mathf.Lerp(area.min.z, area.max.z, (float)random.NextDouble()));
+
+                if (NavMesh.SamplePosition(candidate, out NavMeshHit hit, NavMeshSampleRadius, NavMesh.AllAreas) == false ||
+                    Vector3.Distance(hit.position, origin) < minimumDistance || HasNearbyPosition(hit.position, positions, minimumSpacing))
+                {
+                    continue;
+                }
+
+                if (NavMesh.CalculatePath(origin, hit.position, NavMesh.AllAreas, path) && path.status == NavMeshPathStatus.PathComplete)
+                {
+                    positions.Add(hit.position);
+                }
+            }
+
+            if (positions.Count != count)
+            {
+                throw new InvalidOperationException($"Only {positions.Count} of {count} reachable spawn positions found (seed {seed}).");
+            }
+
+            return positions.ToArray();
+        }
+
+        private bool HasNearbyPosition(Vector3 candidate, List<Vector3> positions, float minimumSpacing)
+        {
+            for (int positionIndex = 0; positionIndex < positions.Count; positionIndex++)
+            {
+                if (Vector3.Distance(candidate, positions[positionIndex]) < minimumSpacing)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private MazeLayout SelectBoundaryEndpoints(MazeLayout layout)
+        {
+            int entry = 0;
+            int exit = layout.Size - 1;
+            int longestDistance = -1;
+
+            for (int entryRow = 0; entryRow < layout.Side; entryRow++)
+            {
+                int entryIndex = entryRow * layout.Side;
+
+                for (int exitRow = 0; exitRow < layout.Side; exitRow++)
+                {
+                    int exitIndex = exitRow * layout.Side + layout.Side - 1;
+                    int distance = layout.GetDistance(entryIndex, exitIndex);
+
+                    if (distance > longestDistance)
+                    {
+                        longestDistance = distance;
+                        entry = entryIndex;
+                        exit = exitIndex;
+                    }
+                }
+            }
+
+            return new MazeLayout(layout.Side, layout.Seed, entry, exit, layout.Cells);
+        }
+
+        private ModuleCatalogEntry GetModuleEntry(string moduleId)
+        {
+            ModuleCatalogEntry[] entries = _generationConfig.ModuleCatalog;
+
+            for (int entryIndex = 0; entryIndex < entries.Length; entryIndex++)
+            {
+                ModuleCatalogEntry entry = entries[entryIndex];
+
+                if (entry != null && entry.ModuleId == moduleId && entry.Prefab != null)
+                {
+                    return entry;
+                }
+            }
+
+            throw new InvalidOperationException($"Module catalog has no usable entry '{moduleId}'.");
+        }
+
+        private int ComputeSide(int levelNumber)
+        {
+            int side = _generationConfig.RoomGridSideStart + (levelNumber - 1) * _generationConfig.RoomGridSideGrowthPerLevel;
+            return Mathf.Min(side, _generationConfig.RoomGridSideCap);
+        }
+
+        private int ComputeEnemyCount(int levelNumber)
+        {
+            int count = _generationConfig.EnemyCountStart + (levelNumber - 1) * _generationConfig.EnemyCountGrowthPerLevel;
+            return Mathf.Min(count, _generationConfig.EnemyCountCap);
         }
 
         private void ValidateBuildState(int levelNumber)
         {
             if (_generationConfig == null || _presentationConfig == null)
             {
-                throw new InvalidOperationException($"{nameof(LevelGeometryFactory)}: call {nameof(Setup)} before {nameof(Build)}.");
+                throw new InvalidOperationException("Call Setup before building a level.");
             }
 
             if (levelNumber < 1)
             {
-                throw new ArgumentOutOfRangeException(nameof(levelNumber), levelNumber, "Level number starts at 1.");
+                throw new ArgumentOutOfRangeException(nameof(levelNumber));
             }
-        }
 
-        private int ComputeSide(int levelNumber)
-        {
-            int side = _generationConfig.LogicalSideStart + (levelNumber - 1) * _generationConfig.LogicalSideGrowthPerLevel;
-            return Mathf.Min(side, _generationConfig.LogicalSideCap);
-        }
-
-        private float ComputeLoopFraction(System.Random random, int side)
-        {
-            int desiredLoopCount = random.Next(_generationConfig.LoopEdgeCountMin, _generationConfig.LoopEdgeCountMax + 1);
-            int bridgeEdgeCount = (side - 1) * (side - 1);
-            return Mathf.Clamp01(desiredLoopCount / (float)bridgeEdgeCount);
-        }
-
-        private int ComputeEnemyCount(int levelNumber)
-        {
-            int enemyCount = _generationConfig.EnemyCountStart + (levelNumber - 1) * _generationConfig.EnemyCountGrowthPerLevel;
-            return Mathf.Min(enemyCount, _generationConfig.EnemyCountCap);
-        }
-
-        private BoundaryEndpoints SelectBoundaryEndpoints(MazeLayout layout, int side)
-        {
-            BoundaryEndpoints endpoints = new BoundaryEndpoints();
-            endpoints.EntryCellIndex = 0;
-            endpoints.ExitCellIndex = layout.Size - 1;
-            endpoints.GraphDistance = -1;
-
-            for (int entryIndex = 0; entryIndex < layout.Size; entryIndex++)
+            if (_generationConfig.LevelPrefab == null || _generationConfig.ClosedDoorPrefab == null ||
+                _presentationConfig.GateLeafPrefab == null || _generationConfig.ModuleCatalog == null || _generationConfig.DoorConfig == null || _presentationConfig.BlackCorridorPrefab == null)
             {
-                if (layout.Cells[entryIndex].Coordinates.x > 0)
-                {
-                    continue;
-                }
-
-                for (int exitIndex = 0; exitIndex < layout.Size; exitIndex++)
-                {
-                    if (layout.Cells[exitIndex].Coordinates.x < side - 1)
-                    {
-                        continue;
-                    }
-
-                    int graphDistance = layout.GetDistance(entryIndex, exitIndex);
-
-                    if (graphDistance > endpoints.GraphDistance)
-                    {
-                        endpoints.GraphDistance = graphDistance;
-                        endpoints.EntryCellIndex = entryIndex;
-                        endpoints.ExitCellIndex = exitIndex;
-                    }
-                }
+                throw new InvalidOperationException("Level root, closed door, exit gate and module catalog prefabs must be assigned.");
             }
 
-            return endpoints;
-        }
-
-        private LevelAnchors ComputeAnchors(int side, BoundaryEndpoints endpoints)
-        {
-            ModuleCatalogEntry quarterRoom = GetModuleEntry(QuarterRoomModuleId);
-            ModuleCatalogEntry gateRoom = GetModuleEntry(GateRoomModuleId);
-            float quarterHalfWidth = quarterRoom.FootprintSize.x * 0.5f;
-            float quarterHalfDepth = quarterRoom.FootprintSize.z * 0.5f;
-            float gateHalfWidth = gateRoom.FootprintSize.x * 0.5f;
-            float gateHalfDepth = gateRoom.FootprintSize.z * 0.5f;
-
-            LevelAnchors anchors = new LevelAnchors();
-            anchors.GridWidth = side * _generationConfig.CellSize;
-            anchors.EntryAxisZ = (endpoints.EntryCellIndex / side + 0.5f) * _generationConfig.CellSize;
-            anchors.ExitAxisZ = (endpoints.ExitCellIndex / side + 0.5f) * _generationConfig.CellSize;
-            anchors.QuarterRoomCenterX = -(_generationConfig.ConnectorLength + quarterHalfWidth);
-            anchors.QuarterRoomHalfWidth = quarterHalfWidth;
-            anchors.QuarterRoomHalfDepth = quarterHalfDepth;
-            anchors.GateRoomCenterX = anchors.GridWidth + _generationConfig.ConnectorLength + gateHalfDepth;
-            anchors.GateRoomHalfWidth = gateHalfWidth;
-            anchors.GateRoomHalfDepth = gateHalfDepth;
-            anchors.GateOpeningX = anchors.GateRoomCenterX + gateHalfDepth;
-            anchors.SpawnPosition = new Vector3(anchors.QuarterRoomCenterX, 0f, anchors.EntryAxisZ);
-            anchors.CorridorStart = new Vector3(anchors.GateOpeningX, 0f, anchors.ExitAxisZ);
-            anchors.CorridorEnd = anchors.CorridorStart + Vector3.right * (_presentationConfig.DarkCorridorLength - _presentationConfig.TransitionEndInset);
-            return anchors;
-        }
-
-        private ModuleCatalogEntry GetModuleEntry(string moduleId)
-        {
-            ModuleCatalogEntry[] moduleCatalog = _generationConfig.ModuleCatalog;
-
-            if (moduleCatalog == null)
+            if (_generationConfig.RoomGridSideStart < MazeLayout.MinimumSide ||
+                _generationConfig.RoomGridSideCap < _generationConfig.RoomGridSideStart ||
+                _generationConfig.LoopEdgeCountMin > _generationConfig.LoopEdgeCountMax)
             {
-                throw new InvalidOperationException($"{nameof(LevelGenerationConfig)}: module catalog is empty, cannot resolve '{moduleId}'.");
+                throw new InvalidOperationException("Invalid room grid or loop settings.");
             }
-
-            for (int entryIndex = 0; entryIndex < moduleCatalog.Length; entryIndex++)
-            {
-                ModuleCatalogEntry entry = moduleCatalog[entryIndex];
-
-                if (entry == null)
-                {
-                    continue;
-                }
-
-                if (entry.ModuleId == moduleId)
-                {
-                    if (entry.Prefab == null)
-                    {
-                        continue;
-                    }
-
-                    return entry;
-                }
-            }
-
-            throw new InvalidOperationException($"{nameof(LevelGenerationConfig)}: module catalog has no usable entry '{moduleId}'.");
-        }
-
-        private GameObject CreateRoot(int levelNumber, int seed, Transform parent)
-        {
-            GameObject root = new GameObject($"Level_{levelNumber}_Seed_{seed}");
-
-            if (parent == null)
-            {
-                return root;
-            }
-
-            root.transform.SetParent(parent, false);
-            return root;
-        }
-
-        private Transform CreateGeometryRoot(Transform root)
-        {
-            GameObject geometryRoot = new GameObject("Geometry");
-            geometryRoot.transform.SetParent(root, false);
-            return geometryRoot.transform;
-        }
-
-        private void BuildMazeShell(Transform geometryRoot, MazeLayout layout, LevelGeometryBuilder builder, LevelAnchors anchors, BoundaryEndpoints endpoints)
-        {
-            float cellSize = _generationConfig.CellSize;
-            float wallThickness = _generationConfig.WallThickness;
-            float height = _generationConfig.CeilingHeight;
-            float floorThickness = _generationConfig.FloorThickness;
-            int side = layout.Side;
-
-            builder.CreateFloorSlab(geometryRoot, "MazeFloor", new Vector3(anchors.GridWidth * 0.5f, -floorThickness * 0.5f, anchors.GridWidth * 0.5f), new Vector3(anchors.GridWidth, floorThickness, anchors.GridWidth), cellSize);
-            builder.CreateCeilingSlab(geometryRoot, "MazeCeiling", new Vector3(anchors.GridWidth * 0.5f, height + floorThickness * 0.5f, anchors.GridWidth * 0.5f), new Vector3(anchors.GridWidth, floorThickness, anchors.GridWidth), cellSize);
-
-            for (int cellIndex = 0; cellIndex < layout.Size; cellIndex++)
-            {
-                MazeCell cell = layout.Cells[cellIndex];
-                int cellCoordinateX = cell.Coordinates.x;
-                int cellCoordinateY = cell.Coordinates.y;
-
-                if (cellCoordinateY == 0 && cell.HasPassage(MazeDirection.South) == false)
-                {
-                    Vector3 center = new Vector3(cellCoordinateX * cellSize + cellSize * 0.5f, height * 0.5f, 0f);
-                    builder.CreateBox(geometryRoot, $"MazeWall_S_{cellIndex}", center, new Vector3(cellSize + wallThickness, height, wallThickness));
-                }
-
-                if (cellCoordinateY == side - 1 && cell.HasPassage(MazeDirection.North) == false)
-                {
-                    Vector3 center = new Vector3(cellCoordinateX * cellSize + cellSize * 0.5f, height * 0.5f, anchors.GridWidth);
-                    builder.CreateBox(geometryRoot, $"MazeWall_N_{cellIndex}", center, new Vector3(cellSize + wallThickness, height, wallThickness));
-                }
-
-                if (cellCoordinateX == 0 && cell.HasPassage(MazeDirection.West) == false && cellIndex == endpoints.EntryCellIndex == false)
-                {
-                    Vector3 center = new Vector3(0f, height * 0.5f, cellCoordinateY * cellSize + cellSize * 0.5f);
-                    builder.CreateBox(geometryRoot, $"MazeWall_W_{cellIndex}", center, new Vector3(wallThickness, height, cellSize + wallThickness));
-                }
-
-                if (cell.HasPassage(MazeDirection.East) == false)
-                {
-                    if (cellCoordinateX < side - 1)
-                    {
-                        Vector3 center = new Vector3((cellCoordinateX + 1) * cellSize, height * 0.5f, cellCoordinateY * cellSize + cellSize * 0.5f);
-                        builder.CreateBox(geometryRoot, $"MazeWall_E_{cellIndex}", center, new Vector3(wallThickness, height, cellSize + wallThickness));
-                    }
-                    else if (cellIndex == endpoints.ExitCellIndex == false)
-                    {
-                        Vector3 center = new Vector3(anchors.GridWidth, height * 0.5f, cellCoordinateY * cellSize + cellSize * 0.5f);
-                        builder.CreateBox(geometryRoot, $"MazeWall_E_{cellIndex}", center, new Vector3(wallThickness, height, cellSize + wallThickness));
-                    }
-                }
-
-                if (cellCoordinateY < side - 1 && cell.HasPassage(MazeDirection.North) == false)
-                {
-                    Vector3 center = new Vector3(cellCoordinateX * cellSize + cellSize * 0.5f, height * 0.5f, (cellCoordinateY + 1) * cellSize);
-                    builder.CreateBox(geometryRoot, $"MazeWall_N_{cellIndex}", center, new Vector3(cellSize + wallThickness, height, wallThickness));
-                }
-            }
-        }
-
-        private void BuildWestCorridor(Transform geometryRoot, LevelGeometryBuilder builder, LevelAnchors anchors)
-        {
-            float wallThickness = _generationConfig.WallThickness;
-            float xBegin = -_generationConfig.ConnectorLength - wallThickness;
-            float length = _generationConfig.ConnectorLength + wallThickness * 2f;
-
-            if (TryCreateConnector(geometryRoot, "WestCorridor", -_generationConfig.ConnectorLength * 0.5f, anchors.EntryAxisZ) == false)
-            {
-                builder.CreateCorridorShell(geometryRoot, "WestCorridor", xBegin, length, anchors.EntryAxisZ,
-                    _generationConfig.CorridorWidth, _generationConfig.CorridorHeight, _generationConfig.FloorThickness,
-                    wallThickness, _generationConfig.CellSize, false);
-            }
-            BuildGridJunction(geometryRoot, builder, anchors, "WestJunction", 0f, anchors.EntryAxisZ);
-        }
-
-        private void BuildEastCorridor(Transform geometryRoot, LevelGeometryBuilder builder, LevelAnchors anchors)
-        {
-            float wallThickness = _generationConfig.WallThickness;
-            float xBegin = anchors.GridWidth - wallThickness;
-            float length = _generationConfig.ConnectorLength + wallThickness * 2f;
-
-            if (TryCreateConnector(geometryRoot, "EastCorridor", anchors.GridWidth + _generationConfig.ConnectorLength * 0.5f,
-                anchors.ExitAxisZ) == false)
-            {
-                builder.CreateCorridorShell(geometryRoot, "EastCorridor", xBegin, length, anchors.ExitAxisZ,
-                    _generationConfig.CorridorWidth, _generationConfig.CorridorHeight, _generationConfig.FloorThickness,
-                    wallThickness, _generationConfig.CellSize, false);
-            }
-            BuildGridJunction(geometryRoot, builder, anchors, "EastJunction", anchors.GridWidth, anchors.ExitAxisZ);
-        }
-
-        private bool TryCreateConnector(Transform parent, string objectName, float centerX, float centerZ)
-        {
-            ModuleCatalogEntry[] entries = _generationConfig.ModuleCatalog;
-
-            for (int i = 0; i < entries.Length; i++)
-            {
-                ModuleCatalogEntry entry = entries[i];
-
-                if (entry == null)
-                {
-                    continue;
-                }
-
-                if (entry.ModuleId != "corridor_straight" || entry.Prefab == null ||
-                    Mathf.Abs(entry.FootprintSize.z - _generationConfig.ConnectorLength) > Mathf.Epsilon)
-                {
-                    continue;
-                }
-
-                GameObject instance = UnityEngine.Object.Instantiate(entry.Prefab, parent);
-                instance.name = objectName;
-                instance.transform.localPosition = new Vector3(centerX, 0f, centerZ);
-                instance.transform.localRotation = Quaternion.Euler(0f, 90f, 0f);
-                return true;
-            }
-
-            return false;
-        }
-
-        private void BuildGridJunction(Transform geometryRoot, LevelGeometryBuilder builder, LevelAnchors anchors, string namePrefix, float junctionX, float axisZ)
-        {
-            float cellSize = _generationConfig.CellSize;
-            float wallThickness = _generationConfig.WallThickness;
-            float corridorWidth = _generationConfig.CorridorWidth;
-            float corridorHeight = _generationConfig.CorridorHeight;
-            float mazeHeight = _generationConfig.CeilingHeight;
-            float flankWidth = (corridorWidth - cellSize) * 0.5f;
-
-            if (flankWidth > 0f)
-            {
-                float flankOffsetZ = cellSize * 0.5f + flankWidth * 0.5f;
-
-                builder.CreateBox(geometryRoot, $"{namePrefix}_CapSouth", new Vector3(junctionX, corridorHeight * 0.5f, axisZ - flankOffsetZ), new Vector3(wallThickness * 2f, corridorHeight, flankWidth));
-                builder.CreateBox(geometryRoot, $"{namePrefix}_CapNorth", new Vector3(junctionX, corridorHeight * 0.5f, axisZ + flankOffsetZ), new Vector3(wallThickness * 2f, corridorHeight, flankWidth));
-            }
-
-            if (corridorHeight > mazeHeight)
-            {
-                float lintelHeight = corridorHeight - mazeHeight;
-                builder.CreateBox(geometryRoot, $"{namePrefix}_Lintel", new Vector3(junctionX, mazeHeight + lintelHeight * 0.5f, axisZ), new Vector3(wallThickness, lintelHeight, corridorWidth));
-            }
-        }
-
-        private void BuildExitCorridor(Transform geometryRoot, LevelGeometryBuilder builder, LevelAnchors anchors)
-        {
-            Material blackMaterial = _generationConfig.ExitCorridorMaterial;
-
-            if (blackMaterial == null)
-            {
-                throw new InvalidOperationException($"{nameof(LevelGenerationConfig)}: exit corridor material is not assigned.");
-            }
-
-            float wallThickness = _generationConfig.WallThickness;
-            float floorThickness = _generationConfig.FloorThickness;
-            float width = _generationConfig.GateOpeningWidth;
-            float height = _generationConfig.RoomHeight;
-            float length = _presentationConfig.DarkCorridorLength;
-            float xBegin = anchors.GateOpeningX;
-            float centerLineX = xBegin + length * 0.5f;
-
-            builder.CreateSlabWithMaterial(geometryRoot, "ExitCorridor_Floor", new Vector3(centerLineX, -floorThickness * 0.5f, anchors.ExitAxisZ), new Vector3(length, floorThickness, width), _generationConfig.CellSize, blackMaterial);
-            builder.CreateSlabWithMaterial(geometryRoot, "ExitCorridor_Ceiling", new Vector3(centerLineX, height + floorThickness * 0.5f, anchors.ExitAxisZ), new Vector3(length, floorThickness, width + wallThickness * 2f), _generationConfig.CellSize, blackMaterial);
-            builder.CreateBoxWithMaterial(geometryRoot, "ExitCorridor_WallSouth", new Vector3(centerLineX, height * 0.5f, anchors.ExitAxisZ - (width * 0.5f + wallThickness * 0.5f)), new Vector3(length, height, wallThickness), blackMaterial);
-            builder.CreateBoxWithMaterial(geometryRoot, "ExitCorridor_WallNorth", new Vector3(centerLineX, height * 0.5f, anchors.ExitAxisZ + (width * 0.5f + wallThickness * 0.5f)), new Vector3(length, height, wallThickness), blackMaterial);
-            builder.CreateBoxWithMaterial(geometryRoot, "ExitCorridor_EndCap", new Vector3(xBegin + length + wallThickness * 0.5f, height * 0.5f, anchors.ExitAxisZ), new Vector3(wallThickness, height, width + wallThickness * 2f), blackMaterial);
-        }
-
-        private void BuildQuarterRoom(Transform geometryRoot, LevelGeometryBuilder builder, LevelAnchors anchors)
-        {
-            ModuleCatalogEntry quarterRoom = GetModuleEntry(QuarterRoomModuleId);
-            GameObject roomInstance = UnityEngine.Object.Instantiate(quarterRoom.Prefab, geometryRoot);
-            roomInstance.name = "RoomQuartersArena";
-            roomInstance.transform.position = new Vector3(anchors.QuarterRoomCenterX, 0f, anchors.EntryAxisZ);
-            roomInstance.transform.rotation = Quaternion.identity;
-
-            float capThickness = _generationConfig.WallThickness * PortCapThicknessMultiplier;
-            float capWidth = _generationConfig.RoomDoorWidth + PortCapSizeMargin;
-            float capHeight = _generationConfig.RoomDoorHeight + PortCapSizeMargin;
-            float capCenterY = _generationConfig.RoomDoorHeight * 0.5f;
-
-            builder.CreateBox(roomInstance.transform, "PortCapNorth", new Vector3(0f, capCenterY, anchors.QuarterRoomHalfDepth), new Vector3(capWidth, capHeight, capThickness));
-            builder.CreateBox(roomInstance.transform, "PortCapSouth", new Vector3(0f, capCenterY, -anchors.QuarterRoomHalfDepth), new Vector3(capWidth, capHeight, capThickness));
-            builder.CreateBox(roomInstance.transform, "PortCapWest", new Vector3(-anchors.QuarterRoomHalfWidth, capCenterY, 0f), new Vector3(capThickness, capHeight, capWidth));
-        }
-
-        private void BuildGateRoom(Transform geometryRoot, LevelAnchors anchors)
-        {
-            ModuleCatalogEntry gateRoom = GetModuleEntry(GateRoomModuleId);
-            GameObject roomInstance = UnityEngine.Object.Instantiate(gateRoom.Prefab, geometryRoot);
-            roomInstance.name = "RoomGate";
-            roomInstance.transform.position = new Vector3(anchors.GateRoomCenterX, 0f, anchors.ExitAxisZ);
-            roomInstance.transform.rotation = Quaternion.Euler(0f, 90f, 0f);
-        }
-
-        private ExitGate BuildExitGateActor(Transform root, LevelAnchors anchors)
-        {
-            GameObject gateLeafPrefab = _presentationConfig.GateLeafPrefab;
-
-            if (gateLeafPrefab == null)
-            {
-                throw new InvalidOperationException($"{nameof(LevelPresentationConfig)}: gate leaf prefab is not assigned.");
-            }
-
-            GameObject gateActor = new GameObject("ExitGateActor");
-            gateActor.transform.SetParent(root, false);
-            gateActor.transform.position = new Vector3(anchors.GateOpeningX, 0f, anchors.ExitAxisZ);
-            gateActor.transform.rotation = Quaternion.Euler(0f, 90f, 0f);
-
-            GameObject leafInstance = UnityEngine.Object.Instantiate(gateLeafPrefab, gateActor.transform);
-            leafInstance.name = "GateLeaf";
-            leafInstance.transform.localPosition = Vector3.zero;
-
-            GameObject glowObject = new GameObject("GateGlow");
-            glowObject.transform.SetParent(gateActor.transform, false);
-            Vector3 glowWorldPosition = new Vector3(anchors.GateOpeningX - GateGlowOffset, GateGlowHeight, anchors.ExitAxisZ);
-            glowObject.transform.localPosition = gateActor.transform.InverseTransformPoint(glowWorldPosition);
-
-            Light glow = glowObject.AddComponent<Light>();
-            glow.type = LightType.Point;
-            glow.color = _presentationConfig.ExitGlowColor;
-            glow.intensity = _presentationConfig.ExitGlowIntensity;
-            glow.range = _presentationConfig.LightRange;
-            glow.shadows = LightShadows.None;
-            glow.enabled = false;
-
-            ExitGate exitGate = gateActor.AddComponent<ExitGate>();
-            exitGate.Setup(leafInstance.transform, glow, _presentationConfig);
-            return exitGate;
-        }
-
-        private void BuildMazeLights(Transform geometryRoot, LevelAnchors anchors)
-        {
-            int lightCount = _presentationConfig.MaxSimultaneousLights;
-
-            if (lightCount == 0)
-            {
-                return;
-            }
-
-            int gridLightCount = Mathf.Max(1, lightCount - 4);
-            int columns = Mathf.CeilToInt(Mathf.Sqrt(gridLightCount));
-            int rows = Mathf.CeilToInt(gridLightCount / (float)columns);
-
-            for (int lightIndex = 0; lightIndex < lightCount; lightIndex++)
-            {
-                int gridIndex = Mathf.Max(0, lightIndex - 4);
-                int column = gridIndex % columns;
-                int row = gridIndex / columns;
-                float positionX = (column + 0.5f) / columns * anchors.GridWidth;
-                float positionZ = (row + 0.5f) / rows * anchors.GridWidth;
-                float height = _generationConfig.CeilingHeight - MazeLightHeightOffset;
-
-                switch (lightIndex)
-                {
-                    case 0:
-                        positionX = anchors.QuarterRoomCenterX;
-                        positionZ = anchors.EntryAxisZ;
-                        height = _generationConfig.RoomHeight - MazeLightHeightOffset;
-                        break;
-                    case 1:
-                        positionX = anchors.GateRoomCenterX;
-                        positionZ = anchors.ExitAxisZ;
-                        height = _generationConfig.RoomHeight - MazeLightHeightOffset;
-                        break;
-                    case 2:
-                        positionX = -_generationConfig.ConnectorLength * 0.5f;
-                        positionZ = anchors.EntryAxisZ;
-                        height = _generationConfig.CorridorHeight - MazeLightHeightOffset;
-                        break;
-                    case 3:
-                        positionX = anchors.GridWidth + _generationConfig.ConnectorLength * 0.5f;
-                        positionZ = anchors.ExitAxisZ;
-                        height = _generationConfig.CorridorHeight - MazeLightHeightOffset;
-                        break;
-                }
-
-                GameObject lightObject = new GameObject($"MazeLight_{lightIndex}");
-                lightObject.transform.SetParent(geometryRoot, false);
-                lightObject.transform.position = new Vector3(positionX, height, positionZ);
-
-                Light light = lightObject.AddComponent<Light>();
-                light.type = LightType.Point;
-                light.color = _presentationConfig.LightColor;
-                light.intensity = _presentationConfig.LightIntensity;
-                light.range = _presentationConfig.LightRange;
-                light.shadows = LightShadows.None;
-            }
-        }
-
-        private void MarkStaticTree(GameObject rootObject)
-        {
-            rootObject.isStatic = true;
-            Transform rootTransform = rootObject.transform;
-
-            for (int childIndex = 0; childIndex < rootTransform.childCount; childIndex++)
-            {
-                MarkStaticTree(rootTransform.GetChild(childIndex).gameObject);
-            }
-        }
-
-        private NavMeshSurface BakeNavMesh(GameObject geometryRoot)
-        {
-            NavMeshSurface navMeshSurface = geometryRoot.AddComponent<NavMeshSurface>();
-            navMeshSurface.collectObjects = CollectObjects.Children;
-            navMeshSurface.useGeometry = NavMeshCollectGeometry.PhysicsColliders;
-            navMeshSurface.BuildNavMesh();
-            return navMeshSurface;
-        }
-
-        private Vector3 SnapToNavMesh(Vector3 position, int seed)
-        {
-            NavMeshHit hit;
-
-            if (NavMesh.SamplePosition(position, out hit, NavMeshSampleRadius * 2f, NavMesh.AllAreas))
-            {
-                return hit.position;
-            }
-
-            throw new InvalidOperationException($"{nameof(LevelGeometryFactory)}: player spawn is not on NavMesh (seed {seed}).");
-        }
-
-        private Vector3[] SampleReachablePositions(Vector3 origin, int targetCount, float minDistanceFromOrigin, float minSpacing, System.Random random, LevelAnchors anchors, int levelNumber, int seed, string purpose)
-        {
-            List<Vector3> acceptedPositions = new List<Vector3>(targetCount);
-            NavMeshPath path = new NavMeshPath();
-            int attemptLimit = MaxPlacementAttemptsPerPosition * targetCount;
-            int attempts = 0;
-
-            while (acceptedPositions.Count < targetCount)
-            {
-                if (attempts >= attemptLimit)
-                {
-                    throw new InvalidOperationException($"{nameof(LevelGeometryFactory)}: placed {acceptedPositions.Count} of {targetCount} {purpose} positions after {attempts} attempts (level {levelNumber}, seed {seed}).");
-                }
-
-                attempts += 1;
-                Vector3 candidate = SampleGridPoint(random, anchors);
-
-                if (acceptedPositions.Count == 0)
-                {
-                    candidate = SampleRoomPoint(random, anchors.QuarterRoomCenterX, anchors.EntryAxisZ,
-                        anchors.QuarterRoomHalfWidth, anchors.QuarterRoomHalfDepth);
-                }
-                else if (purpose == "enemy" && acceptedPositions.Count == 1)
-                {
-                    candidate = SampleRoomPoint(random, anchors.GateRoomCenterX, anchors.ExitAxisZ,
-                        anchors.GateRoomHalfDepth, anchors.GateRoomHalfWidth);
-                }
-                NavMeshHit hit;
-
-                if (NavMesh.SamplePosition(candidate, out hit, NavMeshSampleRadius, NavMesh.AllAreas) == false)
-                {
-                    continue;
-                }
-
-                if (IsPositionAcceptable(hit.position, origin, minDistanceFromOrigin, minSpacing, acceptedPositions) == false)
-                {
-                    continue;
-                }
-
-                if (NavMesh.CalculatePath(origin, hit.position, NavMesh.AllAreas, path) == false)
-                {
-                    continue;
-                }
-
-                if (path.status == NavMeshPathStatus.PathComplete == false)
-                {
-                    continue;
-                }
-
-                acceptedPositions.Add(hit.position);
-            }
-
-            return acceptedPositions.ToArray();
-        }
-
-        private bool IsPositionAcceptable(Vector3 position, Vector3 origin, float minDistanceFromOrigin, float minSpacing, List<Vector3> acceptedPositions)
-        {
-            if (Vector3.Distance(position, origin) < minDistanceFromOrigin)
-            {
-                return false;
-            }
-
-            for (int positionIndex = 0; positionIndex < acceptedPositions.Count; positionIndex++)
-            {
-                if (Vector3.Distance(position, acceptedPositions[positionIndex]) < minSpacing)
-                {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        private Vector3 SampleRoomPoint(System.Random random, float centerX, float centerZ, float halfWidth, float halfDepth)
-        {
-            float positionX = centerX + ((float)random.NextDouble() * 2f - 1f) * (halfWidth - GridSampleInset);
-            float positionZ = centerZ + ((float)random.NextDouble() * 2f - 1f) * (halfDepth - GridSampleInset);
-            return new Vector3(positionX, NavMeshSnapHeight, positionZ);
-        }
-
-        private Vector3 SampleGridPoint(System.Random random, LevelAnchors anchors)
-        {
-            float spanX = anchors.GridWidth - GridSampleInset * 2f;
-            float spanZ = anchors.GridWidth - GridSampleInset * 2f;
-            float positionX = (float)random.NextDouble() * spanX + GridSampleInset;
-            float positionZ = (float)random.NextDouble() * spanZ + GridSampleInset;
-
-            return new Vector3(positionX, NavMeshSnapHeight, positionZ);
-        }
-
-        private struct BoundaryEndpoints
-        {
-            public int EntryCellIndex;
-            public int ExitCellIndex;
-            public int GraphDistance;
-        }
-
-        private struct LevelAnchors
-        {
-            public float GridWidth;
-            public float EntryAxisZ;
-            public float ExitAxisZ;
-            public float QuarterRoomCenterX;
-            public float QuarterRoomHalfWidth;
-            public float QuarterRoomHalfDepth;
-            public float GateRoomCenterX;
-            public float GateRoomHalfWidth;
-            public float GateRoomHalfDepth;
-            public float GateOpeningX;
-            public Vector3 SpawnPosition;
-            public Vector3 CorridorStart;
-            public Vector3 CorridorEnd;
         }
     }
 }

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8168413652303595017}
   - component: {fileID: 1444398972522980005}
   - component: {fileID: 7359303145204403323}
+  - component: {fileID: 11400000}
   m_Layer: 10
   m_Name: HealingOrb
   m_TagString: Untagged
@@ -176,3 +177,15 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 133ce05809f17480e8440367f2b86b91, type: 3}
   m_PrefabInstance: {fileID: 3454516497072390774}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5094640089952615080}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e104fcb424b86c8292b03e5d91994af, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: MazeHell.Runtime::MazeHell.Level.HealingPickup

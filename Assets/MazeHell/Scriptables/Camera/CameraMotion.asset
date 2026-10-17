@@ -20,8 +20,8 @@ MonoBehaviour:
   _speedFieldOfViewBonus: 8
   _speedFieldOfViewReferenceSpeed: 12
   _fieldOfViewSmoothTime: 0.2
-  _bobVerticalAmplitude: 0.025
-  _bobLateralAmplitude: 0.018
+  _bobVerticalAmplitude: 0.006
+  _bobLateralAmplitude: 0.004
   _bobFrequency: 2.2
   _jumpImpulse:
     _positionOffset: 0.025

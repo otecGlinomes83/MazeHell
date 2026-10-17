@@ -5,25 +5,20 @@ namespace MazeHell.Level
 {
     public class LevelResources : MonoBehaviour
     {
-        private Mesh[] _meshes;
         private NavMeshData _navigationData;
 
-        public void Setup(Mesh[] meshes, NavMeshData navigationData)
+        public void Setup(NavMeshData navigationData)
         {
-            _meshes = meshes;
+            if (_navigationData != navigationData)
+            {
+                Release(_navigationData);
+            }
+
             _navigationData = navigationData;
         }
 
         private void OnDestroy()
         {
-            if (_meshes != null)
-            {
-                for (int i = 0; i < _meshes.Length; i++)
-                {
-                    Release(_meshes[i]);
-                }
-            }
-
             Release(_navigationData);
         }
 

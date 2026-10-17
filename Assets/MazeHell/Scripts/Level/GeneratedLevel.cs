@@ -16,11 +16,13 @@ namespace MazeHell.Level
         private Vector3 _corridorStart;
         private Vector3 _corridorEnd;
         private Vector3 _corridorDirection;
+        private float _corridorHalfWidth;
         private Vector3[] _enemySpawnPositions;
         private Vector3[] _pickupPositions;
         private NavMeshSurface _navMeshSurface;
+        private ProximityDoor[] _doors;
 
-        public GeneratedLevel(GameObject root, Transform geometryRoot, Vector3 spawnPosition, Quaternion spawnRotation, MazeLayout layout, ExitGate exitGate, Vector3 corridorStart, Vector3 corridorEnd, Vector3 corridorDirection, Vector3[] enemySpawnPositions, Vector3[] pickupPositions, NavMeshSurface navMeshSurface)
+        public GeneratedLevel(GameObject root, Transform geometryRoot, Vector3 spawnPosition, Quaternion spawnRotation, MazeLayout layout, ExitGate exitGate, Vector3 corridorStart, Vector3 corridorEnd, Vector3 corridorDirection, float corridorHalfWidth, Vector3[] enemySpawnPositions, Vector3[] pickupPositions, NavMeshSurface navMeshSurface, ProximityDoor[] doors)
         {
             if (root == null)
             {
@@ -66,9 +68,21 @@ namespace MazeHell.Level
             _corridorStart = corridorStart;
             _corridorEnd = corridorEnd;
             _corridorDirection = corridorDirection;
+            _corridorHalfWidth = corridorHalfWidth;
             _enemySpawnPositions = enemySpawnPositions;
             _pickupPositions = pickupPositions;
             _navMeshSurface = navMeshSurface;
+            _doors = doors;
+        }
+
+        public void TickDoors(Vector3 position, Vector3 velocity, float bodyHeight, float deltaTime)
+        {
+            for (int doorIndex = 0; doorIndex < _doors.Length; doorIndex++)
+            {
+                _doors[doorIndex].Tick(position, velocity, bodyHeight, deltaTime);
+            }
+
+            _exitGate.TickPlayer(position, velocity, bodyHeight, deltaTime);
         }
 
         public GameObject Root => _root;
@@ -88,6 +102,8 @@ namespace MazeHell.Level
         public Vector3 CorridorEnd => _corridorEnd;
 
         public Vector3 CorridorDirection => _corridorDirection;
+
+        public float CorridorHalfWidth => _corridorHalfWidth;
 
         public Vector3[] EnemySpawnPositions => _enemySpawnPositions;
 
