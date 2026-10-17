@@ -1,0 +1,16 @@
+{
+  "name": "MazeHell.Tests.EditMode",
+  "rootNamespace": "MazeHell.Tests",
+  "references": [
+    "MazeHell.Runtime",
+    "Unity.InputSystem",
+    "UnityEngine.UI"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ],
+  "autoReferenced": false
+}

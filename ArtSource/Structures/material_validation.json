@@ -1,0 +1,75 @@
+{
+  "passed": true,
+  "issues": [],
+  "materials": [
+    {
+      "name": "MH_Ceiling_Basalt",
+      "shader": "Universal Render Pipeline/Lit",
+      "normal": "floor_cracked_normal",
+      "smoothness": 0.08
+    },
+    {
+      "name": "MH_Column_Band",
+      "shader": "Universal Render Pipeline/Lit",
+      "normal": "wall_base_normal",
+      "smoothness": 0.08
+    },
+    {
+      "name": "MH_Column_Stone",
+      "shader": "Universal Render Pipeline/Lit",
+      "normal": "wall_base_normal",
+      "smoothness": 0.08
+    },
+    {
+      "name": "MH_Floor_Cracked",
+      "shader": "Universal Render Pipeline/Lit",
+      "normal": "floor_cracked_normal",
+      "smoothness": 0.08
+    },
+    {
+      "name": "MH_Ivory_Flat",
+      "shader": "Universal Render Pipeline/Lit",
+      "normal": null,
+      "smoothness": 0.08
+    },
+    {
+      "name": "MH_Metal_Dark",
+      "shader": "Universal Render Pipeline/Lit",
+      "normal": null,
+      "smoothness": 0.22
+    },
+    {
+      "name": "MH_Transition_Black",
+      "shader": "Universal Render Pipeline/Unlit",
+      "normal": null,
+      "smoothness": 0.0
+    },
+    {
+      "name": "MH_Wall_Bones",
+      "shader": "Universal Render Pipeline/Lit",
+      "normal": "wall_bones_normal",
+      "smoothness": 0.08
+    },
+    {
+      "name": "MH_Wall_Hellstone",
+      "shader": "Universal Render Pipeline/Lit",
+      "normal": "wall_base_normal",
+      "smoothness": 0.08
+    },
+    {
+      "name": "MH_Wall_Lava",
+      "shader": "Universal Render Pipeline/Lit",
+      "normal": "wall_lava_normal",
+      "smoothness": 0.08
+    },
+    {
+      "name": "MH_Wood_AshGray",
+      "shader": "Universal Render Pipeline/Lit",
+      "normal": "wood_ash_gray_normal",
+      "smoothness": 0.12
+    }
+  ],
+  "lights": 37,
+  "pipeline": "MazeHell_Web_RPAsset",
+  "target": "WebGL"
+}

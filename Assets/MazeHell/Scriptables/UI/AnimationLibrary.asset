@@ -1,0 +1,114 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2532fcc0c9ca58508afe438bb78077c8, type: 3}
+  m_Name: AnimationLibrary
+  m_EditorClassIdentifier: MazeHell.Runtime::MazeHell.Configuration.AnimationLibrary
+  _enemySet:
+    _walkFrontSprites:
+    - {fileID: 21300000, guid: 18c30cd493a24398ba733e665adf57b7, type: 3}
+    - {fileID: 21300000, guid: f0e856ac6d444bcfa978dc98ae4cc490, type: 3}
+    _walkSideSprites:
+    - {fileID: 21300000, guid: 82efe2981806447b84b103ce456b70f5, type: 3}
+    - {fileID: 21300000, guid: ab70dceafcdf418eaeb550fd66c15128, type: 3}
+    _walkBackSprites:
+    - {fileID: 21300000, guid: 9ea3ca67b479417e9d551ced865135d4, type: 3}
+    - {fileID: 21300000, guid: b9d009b1ad1e4eed892d863b2f800d0f, type: 3}
+    _windupSprites:
+    - {fileID: 21300000, guid: 18bfafdd685e44769e49d048c91fbac8, type: 3}
+    _lungeSprites:
+    - {fileID: 21300000, guid: 6d7b48e2a52f49ba89567dee62a61fbc, type: 3}
+    _painSprites:
+    - {fileID: 21300000, guid: 4648759e1a544a91973519764495d446, type: 3}
+    _corpseSprite: {fileID: 21300000, guid: 3fcf5c8b8bf44f15b0f3f98279c33359, type: 3}
+    _walkFrameInterval: 0.15
+    _attackFrameInterval: 0.1
+    _worldHeight: 1.8
+  _weaponSet:
+    _idleSprite: {fileID: 21300000, guid: f8a4a36fae5645d7af93abde330eb717, type: 3}
+    _shotFrames:
+    - {fileID: 21300000, guid: 5e09356cce974be48e1792cf508f9749, type: 3}
+    _volleyFrames:
+    - {fileID: 21300000, guid: 6c1fc741e738416e865ff78c48826e8e, type: 3}
+    _reloadFrames:
+    - {fileID: 21300000, guid: 103096a4b9224f28addc4b2b9fec7cdd, type: 3}
+    - {fileID: 21300000, guid: 3f35f9c8f82a4e9bbd8db164e7952702, type: 3}
+    _emptySprite: {fileID: 21300000, guid: c3edb9a4bfe2438ab2797ed610ae77f9, type: 3}
+    _blockSprite: {fileID: 21300000, guid: 713ffffe24f84482b46ede788fb31f5d, type: 3}
+    _frameInterval: 0.08
+  _faceSet:
+    _healthy:
+      _frames:
+      - {fileID: 21300000, guid: a930930030a346a794da211482962962, type: 3}
+      - {fileID: 21300000, guid: e7750f51bdcd4cbda148ec48dd0adf7f, type: 3}
+      - {fileID: 21300000, guid: 99399ca038154881b0dc610fa7bf80c4, type: 3}
+      - {fileID: 21300000, guid: c0afe23c589a4eb8aac5be863c8a5bda, type: 3}
+      _frameDurations:
+      - 0.75
+      - 0.35
+      - 0.12
+      - 0.5
+    _scratched:
+      _frames:
+      - {fileID: 21300000, guid: fb7e11d2bc454913833e332378b8b4b2, type: 3}
+      - {fileID: 21300000, guid: 3f80ffacc4ba46128c598d2e7c40f628, type: 3}
+      - {fileID: 21300000, guid: 49de4925e3844d4eb211ba631345bd1c, type: 3}
+      - {fileID: 21300000, guid: 40b31aeddb0448a18392b5d2a39ba4a0, type: 3}
+      _frameDurations:
+      - 0.75
+      - 0.35
+      - 0.12
+      - 0.5
+    _bleeding:
+      _frames:
+      - {fileID: 21300000, guid: a3abca2d4c0d4906b986f096cc8b0cc3, type: 3}
+      - {fileID: 21300000, guid: 2cb2d2aba2834c00b986404253099bb9, type: 3}
+      - {fileID: 21300000, guid: c8b10fa246d1476e90306834102d0a76, type: 3}
+      - {fileID: 21300000, guid: ae40d2e8e6934194b5c6cc386d3fce38, type: 3}
+      _frameDurations:
+      - 0.75
+      - 0.35
+      - 0.12
+      - 0.5
+    _critical:
+      _frames:
+      - {fileID: 21300000, guid: c287f5fe0cc649ed8df81ec708893a69, type: 3}
+      - {fileID: 21300000, guid: ab0fd5ca056b454f99469dc22153ebb4, type: 3}
+      - {fileID: 21300000, guid: 1ea4f049f68c48a3973dd4eecf942f24, type: 3}
+      - {fileID: 21300000, guid: a94a50429abb4b8a8c26d9dbf38b4330, type: 3}
+      _frameDurations:
+      - 0.75
+      - 0.35
+      - 0.12
+      - 0.5
+    _nearDeath:
+      _frames:
+      - {fileID: 21300000, guid: cded318637d042f298ff7317536f8bc0, type: 3}
+      - {fileID: 21300000, guid: 6497a18968994a6197ea2cfe5cafb8e7, type: 3}
+      - {fileID: 21300000, guid: 02724816e1094123b0dd125caa1473b0, type: 3}
+      - {fileID: 21300000, guid: e3c9d2e6264a4683895f40e677780d25, type: 3}
+      _frameDurations:
+      - 0.75
+      - 0.35
+      - 0.12
+      - 0.5
+    _hit:
+      _frames:
+      - {fileID: 21300000, guid: b0ab681e81074ba28fd1c0e4c9c13b8e, type: 3}
+      - {fileID: 21300000, guid: d556d39e8f97415e8648fc94079ac214, type: 3}
+      - {fileID: 21300000, guid: 2819353145f046d6b5c447ad26a4a499, type: 3}
+      - {fileID: 21300000, guid: 7eef67c81ab14789b325914e6a222e93, type: 3}
+      _frameDurations:
+      - 0.07
+      - 0.09
+      - 0.08
+      - 0.1
+    _loopFrameInterval: 0.25

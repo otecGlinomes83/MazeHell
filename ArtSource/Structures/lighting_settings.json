@@ -1,0 +1,27 @@
+{
+    "rooms": {
+        "color": {
+            "r": 1.0,
+            "g": 1.0,
+            "b": 1.0,
+            "a": 1.0
+        },
+        "intensity": 45.0,
+        "range": 20.0,
+        "shadows": 2,
+        "shadowStrength": 0.8500000238418579
+    },
+    "corridors": {
+        "color": {
+            "r": 1.0,
+            "g": 1.0,
+            "b": 1.0,
+            "a": 1.0
+        },
+        "intensity": 18.0,
+        "range": 17.0,
+        "shadows": 2,
+        "shadowStrength": 1.0
+    },
+    "controlledLights": 37
+}

@@ -1,0 +1,14 @@
+{
+  "name": "MazeHell.Tests.PlayMode",
+  "rootNamespace": "MazeHell.Tests",
+  "references": [
+    "MazeHell.Runtime",
+    "UnityEngine.UI",
+    "Unity.TextMeshPro",
+    "Unity.AI.Navigation"
+  ],
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ],
+  "autoReferenced": false
+}

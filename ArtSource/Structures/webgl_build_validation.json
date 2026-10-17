@@ -1,0 +1,10 @@
+{
+  "status": "Succeeded",
+  "bytes": 25044545,
+  "errors": 0,
+  "warnings": 1,
+  "seconds": 18.521672,
+  "messages": [
+    "Pipeline: No RuntimePipelineConfig asset found (Project Settings > Pipeline > Runtime). Pipeline will be disabled in Player builds."
+  ]
+}

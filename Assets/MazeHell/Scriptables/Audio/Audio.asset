@@ -1,0 +1,186 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3028c7128080ea40d8dd4946569b486d, type: 3}
+  m_Name: Audio
+  m_EditorClassIdentifier: MazeHell.Runtime::MazeHell.Configuration.AudioConfig
+  _masterVolume: 1
+  _musicVolume: 0.35
+  _sfxVolume: 0.9
+  _audioMixer: {fileID: 0}
+  _musicLoopClip: {fileID: 8300000, guid: 728b39991a32bdb35adb48e1619b6bf8, type: 3}
+  _musicFadeInDuration: 2
+  _sfxPoolCapacity: 16
+  _maxVoicesPerCue: 3
+  _heartbeatIntervalHealthy: 1.1
+  _heartbeatIntervalCritical: 0.45
+  _footstepDistance: 2.2
+  _cues:
+  - _cueId: shotgun_single
+    _clip: {fileID: 8300000, guid: f4003a3c988a2aed5b1d990d98187912, type: 3}
+    _volume: 1
+    _pitchVariation: 0.05
+    _spatialBlend: 0
+    _minDistance: 3
+    _maxDistance: 40
+    _ignoreListenerPause: 0
+  - _cueId: shotgun_volley
+    _clip: {fileID: 8300000, guid: cdc53522ba03d811e92fb4f555d199eb, type: 3}
+    _volume: 1
+    _pitchVariation: 0.05
+    _spatialBlend: 0
+    _minDistance: 3
+    _maxDistance: 40
+    _ignoreListenerPause: 0
+  - _cueId: shotgun_reload
+    _clip: {fileID: 8300000, guid: ec1f1669e1c5cffffbfae4b7a5565da5, type: 3}
+    _volume: 1
+    _pitchVariation: 0.05
+    _spatialBlend: 0
+    _minDistance: 3
+    _maxDistance: 40
+    _ignoreListenerPause: 0
+  - _cueId: footstep
+    _clip: {fileID: 8300000, guid: 58521c579895101b187c9ee21aa49c6e, type: 3}
+    _volume: 1
+    _pitchVariation: 0.05
+    _spatialBlend: 0
+    _minDistance: 3
+    _maxDistance: 40
+    _ignoreListenerPause: 0
+  - _cueId: heartbeat
+    _clip: {fileID: 8300000, guid: 4325b2050bd5ea812854b8876b807d13, type: 3}
+    _volume: 1
+    _pitchVariation: 0.05
+    _spatialBlend: 0
+    _minDistance: 3
+    _maxDistance: 40
+    _ignoreListenerPause: 0
+  - _cueId: jump
+    _clip: {fileID: 8300000, guid: 74a70eb81b684c969b17092543c04d86, type: 3}
+    _volume: 1
+    _pitchVariation: 0.05
+    _spatialBlend: 0
+    _minDistance: 3
+    _maxDistance: 40
+    _ignoreListenerPause: 0
+  - _cueId: land
+    _clip: {fileID: 8300000, guid: b217e60e99292dda3a5281c78f33564b, type: 3}
+    _volume: 1
+    _pitchVariation: 0.05
+    _spatialBlend: 0
+    _minDistance: 3
+    _maxDistance: 40
+    _ignoreListenerPause: 0
+  - _cueId: dash
+    _clip: {fileID: 8300000, guid: 174b124e2c6623757974f45ed588aac9, type: 3}
+    _volume: 1
+    _pitchVariation: 0.05
+    _spatialBlend: 0
+    _minDistance: 3
+    _maxDistance: 40
+    _ignoreListenerPause: 0
+  - _cueId: block
+    _clip: {fileID: 8300000, guid: 001cc527956a296279c5928fcaf21e07, type: 3}
+    _volume: 1
+    _pitchVariation: 0.05
+    _spatialBlend: 0
+    _minDistance: 3
+    _maxDistance: 40
+    _ignoreListenerPause: 0
+  - _cueId: player_hit
+    _clip: {fileID: 8300000, guid: 67be1172753fe6e148af4e3a337e38e3, type: 3}
+    _volume: 1
+    _pitchVariation: 0.05
+    _spatialBlend: 0
+    _minDistance: 3
+    _maxDistance: 40
+    _ignoreListenerPause: 0
+  - _cueId: imp_alert
+    _clip: {fileID: 8300000, guid: a46476b3b4fde4155b12dc3720506daf, type: 3}
+    _volume: 1
+    _pitchVariation: 0.05
+    _spatialBlend: 1
+    _minDistance: 3
+    _maxDistance: 40
+    _ignoreListenerPause: 0
+  - _cueId: imp_windup
+    _clip: {fileID: 8300000, guid: 9793f0d66d2dc744c930065270c934d8, type: 3}
+    _volume: 1
+    _pitchVariation: 0.05
+    _spatialBlend: 1
+    _minDistance: 3
+    _maxDistance: 40
+    _ignoreListenerPause: 0
+  - _cueId: imp_lunge
+    _clip: {fileID: 8300000, guid: af0fad56c45f1323d912d5d9ce946ffd, type: 3}
+    _volume: 1
+    _pitchVariation: 0.05
+    _spatialBlend: 1
+    _minDistance: 3
+    _maxDistance: 40
+    _ignoreListenerPause: 0
+  - _cueId: imp_pain
+    _clip: {fileID: 8300000, guid: 8cf291d62bc2f30d1aca814a7e82cc9c, type: 3}
+    _volume: 1
+    _pitchVariation: 0.05
+    _spatialBlend: 1
+    _minDistance: 3
+    _maxDistance: 40
+    _ignoreListenerPause: 0
+  - _cueId: imp_death
+    _clip: {fileID: 8300000, guid: 409528bf8b5711cd6812dc6c802d97c8, type: 3}
+    _volume: 1
+    _pitchVariation: 0.05
+    _spatialBlend: 1
+    _minDistance: 3
+    _maxDistance: 40
+    _ignoreListenerPause: 0
+  - _cueId: heal
+    _clip: {fileID: 8300000, guid: ba099d399408fc439b690f4e2b7c82f0, type: 3}
+    _volume: 1
+    _pitchVariation: 0.05
+    _spatialBlend: 0
+    _minDistance: 3
+    _maxDistance: 40
+    _ignoreListenerPause: 0
+  - _cueId: gate_horn
+    _clip: {fileID: 8300000, guid: 0f6b85a93297e2128816d914857bdade, type: 3}
+    _volume: 1
+    _pitchVariation: 0.05
+    _spatialBlend: 0
+    _minDistance: 3
+    _maxDistance: 40
+    _ignoreListenerPause: 0
+  - _cueId: gate_move
+    _clip: {fileID: 8300000, guid: b237d12ba23e8a0e69f439a4be6240ac, type: 3}
+    _volume: 1
+    _pitchVariation: 0.05
+    _spatialBlend: 1
+    _minDistance: 3
+    _maxDistance: 40
+    _ignoreListenerPause: 0
+  - _cueId: ui_click
+    _clip: {fileID: 8300000, guid: c8c5deaf8b540c13c882ccf253f7ac2b, type: 3}
+    _volume: 1
+    _pitchVariation: 0.05
+    _spatialBlend: 0
+    _minDistance: 3
+    _maxDistance: 40
+    _ignoreListenerPause: 1
+  - _cueId: imp_footstep
+    _clip: {fileID: 8300000, guid: 58521c579895101b187c9ee21aa49c6e, type: 3}
+    _volume: 0.45
+    _pitchVariation: 0.05
+    _spatialBlend: 1
+    _minDistance: 3
+    _maxDistance: 40
+    _ignoreListenerPause: 0

@@ -1,0 +1,77 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2fccab3376f4f12218bc288b7cf4bd1b, type: 3}
+  m_Name: LevelGeneration
+  m_EditorClassIdentifier: MazeHell.Runtime::MazeHell.Configuration.LevelGenerationConfig
+  _baseSeed: 1
+  _useFixedSeed: 0
+  _logicalSideStart: 16
+  _logicalSideGrowthPerLevel: 2
+  _logicalSideCap: 36
+  _cellSize: 4
+  _wallThickness: 0.4
+  _ceilingHeight: 4.5
+  _straightRunMinimumCells: 4
+  _arenaCountMin: 2
+  _arenaCountMax: 4
+  _arenaSizeMinCells: 5
+  _arenaSizeMaxCells: 8
+  _loopEdgeCountMin: 8
+  _loopEdgeCountMax: 14
+  _deadEndMinimum: 10
+  _deadEndBudgetMaximum: 18
+  _enemyCountStart: 8
+  _enemyCountGrowthPerLevel: 3
+  _enemyCountCap: 40
+  _healPickupCount: 3
+  _healPickupHealth: 25
+  _healPickupRadius: 1.2
+  _healPickupBobAmplitude: 0.35
+  _healPickupBobSpeed: 2
+  _healPickupSpinDegreesPerSecond: 90
+  _enemyMinSpawnDistance: 12
+  _enemyMinSpacing: 3
+  _pickupMinSpawnDistance: 8
+  _connectorLength: 24
+  _corridorWidth: 6
+  _corridorHeight: 6
+  _floorThickness: 0.2
+  _roomDoorWidth: 6
+  _roomDoorHeight: 4.5
+  _gateOpeningWidth: 10
+  _roomHeight: 8
+  _moduleCatalog:
+  - _moduleId: room_quarters
+    _prefab: {fileID: 4391102051133032310, guid: 2da64404262d55b13a8486a8962d90ce, type: 3}
+    _footprintSize: {x: 41, y: 8.2, z: 41}
+  - _moduleId: room_ring
+    _prefab: {fileID: 4863594665523759995, guid: 720560afd7c4d73e5b9c31e79b286e2f, type: 3}
+    _footprintSize: {x: 41, y: 8.2, z: 41}
+  - _moduleId: room_comb
+    _prefab: {fileID: 2362039283421223126, guid: 8cc307af5f1ecd9b0adee932250064b2, type: 3}
+    _footprintSize: {x: 41, y: 8.2, z: 41}
+  - _moduleId: room_gate
+    _prefab: {fileID: 8550214402825720317, guid: 9a01163d7716abff5a43b3fa016d026e, type: 3}
+    _footprintSize: {x: 41, y: 8.2, z: 41}
+  - _moduleId: room_mini_pillars
+    _prefab: {fileID: 6620855822546967397, guid: 507d69cf4291fc320a5176a80ffef501, type: 3}
+    _footprintSize: {x: 25, y: 8.2, z: 25}
+  - _moduleId: room_mini_cover
+    _prefab: {fileID: 4612336205014339251, guid: c2958814f2638e29aba381ae63f96741, type: 3}
+    _footprintSize: {x: 25, y: 8.2, z: 25}
+  - _moduleId: corridor_straight
+    _prefab: {fileID: 4367345956030619378, guid: 1396027811bf08225a9f89ee57d35080, type: 3}
+    _footprintSize: {x: 7, y: 6.2, z: 24}
+  _wallMaterial: {fileID: 2100000, guid: 25ac4bdae249f075e919b4c1e71794f4, type: 2}
+  _floorMaterial: {fileID: 2100000, guid: 9aa9f7f15fa37285a840a8c88650e29f, type: 2}
+  _ceilingMaterial: {fileID: 2100000, guid: 8e8c5d504cb457f54b420cd8d7ed3096, type: 2}
+  _exitCorridorMaterial: {fileID: 2100000, guid: 25ec54ef303796dcdb6341da19520628, type: 2}

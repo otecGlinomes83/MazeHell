@@ -1,0 +1,268 @@
+using System;
+using MazeHell.Combat;
+using MazeHell.Configuration;
+using MazeHell.Player;
+using UnityEngine;
+using UnityEngine.UI;
+
+namespace MazeHell.UI
+{
+    [DisallowMultipleComponent]
+    public class HudPresenter : MonoBehaviour
+    {
+        private const string LevelSplashFormatKey = "level_splash_format";
+
+        private const string EnemyCountFormatKey = "hud_enemy_format";
+
+        private const float MinimalDashCooldown = 0.01f;
+
+        private const float MinimalFlashDuration = 0.01f;
+
+        private HudView _view;
+
+        private PlayerRig _player;
+
+        private InterfaceConfig _interface;
+
+        private PlayerMovementConfig _movement;
+
+        private Localization _localization;
+
+        private float _damageFlashTimer;
+
+        private float _splashRemaining;
+
+        private bool _isSetupFinished;
+
+        public void Setup(HudView view, PlayerRig player, InterfaceConfig ui, AnimationLibrary animations,
+            HudMotionConfig hud, PlayerMovementConfig movement, ShotgunConfig gun)
+        {
+            if (view == null)
+            {
+                throw new ArgumentNullException(nameof(view));
+            }
+
+            if (player == null)
+            {
+                throw new ArgumentNullException(nameof(player));
+            }
+
+            if (ui == null)
+            {
+                throw new ArgumentNullException(nameof(ui));
+            }
+
+            if (animations == null)
+            {
+                throw new ArgumentNullException(nameof(animations));
+            }
+
+            if (hud == null)
+            {
+                throw new ArgumentNullException(nameof(hud));
+            }
+
+            if (movement == null)
+            {
+                throw new ArgumentNullException(nameof(movement));
+            }
+
+            if (gun == null)
+            {
+                throw new ArgumentNullException(nameof(gun));
+            }
+
+            if (view.Spring == null || view.Portrait == null || view.WeaponAnimator == null ||
+                view.PortraitImage == null || view.WeaponImage == null || view.BarrelLeft == null ||
+                view.BarrelRight == null || view.DashImage == null || view.HealthFill == null ||
+                view.DamageOverlay == null || view.HealthText == null || view.EnemyText == null ||
+                view.SplashText == null || view.SplashPanel == null)
+            {
+                throw new InvalidOperationException($"{name}: hud view has unassigned bindings.");
+            }
+
+            UnsubscribeFromPlayer();
+
+            _view = view;
+            _player = player;
+            _interface = ui;
+            _movement = movement;
+            _localization = null;
+            _damageFlashTimer = 0f;
+            _splashRemaining = 0f;
+            _isSetupFinished = true;
+
+            view.Spring.Setup(view.SpringRoot, view.WeaponRoot, view.CrosshairRoot, player.CameraMotion, hud);
+            view.Portrait.Setup(view.PortraitImage, player.Health, animations, hud);
+            view.WeaponAnimator.Setup(view.WeaponImage, player.Shotgun, animations, gun);
+
+            player.Health.Changed += OnHealthChanged;
+            player.Shotgun.Changed += OnShotgunChanged;
+            player.Defense.Damaged += OnDefenseDamaged;
+
+            OnHealthChanged(player.Health);
+            OnShotgunChanged(player.Shotgun);
+
+            view.DamageOverlay.color = BuildVignetteColor(0f);
+            view.SplashPanel.SetActive(false);
+        }
+
+        public void LateTick(float deltaTime)
+        {
+            AssertSetup();
+
+            float clampedDeltaTime = Mathf.Max(0f, deltaTime);
+
+            _view.Spring.Tick(clampedDeltaTime);
+            _view.Portrait.Tick(clampedDeltaTime);
+            _view.WeaponAnimator.Tick(clampedDeltaTime);
+
+            UpdateDashPip();
+            UpdateVignette(clampedDeltaTime);
+            UpdateSplash(clampedDeltaTime);
+        }
+
+        public void SetEnemyCount(int count)
+        {
+            AssertSetup();
+
+            if (_localization == null)
+            {
+                throw new InvalidOperationException(
+                    $"{name}: enemy count needs localization, call ShowLevel first.");
+            }
+
+            _view.EnemyText.text = string.Format(_localization.Get(EnemyCountFormatKey), count);
+        }
+
+        public void ShowLevel(int level, Localization localization, LevelPresentationConfig presentation)
+        {
+            AssertSetup();
+
+            if (localization == null)
+            {
+                throw new ArgumentNullException(nameof(localization));
+            }
+
+            if (presentation == null)
+            {
+                throw new ArgumentNullException(nameof(presentation));
+            }
+
+            _localization = localization;
+            _view.SplashPanel.SetActive(true);
+            _view.SplashText.text = string.Format(localization.Get(LevelSplashFormatKey), level);
+            _splashRemaining = Mathf.Max(0f, presentation.LevelSplashDuration);
+        }
+
+        private void OnHealthChanged(Health health)
+        {
+            float healthFraction = 0f;
+
+            if (health.MaxHealth > 0f)
+            {
+                healthFraction = Mathf.Clamp01(health.CurrentHealth / health.MaxHealth);
+            }
+
+            _view.HealthFill.fillAmount = healthFraction;
+            _view.HealthText.text = Mathf.CeilToInt(health.CurrentHealth).ToString();
+        }
+
+        private void OnShotgunChanged(Shotgun gun)
+        {
+            UpdateBarrel(_view.BarrelLeft, gun.Ammo >= 1);
+            UpdateBarrel(_view.BarrelRight, gun.Ammo >= 2);
+        }
+
+        private void OnDefenseDamaged(float damage)
+        {
+            _damageFlashTimer = _interface.DamageFlashDuration;
+        }
+
+        private void UpdateBarrel(Image barrel, bool isCharged)
+        {
+            if (isCharged)
+            {
+                barrel.sprite = _interface.BarrelFullSprite;
+
+                return;
+            }
+
+            barrel.sprite = _interface.BarrelEmptySprite;
+        }
+
+        private void UpdateDashPip()
+        {
+            float dashCooldown = Mathf.Max(MinimalDashCooldown, _movement.DashCooldown);
+            float cooldownFraction = Mathf.Clamp01(_player.Motor.DashCooldownRemaining / dashCooldown);
+
+            _view.DashImage.fillAmount = 1f - cooldownFraction;
+        }
+
+        private void UpdateVignette(float deltaTime)
+        {
+            if (_damageFlashTimer > 0f)
+            {
+                _damageFlashTimer = Mathf.Max(0f, _damageFlashTimer - deltaTime);
+            }
+
+            float flashDuration = Mathf.Max(MinimalFlashDuration, _interface.DamageFlashDuration);
+            float flashFraction = Mathf.Clamp01(_damageFlashTimer / flashDuration);
+
+            _view.DamageOverlay.color = BuildVignetteColor(flashFraction);
+        }
+
+        private void UpdateSplash(float deltaTime)
+        {
+            if (_splashRemaining <= 0f)
+            {
+                return;
+            }
+
+            _splashRemaining -= deltaTime;
+
+            if (_splashRemaining <= 0f)
+            {
+                _view.SplashPanel.SetActive(false);
+            }
+        }
+
+        private Color BuildVignetteColor(float flashFraction)
+        {
+            Color color = _interface.DangerColor;
+            color.a = _interface.MaxVignetteAlpha * flashFraction;
+
+            return color;
+        }
+
+        private void UnsubscribeFromPlayer()
+        {
+            if (_player == null)
+            {
+                return;
+            }
+
+            _player.Health.Changed -= OnHealthChanged;
+            _player.Shotgun.Changed -= OnShotgunChanged;
+            _player.Defense.Damaged -= OnDefenseDamaged;
+        }
+
+        private void OnDisable()
+        {
+            if (_isSetupFinished == false)
+            {
+                return;
+            }
+
+            UnsubscribeFromPlayer();
+        }
+
+        private void AssertSetup()
+        {
+            if (_isSetupFinished == false)
+            {
+                throw new InvalidOperationException($"{name}: hud presenter is not initialized, call Setup first.");
+            }
+        }
+    }
+}

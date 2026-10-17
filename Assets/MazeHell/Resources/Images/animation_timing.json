@@ -1,0 +1,156 @@
+{
+  "face": {
+    "frame_order": [
+      "00",
+      "01",
+      "02",
+      "03"
+    ],
+    "health_states": [
+      "healthy",
+      "scratched",
+      "bleeding",
+      "critical",
+      "near_dead"
+    ],
+    "health_frame_seconds": [
+      0.75,
+      0.35,
+      0.12,
+      0.5
+    ],
+    "health_loop": true,
+    "hit_frame_seconds": [
+      0.07,
+      0.09,
+      0.08,
+      0.1
+    ],
+    "hit_loop": false,
+    "hit_behavior": "Temporarily override current health portrait, then restore that state.",
+    "state_directories": {
+      "healthy": "Player/Face/Healthy",
+      "scratched": "Player/Face/Scratched",
+      "bleeding": "Player/Face/Bleeding",
+      "critical": "Player/Face/Critical",
+      "near_dead": "Player/Face/NearDeath",
+      "hit": "Player/Face/Hit"
+    }
+  },
+  "imp": {
+    "walk": {
+      "frames": [
+        "walk_1",
+        "walk_2"
+      ],
+      "frame_seconds": [
+        0.16,
+        0.16
+      ],
+      "loop": true,
+      "frame_paths": [
+        "Enemies/Imp/Walk/walk_1",
+        "Enemies/Imp/Walk/walk_2"
+      ]
+    },
+    "windup": {
+      "frames": [
+        "windup"
+      ],
+      "frame_seconds": [
+        0.4
+      ],
+      "loop": false,
+      "frame_paths": [
+        "Enemies/Imp/Windup/windup"
+      ]
+    },
+    "lunge": {
+      "frames": [
+        "lunge"
+      ],
+      "frame_seconds": [
+        0.16
+      ],
+      "loop": false,
+      "frame_paths": [
+        "Enemies/Imp/Lunge/lunge"
+      ]
+    },
+    "pain": {
+      "frames": [
+        "pain"
+      ],
+      "frame_seconds": [
+        0.12
+      ],
+      "loop": false,
+      "frame_paths": [
+        "Enemies/Imp/Pain/pain"
+      ]
+    },
+    "corpse": {
+      "frames": [
+        "corpse"
+      ],
+      "loop": false,
+      "hold_final": true,
+      "frame_paths": [
+        "Enemies/Imp/Corpse/corpse"
+      ]
+    }
+  },
+  "shotgun": {
+    "shot": {
+      "frames": [
+        "shot_1",
+        "idle"
+      ],
+      "frame_seconds": [
+        0.08,
+        0.12
+      ],
+      "frame_paths": [
+        "Player/Weapons/Shotgun/FireSingle/shot_1",
+        "Player/Weapons/Shotgun/Idle/idle"
+      ]
+    },
+    "volley": {
+      "frames": [
+        "volley",
+        "empty"
+      ],
+      "frame_seconds": [
+        0.1,
+        0.2
+      ],
+      "frame_paths": [
+        "Player/Weapons/Shotgun/FireDouble/volley",
+        "Player/Weapons/Shotgun/Empty/empty"
+      ]
+    },
+    "reload": {
+      "frames": [
+        "reload_1",
+        "reload_2",
+        "idle"
+      ],
+      "frame_seconds": [
+        0.25,
+        0.45,
+        0.15
+      ],
+      "frame_paths": [
+        "Player/Weapons/Shotgun/ReloadOpen/reload_1",
+        "Player/Weapons/Shotgun/ReloadInsert/reload_2",
+        "Player/Weapons/Shotgun/Idle/idle"
+      ]
+    }
+  },
+  "heal_orb": {
+    "fps": 24,
+    "frame_start": 1,
+    "frame_end": 49,
+    "loop_seconds": 2
+  }
+}

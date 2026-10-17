@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92ff25180193f0937a0a293cf21b8e17, type: 3}
+  m_Name: PlayerMovement
+  m_EditorClassIdentifier: MazeHell.Runtime::MazeHell.Configuration.PlayerMovementConfig
+  _bodyHeight: 1.8
+  _bodyRadius: 0.35
+  _eyeHeight: 1.62
+  _stepOffset: 0.3
+  _skinWidth: 0.04
+  _slopeLimit: 45
+  _baseSpeed: 7
+  _groundAcceleration: 60
+  _groundFriction: 8
+  _airAcceleration: 12
+  _airWishSpeed: 1
+  _gravity: 20
+  _jumpHeight: 1
+  _jumpBufferTime: 0.15
+  _coyoteTime: 0.15
+  _bhopGraceTime: 0.15
+  _bhopSpeedGain: 0.6
+  _softSpeedCap: 12
+  _capDecay: 4
+  _dashSpeedMultiplier: 3
+  _dashDuration: 0.18
+  _dashCooldown: 1.5
+  _dashInvulnerabilityTime: 0.2
+  _minimumMoveDistance: 0
+  _groundedProbeDistance: 0.25
+  _groundedProbeSkin: 0.08
+  _knockbackDecay: 8
+  _blockSpeedMultiplier: 0.6

@@ -1,0 +1,15 @@
+PASS room_quarters: static prefab, bounds match Blender manifest
+PASS room_ring: static prefab, bounds match Blender manifest
+PASS room_comb: static prefab, bounds match Blender manifest
+PASS room_gate: static prefab, bounds match Blender manifest
+PASS room_mini_pillars: static prefab, bounds match Blender manifest
+PASS room_mini_cover: static prefab, bounds match Blender manifest
+PASS corridor_straight: static prefab, bounds match Blender manifest
+PASS corridor_corner: static prefab, bounds match Blender manifest
+PASS door_wood: static prefab, bounds match Blender manifest
+PASS door_wood_small: static prefab, bounds match Blender manifest
+PASS gate_big: static prefab, bounds match Blender manifest
+PASS 369 mesh boxes checked
+PASS 323449 cross-module collider pairs, no overlaps
+PASS only StructureLightingController and StructureLight, no triggers or missing scripts
+PASS wooden doors are solid, single panel with bottom-center pivot, no animation or gameplay components

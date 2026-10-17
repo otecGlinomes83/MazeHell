@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c83a5576fc1d2d72a8ed7117e4872454, type: 3}
+  m_Name: Shotgun
+  m_EditorClassIdentifier: MazeHell.Runtime::MazeHell.Configuration.ShotgunConfig
+  _barrelCount: 2
+  _pelletCount: 8
+  _pelletDamage: 2.5
+  _spreadAngle: 5
+  _maxRange: 25
+  _hitMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  _minShotInterval: 0.12
+  _volleyWindow: 0.25
+  _reloadDuration: 0.6
+  _reloadBreakProgress: 0.4
+  _shotSpriteHoldTime: 0.08
+  _volleySpriteHoldTime: 0.12
+  _noiseRadius: 25
+  _muzzleFlashIntensity: 45
+  _muzzleFlashDuration: 0.06
+  _muzzleFlashRange: 8
+  _muzzleFlashColor: {r: 1, g: 0.72, b: 0.4, a: 1}
+  _recoilPitchDegrees: 0.7
+  _volleyRecoilPitchDegrees: 1.4
+  _recoilRecoverySpeed: 6
+  _enemyKnockbackSpeed: 5
+  _volleyKnockbackMultiplier: 2

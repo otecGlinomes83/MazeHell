@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9578704bfa8166f26a124edbbc56a782, type: 3}
+  m_Name: Interface
+  m_EditorClassIdentifier: MazeHell.Runtime::MazeHell.Configuration.InterfaceConfig
+  _fontAsset: {fileID: 11400000, guid: 729c0747724e2cfce9cd62674e94d0da, type: 2}
+  _referenceResolution: {x: 1920, y: 1080}
+  _matchWidthOrHeight: 0.5
+  _textColor: {r: 0.85, g: 0.8, b: 0.75, a: 1}
+  _accentColor: {r: 1, g: 0.45, b: 0.15, a: 1}
+  _dangerColor: {r: 0.85, g: 0.1, b: 0.05, a: 1}
+  _hudMarginPixels: 48
+  _crosshairSizePixels: 18
+  _splashFontSize: 72
+  _menuFontSize: 36
+  _buttonFontSize: 32
+  _hudFontSize: 28
+  _crosshairSprite: {fileID: 21300000, guid: cc6d42b8b1b44ed6944c781db6afda8e, type: 3}
+  _barrelFullSprite: {fileID: 21300000, guid: a23292bd61734c52832b1b272f1b9f3c, type: 3}
+  _barrelEmptySprite: {fileID: 21300000, guid: a53bc0e8009a4d408fa0c9fe2eb8407d, type: 3}
+  _dashPipSprite: {fileID: 21300000, guid: 0234aeb26c0f46d3b2c437a5424257d4, type: 3}
+  _skullSprite: {fileID: 21300000, guid: 151080d2682a47dc8cdbdf1e99d31d95, type: 3}
+  _menuBackgroundSprite: {fileID: 21300000, guid: b5572831773344a1bcb8c0caf558282a, type: 3}
+  _menuSceneName: Menu
+  _gameSceneName: Game
+  _buttonNormalColor: {r: 0.07, g: 0.025, b: 0.018, a: 0.95}
+  _buttonHoverColor: {r: 0.25, g: 0.065, b: 0.025, a: 1}
+  _sensitivityStep: 0.02
+  _damageFlashDuration: 0.25
+  _maxVignetteAlpha: 0.3
+  _defaultVolume: 0.7

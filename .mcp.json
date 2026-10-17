@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "claude-code-glm": {
+      "command": "/home/otecglinomes/Repos/Unity/MazeHell/Tools/ClaudeCodeMcp/.venv/bin/python",
+      "args": [
+        "/home/otecglinomes/Repos/Unity/MazeHell/Tools/ClaudeCodeMcp/server.py"
+      ]
+    }
+  }
+}

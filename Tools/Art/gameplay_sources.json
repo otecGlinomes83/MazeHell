@@ -1,0 +1,23 @@
+[
+  {
+    "source": "ArtSource/Generated/Enemies/Imp/Directions/directional_sheet.png",
+    "runtime": [
+      "Enemies/Imp/WalkSide/walk_side_1.png",
+      "Enemies/Imp/WalkSide/walk_side_2.png",
+      "Enemies/Imp/WalkBack/walk_back_1.png",
+      "Enemies/Imp/WalkBack/walk_back_2.png"
+    ],
+    "generated_with": "built-in image_gen",
+    "prompt": "Same red horned imp as front walk reference; equal 2x2 transparent sheet: left side profile two walk strides top row, genuine back view two walk strides bottom row. Match pixel art, identity and palette. No text, no backdrop.",
+    "processing": "ImageMagick equal640px cells; crop to main opaque silhouette with2px padding; nearest resize to232px height, feet aligned244/256; point uncompressed Unity import."
+  },
+  {
+    "source": "ArtSource/Generated/Player/Weapons/Shotgun/Block/block.png",
+    "runtime": [
+      "Player/Weapons/Shotgun/Block/block.png"
+    ],
+    "generated_with": "built-in image_gen",
+    "prompt": "Same shotgun and black fingerless gloves as idle reference. Defensive block stance, shotgun held horizontally crosswise with barrels left and stock right. Transparent background, wide2.5:1 first person pixel art.",
+    "processing": "ImageMagick nearest640x256; alpha retained."
+  }
+]

@@ -1,0 +1,243 @@
+using System;
+using MazeHell.Configuration;
+using MazeHell.Presentation;
+using UnityEngine;
+
+namespace MazeHell.UI
+{
+    [DisallowMultipleComponent]
+    public class HudSpring : MonoBehaviour
+    {
+        private const int MaxSubsteps = 16;
+
+        private const float CriticalDampingTolerance = 0.0001f;
+
+        private const float MinimalOmega = 0.01f;
+
+        private struct SpringState
+        {
+            public Vector3 Position;
+
+            public Vector3 Velocity;
+        }
+
+        private RectTransform _hudRoot;
+
+        private RectTransform _weaponRoot;
+
+        private RectTransform _crosshairRoot;
+
+        private CameraMotion _motion;
+
+        private HudMotionConfig _config;
+
+        private Vector2 _hudBaseAnchoredPosition;
+
+        private Vector2 _weaponBaseAnchoredPosition;
+
+        private Vector2 _crosshairBaseAnchoredPosition;
+
+        private Vector3 _hudBaseLocalEulerAngles;
+
+        private Vector3 _weaponBaseLocalEulerAngles;
+
+        private Vector3 _crosshairBaseLocalEulerAngles;
+
+        private SpringState _hudSpring;
+
+        private SpringState _weaponSpring;
+
+        private SpringState _crosshairSpring;
+
+        private bool _isWeaponChildOfHud;
+
+        private bool _isCrosshairChildOfHud;
+
+        private bool _isSetupFinished;
+
+        public void Setup(RectTransform hudRoot, RectTransform weaponRoot, RectTransform crosshairRoot,
+            CameraMotion motion, HudMotionConfig config)
+        {
+            if (hudRoot == null)
+            {
+                throw new ArgumentNullException(nameof(hudRoot));
+            }
+
+            if (weaponRoot == null)
+            {
+                throw new ArgumentNullException(nameof(weaponRoot));
+            }
+
+            if (crosshairRoot == null)
+            {
+                throw new ArgumentNullException(nameof(crosshairRoot));
+            }
+
+            if (motion == null)
+            {
+                throw new ArgumentNullException(nameof(motion));
+            }
+
+            if (config == null)
+            {
+                throw new ArgumentNullException(nameof(config));
+            }
+
+            _hudRoot = hudRoot;
+            _weaponRoot = weaponRoot;
+            _crosshairRoot = crosshairRoot;
+            _motion = motion;
+            _config = config;
+
+            _hudBaseAnchoredPosition = hudRoot.anchoredPosition;
+            _weaponBaseAnchoredPosition = weaponRoot.anchoredPosition;
+            _crosshairBaseAnchoredPosition = crosshairRoot.anchoredPosition;
+
+            _hudBaseLocalEulerAngles = hudRoot.localEulerAngles;
+            _weaponBaseLocalEulerAngles = weaponRoot.localEulerAngles;
+            _crosshairBaseLocalEulerAngles = crosshairRoot.localEulerAngles;
+
+            _isWeaponChildOfHud = weaponRoot.IsChildOf(hudRoot);
+            _isCrosshairChildOfHud = crosshairRoot.IsChildOf(hudRoot);
+
+            _hudSpring = new SpringState();
+            _weaponSpring = new SpringState();
+            _crosshairSpring = new SpringState();
+            _isSetupFinished = true;
+
+            ApplyAll();
+        }
+
+        public void Tick(float deltaTime)
+        {
+            AssertSetup();
+
+            float clampedDeltaTime = Mathf.Clamp(deltaTime, 0f, _config.MaxSimulationStep * MaxSubsteps);
+
+            Vector3 motionPosition = new Vector3(_motion.PositionOffset.x, _motion.PositionOffset.y, 0f);
+            Vector3 motionRotation = _motion.RotationOffset;
+
+            Vector3 hudTarget = BuildTarget(motionPosition, motionRotation, 1f, _config.MaxPixelDisplacement,
+                _config.MaxPixelAngle);
+            Vector3 weaponTarget = BuildTarget(motionPosition, motionRotation, _config.WeaponGainMultiplier,
+                _config.WeaponMaxPixelDisplacement, _config.MaxPixelAngle);
+            Vector3 crosshairTarget = BuildTarget(motionPosition, motionRotation, _config.CrosshairGainMultiplier,
+                _config.MaxPixelDisplacement, _config.MaxPixelAngle);
+
+            if (_isWeaponChildOfHud)
+            {
+                weaponTarget -= _hudSpring.Position;
+            }
+
+            if (_isCrosshairChildOfHud)
+            {
+                crosshairTarget -= _hudSpring.Position;
+            }
+
+            float omega = Mathf.Max(MinimalOmega, _config.SpringFrequency) * Mathf.PI * 2f;
+            float dampingRatio = _config.SpringDampingRatio;
+            _hudSpring = Integrate(_hudSpring, hudTarget, omega, dampingRatio, clampedDeltaTime);
+            _weaponSpring = Integrate(_weaponSpring, weaponTarget, omega, dampingRatio, clampedDeltaTime);
+            _crosshairSpring = Integrate(_crosshairSpring, crosshairTarget, omega, dampingRatio, clampedDeltaTime);
+
+            ApplyAll();
+        }
+
+        public void ResetState()
+        {
+            AssertSetup();
+
+            _hudSpring = new SpringState();
+            _weaponSpring = new SpringState();
+            _crosshairSpring = new SpringState();
+
+            ApplyAll();
+        }
+
+        private Vector3 BuildTarget(Vector3 motionPosition, Vector3 motionRotation, float gain,
+            float maxPixelDisplacement, float maxPixelAngle)
+        {
+            float positionGain = _config.PositionGainPixelsPerMeter * gain;
+            float angularGain = _config.AngularGainPixelsPerDegree * gain;
+
+            float targetX = motionPosition.x * positionGain - motionRotation.y * angularGain;
+            float targetY = motionPosition.y * positionGain + motionRotation.x * angularGain;
+            float targetRoll = Mathf.Clamp(motionRotation.z, -maxPixelAngle, maxPixelAngle);
+
+            return new Vector3(
+                Mathf.Clamp(targetX, -maxPixelDisplacement, maxPixelDisplacement),
+                Mathf.Clamp(targetY, -maxPixelDisplacement, maxPixelDisplacement),
+                targetRoll);
+        }
+
+        private SpringState Integrate(SpringState spring, Vector3 target, float omega, float dampingRatio,
+            float deltaTime)
+        {
+            Vector3 offset = spring.Position - target;
+            Vector3 velocity = spring.Velocity;
+            float damping = Mathf.Max(0f, dampingRatio);
+
+            if (Mathf.Abs(damping - 1f) < CriticalDampingTolerance)
+            {
+                float decay = Mathf.Exp(-omega * deltaTime);
+                Vector3 coefficient = velocity + omega * offset;
+                spring.Position = target + (offset + coefficient * deltaTime) * decay;
+                spring.Velocity = (velocity - omega * coefficient * deltaTime) * decay;
+                return spring;
+            }
+
+            if (damping < 1f)
+            {
+                float dampedFrequency = omega * Mathf.Sqrt(1f - damping * damping);
+                float decay = Mathf.Exp(-damping * omega * deltaTime);
+                float cosine = Mathf.Cos(dampedFrequency * deltaTime);
+                float sine = Mathf.Sin(dampedFrequency * deltaTime);
+                Vector3 coefficient = (velocity + damping * omega * offset) / dampedFrequency;
+                spring.Position = target + decay * (offset * cosine + coefficient * sine);
+                spring.Velocity = decay * (velocity * cosine -
+                    (damping * omega * velocity + omega * omega * offset) * sine / dampedFrequency);
+                return spring;
+            }
+
+            float discriminant = Mathf.Sqrt(damping * damping - 1f);
+            float firstRoot = -omega * (damping - discriminant);
+            float secondRoot = -omega * (damping + discriminant);
+            Vector3 firstCoefficient = (velocity - secondRoot * offset) / (firstRoot - secondRoot);
+            Vector3 secondCoefficient = offset - firstCoefficient;
+            float firstDecay = Mathf.Exp(firstRoot * deltaTime);
+            float secondDecay = Mathf.Exp(secondRoot * deltaTime);
+            spring.Position = target + firstCoefficient * firstDecay + secondCoefficient * secondDecay;
+            spring.Velocity = firstRoot * firstCoefficient * firstDecay + secondRoot * secondCoefficient * secondDecay;
+            return spring;
+        }
+
+        private void ApplyAll()
+        {
+            ApplyRoot(_hudRoot, _hudBaseAnchoredPosition, _hudBaseLocalEulerAngles, _hudSpring,
+                _config.MaxPixelDisplacement, _config.MaxPixelAngle);
+            ApplyRoot(_weaponRoot, _weaponBaseAnchoredPosition, _weaponBaseLocalEulerAngles, _weaponSpring,
+                _config.WeaponMaxPixelDisplacement, _config.MaxPixelAngle);
+            ApplyRoot(_crosshairRoot, _crosshairBaseAnchoredPosition, _crosshairBaseLocalEulerAngles,
+                _crosshairSpring, _config.MaxPixelDisplacement, _config.MaxPixelAngle);
+        }
+
+        private static void ApplyRoot(RectTransform root, Vector2 baseAnchoredPosition,
+            Vector3 baseLocalEulerAngles, SpringState spring, float maxPixelDisplacement, float maxPixelAngle)
+        {
+            float clampedX = Mathf.Clamp(spring.Position.x, -maxPixelDisplacement, maxPixelDisplacement);
+            float clampedY = Mathf.Clamp(spring.Position.y, -maxPixelDisplacement, maxPixelDisplacement);
+            float clampedRoll = Mathf.Clamp(spring.Position.z, -maxPixelAngle, maxPixelAngle);
+
+            root.anchoredPosition = baseAnchoredPosition + new Vector2(clampedX, clampedY);
+            root.localEulerAngles = baseLocalEulerAngles + new Vector3(0f, 0f, clampedRoll);
+        }
+
+        private void AssertSetup()
+        {
+            if (_isSetupFinished == false)
+            {
+                throw new InvalidOperationException($"{name}: hud spring is not initialized, call Setup first.");
+            }
+        }
+    }
+}

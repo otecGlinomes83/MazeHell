@@ -1,0 +1,123 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c255d231901f7b767863b05a25cf7b65, type: 3}
+  m_Name: Localization
+  m_EditorClassIdentifier: MazeHell.Runtime::MazeHell.Configuration.LocalizationConfig
+  _defaultLanguage: 0
+  _entries:
+  - _key: menu_title
+    _russian: MAZEHELL
+    _english: MAZEHELL
+  - _key: menu_start
+    _russian: "\u041D\u0410\u0427\u0410\u0422\u042C"
+    _english: START
+  - _key: menu_record
+    _russian: "\u0420\u0415\u041A\u041E\u0420\u0414"
+    _english: BEST
+  - _key: menu_leaderboard
+    _russian: "\u041B\u0418\u0414\u0415\u0420\u0411\u041E\u0420\u0414"
+    _english: LEADERBOARD
+  - _key: leaderboard_unavailable
+    _russian: "\u041B\u0418\u0414\u0415\u0420\u0411\u041E\u0420\u0414 \u041D\u0415\u0414\u041E\u0421\u0422\u0423\u041F\u0415\u041D"
+    _english: LEADERBOARD UNAVAILABLE
+  - _key: menu_language
+    _russian: "\u042F\u0417\u042B\u041A"
+    _english: LANGUAGE
+  - _key: menu_sound
+    _russian: "\u0417\u0412\u0423\u041A"
+    _english: SOUND
+  - _key: menu_quit
+    _russian: "\u0412\u042B\u0425\u041E\u0414"
+    _english: QUIT
+  - _key: pause_title
+    _russian: "\u041F\u0410\u0423\u0417\u0410"
+    _english: PAUSED
+  - _key: pause_resume
+    _russian: "\u041F\u0420\u041E\u0414\u041E\u041B\u0416\u0418\u0422\u042C"
+    _english: RESUME
+  - _key: pause_restart
+    _russian: "\u0417\u0410\u041D\u041E\u0412\u041E"
+    _english: RESTART
+  - _key: pause_sound
+    _russian: "\u0417\u0412\u0423\u041A"
+    _english: SOUND
+  - _key: pause_sensitivity
+    _russian: "\u0427\u0423\u0412\u0421\u0422\u0412\u0418\u0422\u0415\u041B\u042C\u041D\u041E\u0421\u0422\u042C"
+    _english: SENSITIVITY
+  - _key: pause_menu
+    _russian: "\u0412 \u041C\u0415\u041D\u042E"
+    _english: MAIN MENU
+  - _key: death_title
+    _russian: "\u0422\u042B \u0423\u041C\u0415\u0420"
+    _english: YOU DIED
+  - _key: death_level
+    _russian: "\u0423\u0420\u041E\u0412\u0415\u041D\u042C"
+    _english: LEVEL
+  - _key: death_kills
+    _russian: "\u0423\u0411\u0418\u0419\u0421\u0422\u0412\u0410"
+    _english: KILLS
+  - _key: death_time
+    _russian: "\u0412\u0420\u0415\u041C\u042F"
+    _english: TIME
+  - _key: death_best
+    _russian: "\u0420\u0415\u041A\u041E\u0420\u0414"
+    _english: BEST
+  - _key: death_retry
+    _russian: "\u0415\u0429\u0401 \u0420\u0410\u0417"
+    _english: RETRY
+  - _key: death_menu
+    _russian: "\u0412 \u041C\u0415\u041D\u042E"
+    _english: MAIN MENU
+  - _key: level_splash_format
+    _russian: "\u0423\u0420\u041E\u0412\u0415\u041D\u042C {0}"
+    _english: LEVEL {0}
+  - _key: language_value
+    _russian: "\u0420\u0423\u0421"
+    _english: ENG
+  - _key: sound_on
+    _russian: "\u0417\u0412\u0423\u041A: \u0412\u041A\u041B"
+    _english: 'SOUND: ON'
+  - _key: sound_off
+    _russian: "\u0417\u0412\u0423\u041A: \u0412\u042B\u041A\u041B"
+    _english: 'SOUND: OFF'
+  - _key: menu_record_format
+    _russian: "\u0420\u0415\u041A\u041E\u0420\u0414: \u0423\u0420. {0} \xB7 {1} \u0423\u0411."
+    _english: "BEST: LV. {0} \xB7 {1} KILLS"
+  - _key: menu_record_none
+    _russian: "\u0420\u0415\u041A\u041E\u0420\u0414: \u2014"
+    _english: "BEST: \u2014"
+  - _key: menu_controls_hint
+    _russian: "WASD \u2014 \u0414\u0412\u0418\u0416\u0415\u041D\u0418\u0415 \xB7
+      \u041B\u041A\u041C \u2014 \u0412\u042B\u0421\u0422\u0420\u0415\u041B \xB7 \u041F\u041A\u041C
+      \u2014 \u0411\u041B\u041E\u041A \xB7 SPACE \u2014 \u041F\u0420\u042B\u0416\u041E\u041A
+      \xB7 SHIFT \u2014 \u0420\u042B\u0412\u041E\u041A"
+    _english: "WASD - MOVE \xB7 LMB - SHOOT \xB7 RMB - BLOCK \xB7 SPACE - JUMP \xB7
+      SHIFT - DASH"
+  - _key: hud_sensitivity_format
+    _russian: "\u0427\u0423\u0412\u0421\u0422\u0412\u0418\u0422\u0415\u041B\u042C\u041D\u041E\u0421\u0422\u042C:
+      {0}"
+    _english: 'SENSITIVITY: {0}'
+  - _key: hud_enemy_format
+    _russian: "\u041E\u0421\u0422\u0410\u041B\u041E\u0421\u042C: {0}"
+    _english: 'REMAINING: {0}'
+  - _key: death_level_format
+    _russian: "\u0423\u0420\u041E\u0412\u0415\u041D\u042C: {0}"
+    _english: 'LEVEL: {0}'
+  - _key: death_kills_format
+    _russian: "\u0423\u0411\u0418\u0419\u0421\u0422\u0412\u0410: {0}"
+    _english: 'KILLS: {0}'
+  - _key: death_time_format
+    _russian: "\u0412\u0420\u0415\u041C\u042F: {0} \u0421"
+    _english: 'TIME: {0} S'
+  - _key: death_best_format
+    _russian: "\u0420\u0415\u041A\u041E\u0420\u0414: \u0423\u0420. {0} \xB7 {1} \u0423\u0411."
+    _english: "BEST: LV. {0} \xB7 {1} KILLS"

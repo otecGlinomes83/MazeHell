@@ -6,7 +6,13 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
-    guid: 99c9720ab356a0642a771bea13969a05
+    path: Assets/MazeHell/Scenes/Menu.unity
+    guid: 3b551cafe1c2d939bbc4de3170ec0719
+  - enabled: 1
+    path: Assets/MazeHell/Scenes/Game.unity
+    guid: db87dddf1a4e175b6a76ccc440c1def6
+  - enabled: 0
+    path: Assets/MazeHell/Scenes/StructureTestMap.unity
+    guid: 912f98a3b052523b4aaa75be7c1b05d0
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}

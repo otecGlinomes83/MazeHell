@@ -1,0 +1,13 @@
+{
+  "name": "MazeHell.Runtime",
+  "rootNamespace": "MazeHell",
+  "references": [
+    "Unity.InputSystem",
+    "Unity.AI.Navigation",
+    "Unity.TextMeshPro",
+    "UnityEngine.UI",
+    "Unity.RenderPipelines.Universal.Runtime",
+    "Unity.RenderPipelines.Core.Runtime"
+  ],
+  "autoReferenced": true
+}

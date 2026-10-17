@@ -1,0 +1,5690 @@
+{
+  "modules": [
+    {
+      "name": "room_quarters",
+      "kind": "room",
+      "boxes": [
+        {
+          "name": "Geo_Floor",
+          "min": [
+            -20.5,
+            -20.5,
+            -0.2
+          ],
+          "max": [
+            20.5,
+            20.5,
+            0
+          ],
+          "material": "MH_Floor_Cracked"
+        },
+        {
+          "name": "Geo_Ceiling",
+          "min": [
+            -20.5,
+            -20.5,
+            8
+          ],
+          "max": [
+            20.5,
+            20.5,
+            8.2
+          ],
+          "material": "MH_Ceiling_Basalt"
+        },
+        {
+          "name": "Geo_Wall_N_L",
+          "min": [
+            -20.5,
+            20,
+            0
+          ],
+          "max": [
+            -3.0,
+            20.5,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Wall_N_R",
+          "min": [
+            3.0,
+            20,
+            0
+          ],
+          "max": [
+            20.5,
+            20.5,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Wall_N_Lintel",
+          "min": [
+            -3,
+            20,
+            4.5
+          ],
+          "max": [
+            3,
+            20.5,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Arch_N_0",
+          "min": [
+            -3.0,
+            19.88,
+            4.5
+          ],
+          "max": [
+            3.0,
+            20,
+            5
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Arch_N_1",
+          "min": [
+            -2.25,
+            19.88,
+            5
+          ],
+          "max": [
+            2.25,
+            20,
+            5.5
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Arch_N_2",
+          "min": [
+            -1.5,
+            19.88,
+            5.5
+          ],
+          "max": [
+            1.5,
+            20,
+            6
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Wall_S_L",
+          "min": [
+            -20.5,
+            -20.5,
+            0
+          ],
+          "max": [
+            -3.0,
+            -20,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Wall_S_R",
+          "min": [
+            3.0,
+            -20.5,
+            0
+          ],
+          "max": [
+            20.5,
+            -20,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Wall_S_Lintel",
+          "min": [
+            -3,
+            -20.5,
+            4.5
+          ],
+          "max": [
+            3,
+            -20,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Arch_S_0",
+          "min": [
+            -3.0,
+            -20,
+            4.5
+          ],
+          "max": [
+            3.0,
+            -19.88,
+            5
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Arch_S_1",
+          "min": [
+            -2.25,
+            -20,
+            5
+          ],
+          "max": [
+            2.25,
+            -19.88,
+            5.5
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Arch_S_2",
+          "min": [
+            -1.5,
+            -20,
+            5.5
+          ],
+          "max": [
+            1.5,
+            -19.88,
+            6
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Wall_W_L",
+          "min": [
+            -20.5,
+            -20,
+            0
+          ],
+          "max": [
+            -20,
+            -3.0,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Wall_W_R",
+          "min": [
+            -20.5,
+            3.0,
+            0
+          ],
+          "max": [
+            -20,
+            20,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Wall_W_Lintel",
+          "min": [
+            -20.5,
+            -3,
+            4.5
+          ],
+          "max": [
+            -20,
+            3,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Arch_W_0",
+          "min": [
+            -20,
+            -3.0,
+            4.5
+          ],
+          "max": [
+            -19.88,
+            3.0,
+            5
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Arch_W_1",
+          "min": [
+            -20,
+            -2.25,
+            5
+          ],
+          "max": [
+            -19.88,
+            2.25,
+            5.5
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Arch_W_2",
+          "min": [
+            -20,
+            -1.5,
+            5.5
+          ],
+          "max": [
+            -19.88,
+            1.5,
+            6
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Wall_E_L",
+          "min": [
+            20,
+            -20,
+            0
+          ],
+          "max": [
+            20.5,
+            -3.0,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Wall_E_R",
+          "min": [
+            20,
+            3.0,
+            0
+          ],
+          "max": [
+            20.5,
+            20,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Wall_E_Lintel",
+          "min": [
+            20,
+            -3,
+            4.5
+          ],
+          "max": [
+            20.5,
+            3,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Arch_E_0",
+          "min": [
+            19.88,
+            -3.0,
+            4.5
+          ],
+          "max": [
+            20,
+            3.0,
+            5
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Arch_E_1",
+          "min": [
+            19.88,
+            -2.25,
+            5
+          ],
+          "max": [
+            20,
+            2.25,
+            5.5
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Arch_E_2",
+          "min": [
+            19.88,
+            -1.5,
+            5.5
+          ],
+          "max": [
+            20,
+            1.5,
+            6
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Inner_Sub_-1_-1_0",
+          "min": [
+            12,
+            -12,
+            0
+          ],
+          "max": [
+            20,
+            -11.5,
+            8
+          ],
+          "material": "MH_Wall_Bones"
+        },
+        {
+          "name": "Geo_Inner_Sub_-1_-1_1",
+          "min": [
+            12,
+            -14.5,
+            0
+          ],
+          "max": [
+            12.5,
+            -12,
+            8
+          ],
+          "material": "MH_Wall_Bones"
+        },
+        {
+          "name": "Geo_Inner_Sub_-1_-1_2",
+          "min": [
+            12,
+            -20,
+            0
+          ],
+          "max": [
+            12.5,
+            -17.5,
+            8
+          ],
+          "material": "MH_Wall_Bones"
+        },
+        {
+          "name": "Geo_Inner_Sub_-1_1_0",
+          "min": [
+            12,
+            11.5,
+            0
+          ],
+          "max": [
+            20,
+            12,
+            8
+          ],
+          "material": "MH_Wall_Bones"
+        },
+        {
+          "name": "Geo_Inner_Sub_-1_1_1",
+          "min": [
+            12,
+            12,
+            0
+          ],
+          "max": [
+            12.5,
+            14.5,
+            8
+          ],
+          "material": "MH_Wall_Bones"
+        },
+        {
+          "name": "Geo_Inner_Sub_-1_1_2",
+          "min": [
+            12,
+            17.5,
+            0
+          ],
+          "max": [
+            12.5,
+            20,
+            8
+          ],
+          "material": "MH_Wall_Bones"
+        },
+        {
+          "name": "Geo_Inner_Sub_1_-1_0",
+          "min": [
+            -20,
+            -12,
+            0
+          ],
+          "max": [
+            -12,
+            -11.5,
+            8
+          ],
+          "material": "MH_Wall_Bones"
+        },
+        {
+          "name": "Geo_Inner_Sub_1_-1_1",
+          "min": [
+            -12.5,
+            -14.5,
+            0
+          ],
+          "max": [
+            -12,
+            -12,
+            8
+          ],
+          "material": "MH_Wall_Bones"
+        },
+        {
+          "name": "Geo_Inner_Sub_1_-1_2",
+          "min": [
+            -12.5,
+            -20,
+            0
+          ],
+          "max": [
+            -12,
+            -17.5,
+            8
+          ],
+          "material": "MH_Wall_Bones"
+        },
+        {
+          "name": "Geo_Inner_Sub_1_1_0",
+          "min": [
+            -20,
+            11.5,
+            0
+          ],
+          "max": [
+            -12,
+            12,
+            8
+          ],
+          "material": "MH_Wall_Bones"
+        },
+        {
+          "name": "Geo_Inner_Sub_1_1_1",
+          "min": [
+            -12.5,
+            12,
+            0
+          ],
+          "max": [
+            -12,
+            14.5,
+            8
+          ],
+          "material": "MH_Wall_Bones"
+        },
+        {
+          "name": "Geo_Inner_Sub_1_1_2",
+          "min": [
+            -12.5,
+            17.5,
+            0
+          ],
+          "max": [
+            -12,
+            20,
+            8
+          ],
+          "material": "MH_Wall_Bones"
+        },
+        {
+          "name": "Geo_Sub_Lintel",
+          "min": [
+            -12.5,
+            -17.5,
+            3.5
+          ],
+          "max": [
+            -12,
+            -14.5,
+            8
+          ],
+          "material": "MH_Wall_Bones"
+        },
+        {
+          "name": "Geo_Sub_Lintel",
+          "min": [
+            -12.5,
+            14.5,
+            3.5
+          ],
+          "max": [
+            -12,
+            17.5,
+            8
+          ],
+          "material": "MH_Wall_Bones"
+        },
+        {
+          "name": "Geo_Sub_Lintel",
+          "min": [
+            12,
+            -17.5,
+            3.5
+          ],
+          "max": [
+            12.5,
+            -14.5,
+            8
+          ],
+          "material": "MH_Wall_Bones"
+        },
+        {
+          "name": "Geo_Sub_Lintel",
+          "min": [
+            12,
+            14.5,
+            3.5
+          ],
+          "max": [
+            12.5,
+            17.5,
+            8
+          ],
+          "material": "MH_Wall_Bones"
+        },
+        {
+          "name": "Column_0_Base",
+          "min": [
+            -6,
+            -6,
+            0
+          ],
+          "max": [
+            -4,
+            -4,
+            0.5
+          ],
+          "material": "MH_Column_Band"
+        },
+        {
+          "name": "Column_0_Shaft",
+          "min": [
+            -5.65,
+            -5.65,
+            0.5
+          ],
+          "max": [
+            -4.35,
+            -4.35,
+            7.5
+          ],
+          "material": "MH_Column_Stone"
+        },
+        {
+          "name": "Column_0_Capital",
+          "min": [
+            -6,
+            -6,
+            7.5
+          ],
+          "max": [
+            -4,
+            -4,
+            8
+          ],
+          "material": "MH_Column_Band"
+        },
+        {
+          "name": "Column_1_Base",
+          "min": [
+            -6,
+            4,
+            0
+          ],
+          "max": [
+            -4,
+            6,
+            0.5
+          ],
+          "material": "MH_Column_Band"
+        },
+        {
+          "name": "Column_1_Shaft",
+          "min": [
+            -5.65,
+            4.35,
+            0.5
+          ],
+          "max": [
+            -4.35,
+            5.65,
+            7.5
+          ],
+          "material": "MH_Column_Stone"
+        },
+        {
+          "name": "Column_1_Capital",
+          "min": [
+            -6,
+            4,
+            7.5
+          ],
+          "max": [
+            -4,
+            6,
+            8
+          ],
+          "material": "MH_Column_Band"
+        },
+        {
+          "name": "Column_2_Base",
+          "min": [
+            4,
+            -6,
+            0
+          ],
+          "max": [
+            6,
+            -4,
+            0.5
+          ],
+          "material": "MH_Column_Band"
+        },
+        {
+          "name": "Column_2_Shaft",
+          "min": [
+            4.35,
+            -5.65,
+            0.5
+          ],
+          "max": [
+            5.65,
+            -4.35,
+            7.5
+          ],
+          "material": "MH_Column_Stone"
+        },
+        {
+          "name": "Column_2_Capital",
+          "min": [
+            4,
+            -6,
+            7.5
+          ],
+          "max": [
+            6,
+            -4,
+            8
+          ],
+          "material": "MH_Column_Band"
+        },
+        {
+          "name": "Column_3_Base",
+          "min": [
+            4,
+            4,
+            0
+          ],
+          "max": [
+            6,
+            6,
+            0.5
+          ],
+          "material": "MH_Column_Band"
+        },
+        {
+          "name": "Column_3_Shaft",
+          "min": [
+            4.35,
+            4.35,
+            0.5
+          ],
+          "max": [
+            5.65,
+            5.65,
+            7.5
+          ],
+          "material": "MH_Column_Stone"
+        },
+        {
+          "name": "Column_3_Capital",
+          "min": [
+            4,
+            4,
+            7.5
+          ],
+          "max": [
+            6,
+            6,
+            8
+          ],
+          "material": "MH_Column_Band"
+        }
+      ],
+      "slots": [
+        {
+          "name": "Door_N",
+          "position": [
+            0,
+            20.5,
+            0
+          ],
+          "angle": 0,
+          "width": 6,
+          "height": 4.5,
+          "door": "door_wood"
+        },
+        {
+          "name": "Door_S",
+          "position": [
+            0,
+            -20.5,
+            0
+          ],
+          "angle": 180,
+          "width": 6,
+          "height": 4.5,
+          "door": "door_wood"
+        },
+        {
+          "name": "Door_W",
+          "position": [
+            -20.5,
+            0,
+            0
+          ],
+          "angle": 90,
+          "width": 6,
+          "height": 4.5,
+          "door": "door_wood"
+        },
+        {
+          "name": "Door_E",
+          "position": [
+            20.5,
+            0,
+            0
+          ],
+          "angle": -90,
+          "width": 6,
+          "height": 4.5,
+          "door": "door_wood"
+        },
+        {
+          "name": "DoorSub_-1_-1",
+          "position": [
+            -12.25,
+            -16,
+            0
+          ],
+          "angle": 90,
+          "width": 3,
+          "height": 3.5,
+          "door": "door_wood_small"
+        },
+        {
+          "name": "DoorSub_-1_1",
+          "position": [
+            -12.25,
+            16,
+            0
+          ],
+          "angle": 90,
+          "width": 3,
+          "height": 3.5,
+          "door": "door_wood_small"
+        },
+        {
+          "name": "DoorSub_1_-1",
+          "position": [
+            12.25,
+            -16,
+            0
+          ],
+          "angle": -90,
+          "width": 3,
+          "height": 3.5,
+          "door": "door_wood_small"
+        },
+        {
+          "name": "DoorSub_1_1",
+          "position": [
+            12.25,
+            16,
+            0
+          ],
+          "angle": -90,
+          "width": 3,
+          "height": 3.5,
+          "door": "door_wood_small"
+        }
+      ],
+      "triangles": 648
+    },
+    {
+      "name": "room_ring",
+      "kind": "room",
+      "boxes": [
+        {
+          "name": "Geo_Floor",
+          "min": [
+            -20.5,
+            -20.5,
+            -0.2
+          ],
+          "max": [
+            20.5,
+            20.5,
+            0
+          ],
+          "material": "MH_Floor_Cracked"
+        },
+        {
+          "name": "Geo_Ceiling",
+          "min": [
+            -20.5,
+            -20.5,
+            8
+          ],
+          "max": [
+            20.5,
+            20.5,
+            8.2
+          ],
+          "material": "MH_Ceiling_Basalt"
+        },
+        {
+          "name": "Geo_Wall_N_L",
+          "min": [
+            -20.5,
+            20,
+            0
+          ],
+          "max": [
+            -3.0,
+            20.5,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Wall_N_R",
+          "min": [
+            3.0,
+            20,
+            0
+          ],
+          "max": [
+            20.5,
+            20.5,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Wall_N_Lintel",
+          "min": [
+            -3,
+            20,
+            4.5
+          ],
+          "max": [
+            3,
+            20.5,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Arch_N_0",
+          "min": [
+            -3.0,
+            19.88,
+            4.5
+          ],
+          "max": [
+            3.0,
+            20,
+            5
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Arch_N_1",
+          "min": [
+            -2.25,
+            19.88,
+            5
+          ],
+          "max": [
+            2.25,
+            20,
+            5.5
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Arch_N_2",
+          "min": [
+            -1.5,
+            19.88,
+            5.5
+          ],
+          "max": [
+            1.5,
+            20,
+            6
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Wall_S_L",
+          "min": [
+            -20.5,
+            -20.5,
+            0
+          ],
+          "max": [
+            -3.0,
+            -20,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Wall_S_R",
+          "min": [
+            3.0,
+            -20.5,
+            0
+          ],
+          "max": [
+            20.5,
+            -20,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Wall_S_Lintel",
+          "min": [
+            -3,
+            -20.5,
+            4.5
+          ],
+          "max": [
+            3,
+            -20,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Arch_S_0",
+          "min": [
+            -3.0,
+            -20,
+            4.5
+          ],
+          "max": [
+            3.0,
+            -19.88,
+            5
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Arch_S_1",
+          "min": [
+            -2.25,
+            -20,
+            5
+          ],
+          "max": [
+            2.25,
+            -19.88,
+            5.5
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Arch_S_2",
+          "min": [
+            -1.5,
+            -20,
+            5.5
+          ],
+          "max": [
+            1.5,
+            -19.88,
+            6
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Wall_W_L",
+          "min": [
+            -20.5,
+            -20,
+            0
+          ],
+          "max": [
+            -20,
+            -3.0,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Wall_W_R",
+          "min": [
+            -20.5,
+            3.0,
+            0
+          ],
+          "max": [
+            -20,
+            20,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Wall_W_Lintel",
+          "min": [
+            -20.5,
+            -3,
+            4.5
+          ],
+          "max": [
+            -20,
+            3,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Arch_W_0",
+          "min": [
+            -20,
+            -3.0,
+            4.5
+          ],
+          "max": [
+            -19.88,
+            3.0,
+            5
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Arch_W_1",
+          "min": [
+            -20,
+            -2.25,
+            5
+          ],
+          "max": [
+            -19.88,
+            2.25,
+            5.5
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Arch_W_2",
+          "min": [
+            -20,
+            -1.5,
+            5.5
+          ],
+          "max": [
+            -19.88,
+            1.5,
+            6
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Wall_E_L",
+          "min": [
+            20,
+            -20,
+            0
+          ],
+          "max": [
+            20.5,
+            -3.0,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Wall_E_R",
+          "min": [
+            20,
+            3.0,
+            0
+          ],
+          "max": [
+            20.5,
+            20,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Wall_E_Lintel",
+          "min": [
+            20,
+            -3,
+            4.5
+          ],
+          "max": [
+            20.5,
+            3,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Arch_E_0",
+          "min": [
+            19.88,
+            -3.0,
+            4.5
+          ],
+          "max": [
+            20,
+            3.0,
+            5
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Arch_E_1",
+          "min": [
+            19.88,
+            -2.25,
+            5
+          ],
+          "max": [
+            20,
+            2.25,
+            5.5
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Arch_E_2",
+          "min": [
+            19.88,
+            -1.5,
+            5.5
+          ],
+          "max": [
+            20,
+            1.5,
+            6
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Inner_N",
+          "min": [
+            -9.5,
+            9.5,
+            0
+          ],
+          "max": [
+            -3,
+            10,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Inner_N",
+          "min": [
+            3,
+            9.5,
+            0
+          ],
+          "max": [
+            9.5,
+            10,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Inner_Lintel_N",
+          "min": [
+            -3,
+            9.5,
+            5
+          ],
+          "max": [
+            3,
+            10,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Inner_S",
+          "min": [
+            -9.5,
+            -10,
+            0
+          ],
+          "max": [
+            -3,
+            -9.5,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Inner_S",
+          "min": [
+            3,
+            -10,
+            0
+          ],
+          "max": [
+            9.5,
+            -9.5,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Inner_Lintel_S",
+          "min": [
+            -3,
+            -10,
+            5
+          ],
+          "max": [
+            3,
+            -9.5,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Inner_W",
+          "min": [
+            -10,
+            -9.5,
+            0
+          ],
+          "max": [
+            -9.5,
+            -3,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Inner_W",
+          "min": [
+            -10,
+            3,
+            0
+          ],
+          "max": [
+            -9.5,
+            9.5,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Inner_Lintel_W",
+          "min": [
+            -10,
+            -3,
+            5
+          ],
+          "max": [
+            -9.5,
+            3,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Inner_E",
+          "min": [
+            9.5,
+            -9.5,
+            0
+          ],
+          "max": [
+            10,
+            -3,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Inner_E",
+          "min": [
+            9.5,
+            3,
+            0
+          ],
+          "max": [
+            10,
+            9.5,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Inner_Lintel_E",
+          "min": [
+            9.5,
+            -3,
+            5
+          ],
+          "max": [
+            10,
+            3,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Inner_Corner",
+          "min": [
+            -10,
+            -10,
+            0
+          ],
+          "max": [
+            -9.5,
+            -9.5,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Inner_Corner",
+          "min": [
+            -10,
+            9.5,
+            0
+          ],
+          "max": [
+            -9.5,
+            10.0,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Inner_Corner",
+          "min": [
+            9.5,
+            -10,
+            0
+          ],
+          "max": [
+            10.0,
+            -9.5,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Inner_Corner",
+          "min": [
+            9.5,
+            9.5,
+            0
+          ],
+          "max": [
+            10.0,
+            10.0,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Inner_Pocket_-1_-1_0",
+          "min": [
+            16,
+            -16,
+            0
+          ],
+          "max": [
+            20,
+            -15.5,
+            8
+          ],
+          "material": "MH_Wall_Bones"
+        },
+        {
+          "name": "Geo_Inner_Pocket_-1_-1_1",
+          "min": [
+            16,
+            -16.5,
+            0
+          ],
+          "max": [
+            16.5,
+            -16,
+            8
+          ],
+          "material": "MH_Wall_Bones"
+        },
+        {
+          "name": "Geo_Inner_Pocket_-1_-1_2",
+          "min": [
+            16,
+            -20,
+            0
+          ],
+          "max": [
+            16.5,
+            -19.5,
+            8
+          ],
+          "material": "MH_Wall_Bones"
+        },
+        {
+          "name": "Geo_Inner_Pocket_-1_1_0",
+          "min": [
+            16,
+            15.5,
+            0
+          ],
+          "max": [
+            20,
+            16,
+            8
+          ],
+          "material": "MH_Wall_Bones"
+        },
+        {
+          "name": "Geo_Inner_Pocket_-1_1_1",
+          "min": [
+            16,
+            16,
+            0
+          ],
+          "max": [
+            16.5,
+            16.5,
+            8
+          ],
+          "material": "MH_Wall_Bones"
+        },
+        {
+          "name": "Geo_Inner_Pocket_-1_1_2",
+          "min": [
+            16,
+            19.5,
+            0
+          ],
+          "max": [
+            16.5,
+            20,
+            8
+          ],
+          "material": "MH_Wall_Bones"
+        },
+        {
+          "name": "Geo_Inner_Pocket_1_-1_0",
+          "min": [
+            -20,
+            -16,
+            0
+          ],
+          "max": [
+            -16,
+            -15.5,
+            8
+          ],
+          "material": "MH_Wall_Bones"
+        },
+        {
+          "name": "Geo_Inner_Pocket_1_-1_1",
+          "min": [
+            -16.5,
+            -16.5,
+            0
+          ],
+          "max": [
+            -16,
+            -16,
+            8
+          ],
+          "material": "MH_Wall_Bones"
+        },
+        {
+          "name": "Geo_Inner_Pocket_1_-1_2",
+          "min": [
+            -16.5,
+            -20,
+            0
+          ],
+          "max": [
+            -16,
+            -19.5,
+            8
+          ],
+          "material": "MH_Wall_Bones"
+        },
+        {
+          "name": "Geo_Inner_Pocket_1_1_0",
+          "min": [
+            -20,
+            15.5,
+            0
+          ],
+          "max": [
+            -16,
+            16,
+            8
+          ],
+          "material": "MH_Wall_Bones"
+        },
+        {
+          "name": "Geo_Inner_Pocket_1_1_1",
+          "min": [
+            -16.5,
+            16,
+            0
+          ],
+          "max": [
+            -16,
+            16.5,
+            8
+          ],
+          "material": "MH_Wall_Bones"
+        },
+        {
+          "name": "Geo_Inner_Pocket_1_1_2",
+          "min": [
+            -16.5,
+            19.5,
+            0
+          ],
+          "max": [
+            -16,
+            20,
+            8
+          ],
+          "material": "MH_Wall_Bones"
+        },
+        {
+          "name": "Geo_Pocket_Lintel",
+          "min": [
+            -16.5,
+            -19.5,
+            3.5
+          ],
+          "max": [
+            -16,
+            -16.5,
+            8
+          ],
+          "material": "MH_Wall_Bones"
+        },
+        {
+          "name": "Geo_Pocket_Lintel",
+          "min": [
+            -16.5,
+            16.5,
+            3.5
+          ],
+          "max": [
+            -16,
+            19.5,
+            8
+          ],
+          "material": "MH_Wall_Bones"
+        },
+        {
+          "name": "Geo_Pocket_Lintel",
+          "min": [
+            16,
+            -19.5,
+            3.5
+          ],
+          "max": [
+            16.5,
+            -16.5,
+            8
+          ],
+          "material": "MH_Wall_Bones"
+        },
+        {
+          "name": "Geo_Pocket_Lintel",
+          "min": [
+            16,
+            16.5,
+            3.5
+          ],
+          "max": [
+            16.5,
+            19.5,
+            8
+          ],
+          "material": "MH_Wall_Bones"
+        },
+        {
+          "name": "Column_0_Base",
+          "min": [
+            -6,
+            -6,
+            0
+          ],
+          "max": [
+            -4,
+            -4,
+            0.5
+          ],
+          "material": "MH_Column_Band"
+        },
+        {
+          "name": "Column_0_Shaft",
+          "min": [
+            -5.65,
+            -5.65,
+            0.5
+          ],
+          "max": [
+            -4.35,
+            -4.35,
+            7.5
+          ],
+          "material": "MH_Column_Stone"
+        },
+        {
+          "name": "Column_0_Capital",
+          "min": [
+            -6,
+            -6,
+            7.5
+          ],
+          "max": [
+            -4,
+            -4,
+            8
+          ],
+          "material": "MH_Column_Band"
+        },
+        {
+          "name": "Column_1_Base",
+          "min": [
+            -6,
+            4,
+            0
+          ],
+          "max": [
+            -4,
+            6,
+            0.5
+          ],
+          "material": "MH_Column_Band"
+        },
+        {
+          "name": "Column_1_Shaft",
+          "min": [
+            -5.65,
+            4.35,
+            0.5
+          ],
+          "max": [
+            -4.35,
+            5.65,
+            7.5
+          ],
+          "material": "MH_Column_Stone"
+        },
+        {
+          "name": "Column_1_Capital",
+          "min": [
+            -6,
+            4,
+            7.5
+          ],
+          "max": [
+            -4,
+            6,
+            8
+          ],
+          "material": "MH_Column_Band"
+        },
+        {
+          "name": "Column_2_Base",
+          "min": [
+            4,
+            -6,
+            0
+          ],
+          "max": [
+            6,
+            -4,
+            0.5
+          ],
+          "material": "MH_Column_Band"
+        },
+        {
+          "name": "Column_2_Shaft",
+          "min": [
+            4.35,
+            -5.65,
+            0.5
+          ],
+          "max": [
+            5.65,
+            -4.35,
+            7.5
+          ],
+          "material": "MH_Column_Stone"
+        },
+        {
+          "name": "Column_2_Capital",
+          "min": [
+            4,
+            -6,
+            7.5
+          ],
+          "max": [
+            6,
+            -4,
+            8
+          ],
+          "material": "MH_Column_Band"
+        },
+        {
+          "name": "Column_3_Base",
+          "min": [
+            4,
+            4,
+            0
+          ],
+          "max": [
+            6,
+            6,
+            0.5
+          ],
+          "material": "MH_Column_Band"
+        },
+        {
+          "name": "Column_3_Shaft",
+          "min": [
+            4.35,
+            4.35,
+            0.5
+          ],
+          "max": [
+            5.65,
+            5.65,
+            7.5
+          ],
+          "material": "MH_Column_Stone"
+        },
+        {
+          "name": "Column_3_Capital",
+          "min": [
+            4,
+            4,
+            7.5
+          ],
+          "max": [
+            6,
+            6,
+            8
+          ],
+          "material": "MH_Column_Band"
+        }
+      ],
+      "slots": [
+        {
+          "name": "Door_N",
+          "position": [
+            0,
+            20.5,
+            0
+          ],
+          "angle": 0,
+          "width": 6,
+          "height": 4.5,
+          "door": "door_wood"
+        },
+        {
+          "name": "Door_S",
+          "position": [
+            0,
+            -20.5,
+            0
+          ],
+          "angle": 180,
+          "width": 6,
+          "height": 4.5,
+          "door": "door_wood"
+        },
+        {
+          "name": "Door_W",
+          "position": [
+            -20.5,
+            0,
+            0
+          ],
+          "angle": 90,
+          "width": 6,
+          "height": 4.5,
+          "door": "door_wood"
+        },
+        {
+          "name": "Door_E",
+          "position": [
+            20.5,
+            0,
+            0
+          ],
+          "angle": -90,
+          "width": 6,
+          "height": 4.5,
+          "door": "door_wood"
+        },
+        {
+          "name": "DoorSub_-1_-1",
+          "position": [
+            -16.25,
+            -18,
+            0
+          ],
+          "angle": 90,
+          "width": 3,
+          "height": 3.5,
+          "door": "door_wood_small"
+        },
+        {
+          "name": "DoorSub_-1_1",
+          "position": [
+            -16.25,
+            18,
+            0
+          ],
+          "angle": 90,
+          "width": 3,
+          "height": 3.5,
+          "door": "door_wood_small"
+        },
+        {
+          "name": "DoorSub_1_-1",
+          "position": [
+            16.25,
+            -18,
+            0
+          ],
+          "angle": -90,
+          "width": 3,
+          "height": 3.5,
+          "door": "door_wood_small"
+        },
+        {
+          "name": "DoorSub_1_1",
+          "position": [
+            16.25,
+            18,
+            0
+          ],
+          "angle": -90,
+          "width": 3,
+          "height": 3.5,
+          "door": "door_wood_small"
+        }
+      ],
+      "triangles": 840
+    },
+    {
+      "name": "room_comb",
+      "kind": "room",
+      "boxes": [
+        {
+          "name": "Geo_Floor",
+          "min": [
+            -20.5,
+            -20.5,
+            -0.2
+          ],
+          "max": [
+            20.5,
+            20.5,
+            0
+          ],
+          "material": "MH_Floor_Cracked"
+        },
+        {
+          "name": "Geo_Ceiling",
+          "min": [
+            -20.5,
+            -20.5,
+            8
+          ],
+          "max": [
+            20.5,
+            20.5,
+            8.2
+          ],
+          "material": "MH_Ceiling_Basalt"
+        },
+        {
+          "name": "Geo_Wall_N_L",
+          "min": [
+            -20.5,
+            20,
+            0
+          ],
+          "max": [
+            -3.0,
+            20.5,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Wall_N_R",
+          "min": [
+            3.0,
+            20,
+            0
+          ],
+          "max": [
+            20.5,
+            20.5,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Wall_N_Lintel",
+          "min": [
+            -3,
+            20,
+            4.5
+          ],
+          "max": [
+            3,
+            20.5,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Arch_N_0",
+          "min": [
+            -3.0,
+            19.88,
+            4.5
+          ],
+          "max": [
+            3.0,
+            20,
+            5
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Arch_N_1",
+          "min": [
+            -2.25,
+            19.88,
+            5
+          ],
+          "max": [
+            2.25,
+            20,
+            5.5
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Arch_N_2",
+          "min": [
+            -1.5,
+            19.88,
+            5.5
+          ],
+          "max": [
+            1.5,
+            20,
+            6
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Wall_S_L",
+          "min": [
+            -20.5,
+            -20.5,
+            0
+          ],
+          "max": [
+            -3.0,
+            -20,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Wall_S_R",
+          "min": [
+            3.0,
+            -20.5,
+            0
+          ],
+          "max": [
+            20.5,
+            -20,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Wall_S_Lintel",
+          "min": [
+            -3,
+            -20.5,
+            4.5
+          ],
+          "max": [
+            3,
+            -20,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Arch_S_0",
+          "min": [
+            -3.0,
+            -20,
+            4.5
+          ],
+          "max": [
+            3.0,
+            -19.88,
+            5
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Arch_S_1",
+          "min": [
+            -2.25,
+            -20,
+            5
+          ],
+          "max": [
+            2.25,
+            -19.88,
+            5.5
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Arch_S_2",
+          "min": [
+            -1.5,
+            -20,
+            5.5
+          ],
+          "max": [
+            1.5,
+            -19.88,
+            6
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Wall_W_L",
+          "min": [
+            -20.5,
+            -20,
+            0
+          ],
+          "max": [
+            -20,
+            -3.0,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Wall_W_R",
+          "min": [
+            -20.5,
+            3.0,
+            0
+          ],
+          "max": [
+            -20,
+            20,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Wall_W_Lintel",
+          "min": [
+            -20.5,
+            -3,
+            4.5
+          ],
+          "max": [
+            -20,
+            3,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Arch_W_0",
+          "min": [
+            -20,
+            -3.0,
+            4.5
+          ],
+          "max": [
+            -19.88,
+            3.0,
+            5
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Arch_W_1",
+          "min": [
+            -20,
+            -2.25,
+            5
+          ],
+          "max": [
+            -19.88,
+            2.25,
+            5.5
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Arch_W_2",
+          "min": [
+            -20,
+            -1.5,
+            5.5
+          ],
+          "max": [
+            -19.88,
+            1.5,
+            6
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Wall_E_L",
+          "min": [
+            20,
+            -20,
+            0
+          ],
+          "max": [
+            20.5,
+            -3.0,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Wall_E_R",
+          "min": [
+            20,
+            3.0,
+            0
+          ],
+          "max": [
+            20.5,
+            20,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Wall_E_Lintel",
+          "min": [
+            20,
+            -3,
+            4.5
+          ],
+          "max": [
+            20.5,
+            3,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Arch_E_0",
+          "min": [
+            19.88,
+            -3.0,
+            4.5
+          ],
+          "max": [
+            20,
+            3.0,
+            5
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Arch_E_1",
+          "min": [
+            19.88,
+            -2.25,
+            5
+          ],
+          "max": [
+            20,
+            2.25,
+            5.5
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Arch_E_2",
+          "min": [
+            19.88,
+            -1.5,
+            5.5
+          ],
+          "max": [
+            20,
+            1.5,
+            6
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Tooth_-1_0",
+          "min": [
+            -18,
+            -20,
+            0
+          ],
+          "max": [
+            -17.5,
+            -15,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Tooth_-1_1",
+          "min": [
+            -7.5,
+            -20,
+            0
+          ],
+          "max": [
+            -7,
+            -15,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Tooth_-1_2",
+          "min": [
+            7,
+            -20,
+            0
+          ],
+          "max": [
+            7.5,
+            -15,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Tooth_-1_3",
+          "min": [
+            17.5,
+            -20,
+            0
+          ],
+          "max": [
+            18,
+            -15,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Tooth_1_0",
+          "min": [
+            -18,
+            15,
+            0
+          ],
+          "max": [
+            -17.5,
+            20,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Tooth_1_1",
+          "min": [
+            -7.5,
+            15,
+            0
+          ],
+          "max": [
+            -7,
+            20,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Tooth_1_2",
+          "min": [
+            7,
+            15,
+            0
+          ],
+          "max": [
+            7.5,
+            20,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Tooth_1_3",
+          "min": [
+            17.5,
+            15,
+            0
+          ],
+          "max": [
+            18,
+            20,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Column_0_Base",
+          "min": [
+            -7,
+            -7,
+            0
+          ],
+          "max": [
+            -5,
+            -5,
+            0.5
+          ],
+          "material": "MH_Column_Band"
+        },
+        {
+          "name": "Column_0_Shaft",
+          "min": [
+            -6.65,
+            -6.65,
+            0.5
+          ],
+          "max": [
+            -5.35,
+            -5.35,
+            7.5
+          ],
+          "material": "MH_Column_Stone"
+        },
+        {
+          "name": "Column_0_Capital",
+          "min": [
+            -7,
+            -7,
+            7.5
+          ],
+          "max": [
+            -5,
+            -5,
+            8
+          ],
+          "material": "MH_Column_Band"
+        },
+        {
+          "name": "Column_1_Base",
+          "min": [
+            -7,
+            5,
+            0
+          ],
+          "max": [
+            -5,
+            7,
+            0.5
+          ],
+          "material": "MH_Column_Band"
+        },
+        {
+          "name": "Column_1_Shaft",
+          "min": [
+            -6.65,
+            5.35,
+            0.5
+          ],
+          "max": [
+            -5.35,
+            6.65,
+            7.5
+          ],
+          "material": "MH_Column_Stone"
+        },
+        {
+          "name": "Column_1_Capital",
+          "min": [
+            -7,
+            5,
+            7.5
+          ],
+          "max": [
+            -5,
+            7,
+            8
+          ],
+          "material": "MH_Column_Band"
+        },
+        {
+          "name": "Column_2_Base",
+          "min": [
+            5,
+            -7,
+            0
+          ],
+          "max": [
+            7,
+            -5,
+            0.5
+          ],
+          "material": "MH_Column_Band"
+        },
+        {
+          "name": "Column_2_Shaft",
+          "min": [
+            5.35,
+            -6.65,
+            0.5
+          ],
+          "max": [
+            6.65,
+            -5.35,
+            7.5
+          ],
+          "material": "MH_Column_Stone"
+        },
+        {
+          "name": "Column_2_Capital",
+          "min": [
+            5,
+            -7,
+            7.5
+          ],
+          "max": [
+            7,
+            -5,
+            8
+          ],
+          "material": "MH_Column_Band"
+        },
+        {
+          "name": "Column_3_Base",
+          "min": [
+            5,
+            5,
+            0
+          ],
+          "max": [
+            7,
+            7,
+            0.5
+          ],
+          "material": "MH_Column_Band"
+        },
+        {
+          "name": "Column_3_Shaft",
+          "min": [
+            5.35,
+            5.35,
+            0.5
+          ],
+          "max": [
+            6.65,
+            6.65,
+            7.5
+          ],
+          "material": "MH_Column_Stone"
+        },
+        {
+          "name": "Column_3_Capital",
+          "min": [
+            5,
+            5,
+            7.5
+          ],
+          "max": [
+            7,
+            7,
+            8
+          ],
+          "material": "MH_Column_Band"
+        }
+      ],
+      "slots": [
+        {
+          "name": "Door_N",
+          "position": [
+            0,
+            20.5,
+            0
+          ],
+          "angle": 0,
+          "width": 6,
+          "height": 4.5,
+          "door": "door_wood"
+        },
+        {
+          "name": "Door_S",
+          "position": [
+            0,
+            -20.5,
+            0
+          ],
+          "angle": 180,
+          "width": 6,
+          "height": 4.5,
+          "door": "door_wood"
+        },
+        {
+          "name": "Door_W",
+          "position": [
+            -20.5,
+            0,
+            0
+          ],
+          "angle": 90,
+          "width": 6,
+          "height": 4.5,
+          "door": "door_wood"
+        },
+        {
+          "name": "Door_E",
+          "position": [
+            20.5,
+            0,
+            0
+          ],
+          "angle": -90,
+          "width": 6,
+          "height": 4.5,
+          "door": "door_wood"
+        }
+      ],
+      "triangles": 552
+    },
+    {
+      "name": "room_gate",
+      "kind": "room",
+      "boxes": [
+        {
+          "name": "Geo_Floor",
+          "min": [
+            -20.5,
+            -20.5,
+            -0.2
+          ],
+          "max": [
+            20.5,
+            20.5,
+            0
+          ],
+          "material": "MH_Floor_Cracked"
+        },
+        {
+          "name": "Geo_Ceiling",
+          "min": [
+            -20.5,
+            -20.5,
+            8
+          ],
+          "max": [
+            20.5,
+            20.5,
+            8.2
+          ],
+          "material": "MH_Ceiling_Basalt"
+        },
+        {
+          "name": "Geo_Wall_N_L",
+          "min": [
+            -20.5,
+            20,
+            0
+          ],
+          "max": [
+            -5.0,
+            20.5,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Wall_N_R",
+          "min": [
+            5.0,
+            20,
+            0
+          ],
+          "max": [
+            20.5,
+            20.5,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Gate_Header",
+          "min": [
+            -5,
+            20,
+            7
+          ],
+          "max": [
+            5,
+            20.5,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Gate_Shoulder_Outer",
+          "min": [
+            -5,
+            20,
+            5.5
+          ],
+          "max": [
+            -4,
+            20.5,
+            7
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Gate_Shoulder_Inner",
+          "min": [
+            -4,
+            20,
+            6.25
+          ],
+          "max": [
+            -3,
+            20.5,
+            7
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Gate_Frame_Pier",
+          "min": [
+            -6.5,
+            19.2,
+            0
+          ],
+          "max": [
+            -5,
+            20,
+            5.5
+          ],
+          "material": "MH_Column_Stone"
+        },
+        {
+          "name": "Geo_Gate_Frame_StepLow",
+          "min": [
+            -6.5,
+            19.2,
+            5.5
+          ],
+          "max": [
+            -4,
+            20,
+            5.9
+          ],
+          "material": "MH_Column_Stone"
+        },
+        {
+          "name": "Geo_Gate_Frame_RiserLow",
+          "min": [
+            -4.4,
+            19.2,
+            5.9
+          ],
+          "max": [
+            -4,
+            20,
+            6.25
+          ],
+          "material": "MH_Column_Stone"
+        },
+        {
+          "name": "Geo_Gate_Frame_StepHigh",
+          "min": [
+            -4.4,
+            19.2,
+            6.25
+          ],
+          "max": [
+            -3,
+            20,
+            6.65
+          ],
+          "material": "MH_Column_Stone"
+        },
+        {
+          "name": "Geo_Gate_Frame_RiserHigh",
+          "min": [
+            -3.4,
+            19.2,
+            6.65
+          ],
+          "max": [
+            -3,
+            20,
+            7
+          ],
+          "material": "MH_Column_Stone"
+        },
+        {
+          "name": "Geo_Gate_Shoulder_Outer",
+          "min": [
+            4,
+            20,
+            5.5
+          ],
+          "max": [
+            5,
+            20.5,
+            7
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Gate_Shoulder_Inner",
+          "min": [
+            3,
+            20,
+            6.25
+          ],
+          "max": [
+            4,
+            20.5,
+            7
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Gate_Frame_Pier",
+          "min": [
+            5,
+            19.2,
+            0
+          ],
+          "max": [
+            6.5,
+            20,
+            5.5
+          ],
+          "material": "MH_Column_Stone"
+        },
+        {
+          "name": "Geo_Gate_Frame_StepLow",
+          "min": [
+            4,
+            19.2,
+            5.5
+          ],
+          "max": [
+            6.5,
+            20,
+            5.9
+          ],
+          "material": "MH_Column_Stone"
+        },
+        {
+          "name": "Geo_Gate_Frame_RiserLow",
+          "min": [
+            4,
+            19.2,
+            5.9
+          ],
+          "max": [
+            4.4,
+            20,
+            6.25
+          ],
+          "material": "MH_Column_Stone"
+        },
+        {
+          "name": "Geo_Gate_Frame_StepHigh",
+          "min": [
+            3,
+            19.2,
+            6.25
+          ],
+          "max": [
+            4.4,
+            20,
+            6.65
+          ],
+          "material": "MH_Column_Stone"
+        },
+        {
+          "name": "Geo_Gate_Frame_RiserHigh",
+          "min": [
+            3,
+            19.2,
+            6.65
+          ],
+          "max": [
+            3.4,
+            20,
+            7
+          ],
+          "material": "MH_Column_Stone"
+        },
+        {
+          "name": "Geo_Gate_Frame_Crown",
+          "min": [
+            -3.4,
+            19.2,
+            7
+          ],
+          "max": [
+            3.4,
+            20,
+            7.4
+          ],
+          "material": "MH_Column_Stone"
+        },
+        {
+          "name": "Geo_Wall_S_L",
+          "min": [
+            -20.5,
+            -20.5,
+            0
+          ],
+          "max": [
+            -3.0,
+            -20,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Wall_S_R",
+          "min": [
+            3.0,
+            -20.5,
+            0
+          ],
+          "max": [
+            20.5,
+            -20,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Wall_S_Lintel",
+          "min": [
+            -3,
+            -20.5,
+            4.5
+          ],
+          "max": [
+            3,
+            -20,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Arch_S_0",
+          "min": [
+            -3.0,
+            -20,
+            4.5
+          ],
+          "max": [
+            3.0,
+            -19.88,
+            5
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Arch_S_1",
+          "min": [
+            -2.25,
+            -20,
+            5
+          ],
+          "max": [
+            2.25,
+            -19.88,
+            5.5
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Arch_S_2",
+          "min": [
+            -1.5,
+            -20,
+            5.5
+          ],
+          "max": [
+            1.5,
+            -19.88,
+            6
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Wall_W",
+          "min": [
+            -20.5,
+            -20,
+            0
+          ],
+          "max": [
+            -20,
+            20,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Wall_E",
+          "min": [
+            20,
+            -20,
+            0
+          ],
+          "max": [
+            20.5,
+            20,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Niche",
+          "min": [
+            -20,
+            5.5,
+            0
+          ],
+          "max": [
+            -18.5,
+            6,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Niche",
+          "min": [
+            -20,
+            10,
+            0
+          ],
+          "max": [
+            -18.5,
+            10.5,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Niche",
+          "min": [
+            -20,
+            -6,
+            0
+          ],
+          "max": [
+            -18.5,
+            -5.5,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Niche",
+          "min": [
+            -20,
+            -10.5,
+            0
+          ],
+          "max": [
+            -18.5,
+            -10,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Niche",
+          "min": [
+            18.5,
+            5.5,
+            0
+          ],
+          "max": [
+            20,
+            6,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Niche",
+          "min": [
+            18.5,
+            10,
+            0
+          ],
+          "max": [
+            20,
+            10.5,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Niche",
+          "min": [
+            18.5,
+            -6,
+            0
+          ],
+          "max": [
+            20,
+            -5.5,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Niche",
+          "min": [
+            18.5,
+            -10.5,
+            0
+          ],
+          "max": [
+            20,
+            -10,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Column_0_Base",
+          "min": [
+            -7,
+            -13,
+            0
+          ],
+          "max": [
+            -5,
+            -11,
+            0.5
+          ],
+          "material": "MH_Column_Band"
+        },
+        {
+          "name": "Column_0_Shaft",
+          "min": [
+            -6.65,
+            -12.65,
+            0.5
+          ],
+          "max": [
+            -5.35,
+            -11.35,
+            7.5
+          ],
+          "material": "MH_Column_Stone"
+        },
+        {
+          "name": "Column_0_Capital",
+          "min": [
+            -7,
+            -13,
+            7.5
+          ],
+          "max": [
+            -5,
+            -11,
+            8
+          ],
+          "material": "MH_Column_Band"
+        },
+        {
+          "name": "Column_1_Base",
+          "min": [
+            -7,
+            -5,
+            0
+          ],
+          "max": [
+            -5,
+            -3,
+            0.5
+          ],
+          "material": "MH_Column_Band"
+        },
+        {
+          "name": "Column_1_Shaft",
+          "min": [
+            -6.65,
+            -4.65,
+            0.5
+          ],
+          "max": [
+            -5.35,
+            -3.35,
+            7.5
+          ],
+          "material": "MH_Column_Stone"
+        },
+        {
+          "name": "Column_1_Capital",
+          "min": [
+            -7,
+            -5,
+            7.5
+          ],
+          "max": [
+            -5,
+            -3,
+            8
+          ],
+          "material": "MH_Column_Band"
+        },
+        {
+          "name": "Column_2_Base",
+          "min": [
+            -7,
+            3,
+            0
+          ],
+          "max": [
+            -5,
+            5,
+            0.5
+          ],
+          "material": "MH_Column_Band"
+        },
+        {
+          "name": "Column_2_Shaft",
+          "min": [
+            -6.65,
+            3.35,
+            0.5
+          ],
+          "max": [
+            -5.35,
+            4.65,
+            7.5
+          ],
+          "material": "MH_Column_Stone"
+        },
+        {
+          "name": "Column_2_Capital",
+          "min": [
+            -7,
+            3,
+            7.5
+          ],
+          "max": [
+            -5,
+            5,
+            8
+          ],
+          "material": "MH_Column_Band"
+        },
+        {
+          "name": "Column_3_Base",
+          "min": [
+            5,
+            -13,
+            0
+          ],
+          "max": [
+            7,
+            -11,
+            0.5
+          ],
+          "material": "MH_Column_Band"
+        },
+        {
+          "name": "Column_3_Shaft",
+          "min": [
+            5.35,
+            -12.65,
+            0.5
+          ],
+          "max": [
+            6.65,
+            -11.35,
+            7.5
+          ],
+          "material": "MH_Column_Stone"
+        },
+        {
+          "name": "Column_3_Capital",
+          "min": [
+            5,
+            -13,
+            7.5
+          ],
+          "max": [
+            7,
+            -11,
+            8
+          ],
+          "material": "MH_Column_Band"
+        },
+        {
+          "name": "Column_4_Base",
+          "min": [
+            5,
+            -5,
+            0
+          ],
+          "max": [
+            7,
+            -3,
+            0.5
+          ],
+          "material": "MH_Column_Band"
+        },
+        {
+          "name": "Column_4_Shaft",
+          "min": [
+            5.35,
+            -4.65,
+            0.5
+          ],
+          "max": [
+            6.65,
+            -3.35,
+            7.5
+          ],
+          "material": "MH_Column_Stone"
+        },
+        {
+          "name": "Column_4_Capital",
+          "min": [
+            5,
+            -5,
+            7.5
+          ],
+          "max": [
+            7,
+            -3,
+            8
+          ],
+          "material": "MH_Column_Band"
+        },
+        {
+          "name": "Column_5_Base",
+          "min": [
+            5,
+            3,
+            0
+          ],
+          "max": [
+            7,
+            5,
+            0.5
+          ],
+          "material": "MH_Column_Band"
+        },
+        {
+          "name": "Column_5_Shaft",
+          "min": [
+            5.35,
+            3.35,
+            0.5
+          ],
+          "max": [
+            6.65,
+            4.65,
+            7.5
+          ],
+          "material": "MH_Column_Stone"
+        },
+        {
+          "name": "Column_5_Capital",
+          "min": [
+            5,
+            3,
+            7.5
+          ],
+          "max": [
+            7,
+            5,
+            8
+          ],
+          "material": "MH_Column_Band"
+        },
+        {
+          "name": "Geo_Tambour_1",
+          "min": [
+            -6.5,
+            20.5,
+            0
+          ],
+          "max": [
+            -4,
+            21.5,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Tambour_2",
+          "min": [
+            -6.5,
+            21.5,
+            0
+          ],
+          "max": [
+            -3,
+            22.5,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Tambour_1",
+          "min": [
+            4,
+            20.5,
+            0
+          ],
+          "max": [
+            6.5,
+            21.5,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Tambour_2",
+          "min": [
+            3,
+            21.5,
+            0
+          ],
+          "max": [
+            6.5,
+            22.5,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Tambour_Floor",
+          "min": [
+            -6.5,
+            20.5,
+            -0.2
+          ],
+          "max": [
+            6.5,
+            22.5,
+            0
+          ],
+          "material": "MH_Floor_Cracked"
+        },
+        {
+          "name": "Geo_Tambour_Ceiling",
+          "min": [
+            -6.5,
+            20.5,
+            8
+          ],
+          "max": [
+            6.5,
+            22.5,
+            8.2
+          ],
+          "material": "MH_Ceiling_Basalt"
+        },
+        {
+          "name": "Geo_Tambour_Exit_Header",
+          "min": [
+            -3,
+            22,
+            6
+          ],
+          "max": [
+            3,
+            22.5,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        }
+      ],
+      "slots": [
+        {
+          "name": "Gate_N",
+          "position": [
+            0,
+            20.5,
+            0
+          ],
+          "angle": 0,
+          "width": 10,
+          "height": 7,
+          "door": "gate_big"
+        },
+        {
+          "name": "Door_S",
+          "position": [
+            0,
+            -20.5,
+            0
+          ],
+          "angle": 180,
+          "width": 6,
+          "height": 4.5,
+          "door": "door_wood"
+        },
+        {
+          "name": "Anchor_Corridor_N",
+          "position": [
+            0,
+            22.5,
+            0
+          ],
+          "angle": 0,
+          "width": 6,
+          "height": 6,
+          "door": ""
+        }
+      ],
+      "triangles": 732
+    },
+    {
+      "name": "room_mini_pillars",
+      "kind": "room",
+      "boxes": [
+        {
+          "name": "Geo_Floor",
+          "min": [
+            -12.5,
+            -12.5,
+            -0.2
+          ],
+          "max": [
+            12.5,
+            12.5,
+            0
+          ],
+          "material": "MH_Floor_Cracked"
+        },
+        {
+          "name": "Geo_Ceiling",
+          "min": [
+            -12.5,
+            -12.5,
+            8
+          ],
+          "max": [
+            12.5,
+            12.5,
+            8.2
+          ],
+          "material": "MH_Ceiling_Basalt"
+        },
+        {
+          "name": "Geo_Wall_N_L",
+          "min": [
+            -12.5,
+            12,
+            0
+          ],
+          "max": [
+            -3.0,
+            12.5,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Wall_N_R",
+          "min": [
+            3.0,
+            12,
+            0
+          ],
+          "max": [
+            12.5,
+            12.5,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Wall_N_Lintel",
+          "min": [
+            -3,
+            12,
+            4.5
+          ],
+          "max": [
+            3,
+            12.5,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Arch_N_0",
+          "min": [
+            -3.0,
+            11.88,
+            4.5
+          ],
+          "max": [
+            3.0,
+            12,
+            5
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Arch_N_1",
+          "min": [
+            -2.25,
+            11.88,
+            5
+          ],
+          "max": [
+            2.25,
+            12,
+            5.5
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Arch_N_2",
+          "min": [
+            -1.5,
+            11.88,
+            5.5
+          ],
+          "max": [
+            1.5,
+            12,
+            6
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Wall_S_L",
+          "min": [
+            -12.5,
+            -12.5,
+            0
+          ],
+          "max": [
+            -3.0,
+            -12,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Wall_S_R",
+          "min": [
+            3.0,
+            -12.5,
+            0
+          ],
+          "max": [
+            12.5,
+            -12,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Wall_S_Lintel",
+          "min": [
+            -3,
+            -12.5,
+            4.5
+          ],
+          "max": [
+            3,
+            -12,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Arch_S_0",
+          "min": [
+            -3.0,
+            -12,
+            4.5
+          ],
+          "max": [
+            3.0,
+            -11.88,
+            5
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Arch_S_1",
+          "min": [
+            -2.25,
+            -12,
+            5
+          ],
+          "max": [
+            2.25,
+            -11.88,
+            5.5
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Arch_S_2",
+          "min": [
+            -1.5,
+            -12,
+            5.5
+          ],
+          "max": [
+            1.5,
+            -11.88,
+            6
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Wall_W_L",
+          "min": [
+            -12.5,
+            -12,
+            0
+          ],
+          "max": [
+            -12,
+            -3.0,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Wall_W_R",
+          "min": [
+            -12.5,
+            3.0,
+            0
+          ],
+          "max": [
+            -12,
+            12,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Wall_W_Lintel",
+          "min": [
+            -12.5,
+            -3,
+            4.5
+          ],
+          "max": [
+            -12,
+            3,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Arch_W_0",
+          "min": [
+            -12,
+            -3.0,
+            4.5
+          ],
+          "max": [
+            -11.88,
+            3.0,
+            5
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Arch_W_1",
+          "min": [
+            -12,
+            -2.25,
+            5
+          ],
+          "max": [
+            -11.88,
+            2.25,
+            5.5
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Arch_W_2",
+          "min": [
+            -12,
+            -1.5,
+            5.5
+          ],
+          "max": [
+            -11.88,
+            1.5,
+            6
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Wall_E_L",
+          "min": [
+            12,
+            -12,
+            0
+          ],
+          "max": [
+            12.5,
+            -3.0,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Wall_E_R",
+          "min": [
+            12,
+            3.0,
+            0
+          ],
+          "max": [
+            12.5,
+            12,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Wall_E_Lintel",
+          "min": [
+            12,
+            -3,
+            4.5
+          ],
+          "max": [
+            12.5,
+            3,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Arch_E_0",
+          "min": [
+            11.88,
+            -3.0,
+            4.5
+          ],
+          "max": [
+            12,
+            3.0,
+            5
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Arch_E_1",
+          "min": [
+            11.88,
+            -2.25,
+            5
+          ],
+          "max": [
+            12,
+            2.25,
+            5.5
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Arch_E_2",
+          "min": [
+            11.88,
+            -1.5,
+            5.5
+          ],
+          "max": [
+            12,
+            1.5,
+            6
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Column_0_Base",
+          "min": [
+            -5,
+            -5,
+            0
+          ],
+          "max": [
+            -3,
+            -3,
+            0.5
+          ],
+          "material": "MH_Column_Band"
+        },
+        {
+          "name": "Column_0_Shaft",
+          "min": [
+            -4.65,
+            -4.65,
+            0.5
+          ],
+          "max": [
+            -3.35,
+            -3.35,
+            7.5
+          ],
+          "material": "MH_Column_Stone"
+        },
+        {
+          "name": "Column_0_Capital",
+          "min": [
+            -5,
+            -5,
+            7.5
+          ],
+          "max": [
+            -3,
+            -3,
+            8
+          ],
+          "material": "MH_Column_Band"
+        },
+        {
+          "name": "Column_1_Base",
+          "min": [
+            -5,
+            3,
+            0
+          ],
+          "max": [
+            -3,
+            5,
+            0.5
+          ],
+          "material": "MH_Column_Band"
+        },
+        {
+          "name": "Column_1_Shaft",
+          "min": [
+            -4.65,
+            3.35,
+            0.5
+          ],
+          "max": [
+            -3.35,
+            4.65,
+            7.5
+          ],
+          "material": "MH_Column_Stone"
+        },
+        {
+          "name": "Column_1_Capital",
+          "min": [
+            -5,
+            3,
+            7.5
+          ],
+          "max": [
+            -3,
+            5,
+            8
+          ],
+          "material": "MH_Column_Band"
+        },
+        {
+          "name": "Column_2_Base",
+          "min": [
+            3,
+            -5,
+            0
+          ],
+          "max": [
+            5,
+            -3,
+            0.5
+          ],
+          "material": "MH_Column_Band"
+        },
+        {
+          "name": "Column_2_Shaft",
+          "min": [
+            3.35,
+            -4.65,
+            0.5
+          ],
+          "max": [
+            4.65,
+            -3.35,
+            7.5
+          ],
+          "material": "MH_Column_Stone"
+        },
+        {
+          "name": "Column_2_Capital",
+          "min": [
+            3,
+            -5,
+            7.5
+          ],
+          "max": [
+            5,
+            -3,
+            8
+          ],
+          "material": "MH_Column_Band"
+        },
+        {
+          "name": "Column_3_Base",
+          "min": [
+            3,
+            3,
+            0
+          ],
+          "max": [
+            5,
+            5,
+            0.5
+          ],
+          "material": "MH_Column_Band"
+        },
+        {
+          "name": "Column_3_Shaft",
+          "min": [
+            3.35,
+            3.35,
+            0.5
+          ],
+          "max": [
+            4.65,
+            4.65,
+            7.5
+          ],
+          "material": "MH_Column_Stone"
+        },
+        {
+          "name": "Column_3_Capital",
+          "min": [
+            3,
+            3,
+            7.5
+          ],
+          "max": [
+            5,
+            5,
+            8
+          ],
+          "material": "MH_Column_Band"
+        }
+      ],
+      "slots": [
+        {
+          "name": "Door_N",
+          "position": [
+            0,
+            12.5,
+            0
+          ],
+          "angle": 0,
+          "width": 6,
+          "height": 4.5,
+          "door": "door_wood"
+        },
+        {
+          "name": "Door_S",
+          "position": [
+            0,
+            -12.5,
+            0
+          ],
+          "angle": 180,
+          "width": 6,
+          "height": 4.5,
+          "door": "door_wood"
+        },
+        {
+          "name": "Door_W",
+          "position": [
+            -12.5,
+            0,
+            0
+          ],
+          "angle": 90,
+          "width": 6,
+          "height": 4.5,
+          "door": "door_wood"
+        },
+        {
+          "name": "Door_E",
+          "position": [
+            12.5,
+            0,
+            0
+          ],
+          "angle": -90,
+          "width": 6,
+          "height": 4.5,
+          "door": "door_wood"
+        }
+      ],
+      "triangles": 456
+    },
+    {
+      "name": "room_mini_cover",
+      "kind": "room",
+      "boxes": [
+        {
+          "name": "Geo_Floor",
+          "min": [
+            -12.5,
+            -12.5,
+            -0.2
+          ],
+          "max": [
+            12.5,
+            12.5,
+            0
+          ],
+          "material": "MH_Floor_Cracked"
+        },
+        {
+          "name": "Geo_Ceiling",
+          "min": [
+            -12.5,
+            -12.5,
+            8
+          ],
+          "max": [
+            12.5,
+            12.5,
+            8.2
+          ],
+          "material": "MH_Ceiling_Basalt"
+        },
+        {
+          "name": "Geo_Wall_N_L",
+          "min": [
+            -12.5,
+            12,
+            0
+          ],
+          "max": [
+            -3.0,
+            12.5,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Wall_N_R",
+          "min": [
+            3.0,
+            12,
+            0
+          ],
+          "max": [
+            12.5,
+            12.5,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Wall_N_Lintel",
+          "min": [
+            -3,
+            12,
+            4.5
+          ],
+          "max": [
+            3,
+            12.5,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Arch_N_0",
+          "min": [
+            -3.0,
+            11.88,
+            4.5
+          ],
+          "max": [
+            3.0,
+            12,
+            5
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Arch_N_1",
+          "min": [
+            -2.25,
+            11.88,
+            5
+          ],
+          "max": [
+            2.25,
+            12,
+            5.5
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Arch_N_2",
+          "min": [
+            -1.5,
+            11.88,
+            5.5
+          ],
+          "max": [
+            1.5,
+            12,
+            6
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Wall_S_L",
+          "min": [
+            -12.5,
+            -12.5,
+            0
+          ],
+          "max": [
+            -3.0,
+            -12,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Wall_S_R",
+          "min": [
+            3.0,
+            -12.5,
+            0
+          ],
+          "max": [
+            12.5,
+            -12,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Wall_S_Lintel",
+          "min": [
+            -3,
+            -12.5,
+            4.5
+          ],
+          "max": [
+            3,
+            -12,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Arch_S_0",
+          "min": [
+            -3.0,
+            -12,
+            4.5
+          ],
+          "max": [
+            3.0,
+            -11.88,
+            5
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Arch_S_1",
+          "min": [
+            -2.25,
+            -12,
+            5
+          ],
+          "max": [
+            2.25,
+            -11.88,
+            5.5
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Arch_S_2",
+          "min": [
+            -1.5,
+            -12,
+            5.5
+          ],
+          "max": [
+            1.5,
+            -11.88,
+            6
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Wall_W_L",
+          "min": [
+            -12.5,
+            -12,
+            0
+          ],
+          "max": [
+            -12,
+            -3.0,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Wall_W_R",
+          "min": [
+            -12.5,
+            3.0,
+            0
+          ],
+          "max": [
+            -12,
+            12,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Wall_W_Lintel",
+          "min": [
+            -12.5,
+            -3,
+            4.5
+          ],
+          "max": [
+            -12,
+            3,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Arch_W_0",
+          "min": [
+            -12,
+            -3.0,
+            4.5
+          ],
+          "max": [
+            -11.88,
+            3.0,
+            5
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Arch_W_1",
+          "min": [
+            -12,
+            -2.25,
+            5
+          ],
+          "max": [
+            -11.88,
+            2.25,
+            5.5
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Arch_W_2",
+          "min": [
+            -12,
+            -1.5,
+            5.5
+          ],
+          "max": [
+            -11.88,
+            1.5,
+            6
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Wall_E_L",
+          "min": [
+            12,
+            -12,
+            0
+          ],
+          "max": [
+            12.5,
+            -3.0,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Wall_E_R",
+          "min": [
+            12,
+            3.0,
+            0
+          ],
+          "max": [
+            12.5,
+            12,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Wall_E_Lintel",
+          "min": [
+            12,
+            -3,
+            4.5
+          ],
+          "max": [
+            12.5,
+            3,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Arch_E_0",
+          "min": [
+            11.88,
+            -3.0,
+            4.5
+          ],
+          "max": [
+            12,
+            3.0,
+            5
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Arch_E_1",
+          "min": [
+            11.88,
+            -2.25,
+            5
+          ],
+          "max": [
+            12,
+            2.25,
+            5.5
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Arch_E_2",
+          "min": [
+            11.88,
+            -1.5,
+            5.5
+          ],
+          "max": [
+            12,
+            1.5,
+            6
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Cover_W",
+          "min": [
+            -7,
+            -7,
+            0
+          ],
+          "max": [
+            -5,
+            -2,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Cover_E",
+          "min": [
+            5,
+            2,
+            0
+          ],
+          "max": [
+            7,
+            7,
+            8
+          ],
+          "material": "MH_Wall_Hellstone"
+        }
+      ],
+      "slots": [
+        {
+          "name": "Door_N",
+          "position": [
+            0,
+            12.5,
+            0
+          ],
+          "angle": 0,
+          "width": 6,
+          "height": 4.5,
+          "door": "door_wood"
+        },
+        {
+          "name": "Door_S",
+          "position": [
+            0,
+            -12.5,
+            0
+          ],
+          "angle": 180,
+          "width": 6,
+          "height": 4.5,
+          "door": "door_wood"
+        },
+        {
+          "name": "Door_W",
+          "position": [
+            -12.5,
+            0,
+            0
+          ],
+          "angle": 90,
+          "width": 6,
+          "height": 4.5,
+          "door": "door_wood"
+        },
+        {
+          "name": "Door_E",
+          "position": [
+            12.5,
+            0,
+            0
+          ],
+          "angle": -90,
+          "width": 6,
+          "height": 4.5,
+          "door": "door_wood"
+        }
+      ],
+      "triangles": 336
+    },
+    {
+      "name": "corridor_straight",
+      "kind": "corridor",
+      "boxes": [
+        {
+          "name": "Geo_Wall_W",
+          "min": [
+            -3.5,
+            -12,
+            0
+          ],
+          "max": [
+            -3,
+            12,
+            6
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Wall_E",
+          "min": [
+            3,
+            -12,
+            0
+          ],
+          "max": [
+            3.5,
+            12,
+            6
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Floor",
+          "min": [
+            -3.5,
+            -12,
+            -0.2
+          ],
+          "max": [
+            3.5,
+            12,
+            0
+          ],
+          "material": "MH_Floor_Cracked"
+        },
+        {
+          "name": "Geo_Ceiling",
+          "min": [
+            -3.5,
+            -12,
+            6
+          ],
+          "max": [
+            3.5,
+            12,
+            6.2
+          ],
+          "material": "MH_Ceiling_Basalt"
+        }
+      ],
+      "slots": [
+        {
+          "name": "Slot_S",
+          "position": [
+            0,
+            -12,
+            0
+          ],
+          "angle": 180,
+          "width": 6,
+          "height": 6,
+          "door": ""
+        },
+        {
+          "name": "Slot_N",
+          "position": [
+            0,
+            12,
+            0
+          ],
+          "angle": 0,
+          "width": 6,
+          "height": 6,
+          "door": ""
+        }
+      ],
+      "triangles": 48
+    },
+    {
+      "name": "corridor_corner",
+      "kind": "corridor",
+      "boxes": [
+        {
+          "name": "Geo_Wall_W",
+          "min": [
+            -3.5,
+            -12,
+            0
+          ],
+          "max": [
+            -3,
+            -3.5,
+            6
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Wall_E",
+          "min": [
+            3,
+            -12,
+            0
+          ],
+          "max": [
+            3.5,
+            3,
+            6
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Wall_N",
+          "min": [
+            -12,
+            3,
+            0
+          ],
+          "max": [
+            3.5,
+            3.5,
+            6
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Wall_S",
+          "min": [
+            -12,
+            -3.5,
+            0
+          ],
+          "max": [
+            -3,
+            -3,
+            6
+          ],
+          "material": "MH_Wall_Hellstone"
+        },
+        {
+          "name": "Geo_Floor_V",
+          "min": [
+            -3.5,
+            -12,
+            -0.2
+          ],
+          "max": [
+            3.5,
+            3.5,
+            0
+          ],
+          "material": "MH_Floor_Cracked"
+        },
+        {
+          "name": "Geo_Floor_H",
+          "min": [
+            -12,
+            -3.5,
+            -0.2
+          ],
+          "max": [
+            -3.5,
+            3.5,
+            0
+          ],
+          "material": "MH_Floor_Cracked"
+        },
+        {
+          "name": "Geo_Ceiling_V",
+          "min": [
+            -3.5,
+            -12,
+            6
+          ],
+          "max": [
+            3.5,
+            3.5,
+            6.2
+          ],
+          "material": "MH_Ceiling_Basalt"
+        },
+        {
+          "name": "Geo_Ceiling_H",
+          "min": [
+            -12,
+            -3.5,
+            6
+          ],
+          "max": [
+            -3.5,
+            3.5,
+            6.2
+          ],
+          "material": "MH_Ceiling_Basalt"
+        }
+      ],
+      "slots": [
+        {
+          "name": "Slot_S",
+          "position": [
+            0,
+            -12,
+            0
+          ],
+          "angle": 180,
+          "width": 6,
+          "height": 6,
+          "door": ""
+        },
+        {
+          "name": "Slot_W",
+          "position": [
+            -12,
+            0,
+            0
+          ],
+          "angle": 90,
+          "width": 6,
+          "height": 6,
+          "door": ""
+        }
+      ],
+      "triangles": 96
+    },
+    {
+      "name": "door_wood",
+      "kind": "door",
+      "boxes": [
+        {
+          "name": "Oak_Plank",
+          "min": [
+            -3.0,
+            -0.25,
+            0
+          ],
+          "max": [
+            -2.25,
+            0.25,
+            4.5
+          ],
+          "material": "MH_Wood_AshGray"
+        },
+        {
+          "name": "Oak_Plank",
+          "min": [
+            -2.25,
+            -0.25,
+            0
+          ],
+          "max": [
+            -1.5,
+            0.25,
+            4.5
+          ],
+          "material": "MH_Wood_AshGray"
+        },
+        {
+          "name": "Oak_Plank",
+          "min": [
+            -1.5,
+            -0.25,
+            0
+          ],
+          "max": [
+            -0.75,
+            0.25,
+            4.5
+          ],
+          "material": "MH_Wood_AshGray"
+        },
+        {
+          "name": "Oak_Plank",
+          "min": [
+            -0.75,
+            -0.25,
+            0
+          ],
+          "max": [
+            0.0,
+            0.25,
+            4.5
+          ],
+          "material": "MH_Wood_AshGray"
+        },
+        {
+          "name": "Oak_Plank",
+          "min": [
+            0.0,
+            -0.25,
+            0
+          ],
+          "max": [
+            0.75,
+            0.25,
+            4.5
+          ],
+          "material": "MH_Wood_AshGray"
+        },
+        {
+          "name": "Oak_Plank",
+          "min": [
+            0.75,
+            -0.25,
+            0
+          ],
+          "max": [
+            1.5,
+            0.25,
+            4.5
+          ],
+          "material": "MH_Wood_AshGray"
+        },
+        {
+          "name": "Oak_Plank",
+          "min": [
+            1.5,
+            -0.25,
+            0
+          ],
+          "max": [
+            2.25,
+            0.25,
+            4.5
+          ],
+          "material": "MH_Wood_AshGray"
+        },
+        {
+          "name": "Oak_Plank",
+          "min": [
+            2.25,
+            -0.25,
+            0
+          ],
+          "max": [
+            3.0,
+            0.25,
+            4.5
+          ],
+          "material": "MH_Wood_AshGray"
+        },
+        {
+          "name": "Continuous_Iron_Strap",
+          "min": [
+            -2.94,
+            -0.34,
+            0.99
+          ],
+          "max": [
+            2.94,
+            -0.25,
+            1.17
+          ],
+          "material": "MH_Metal_Dark"
+        },
+        {
+          "name": "Continuous_Iron_Strap",
+          "min": [
+            -2.94,
+            -0.34,
+            3.42
+          ],
+          "max": [
+            2.94,
+            -0.25,
+            3.6
+          ],
+          "material": "MH_Metal_Dark"
+        },
+        {
+          "name": "Continuous_Iron_Strap",
+          "min": [
+            -2.94,
+            0.25,
+            0.99
+          ],
+          "max": [
+            2.94,
+            0.34,
+            1.17
+          ],
+          "material": "MH_Metal_Dark"
+        },
+        {
+          "name": "Continuous_Iron_Strap",
+          "min": [
+            -2.94,
+            0.25,
+            3.42
+          ],
+          "max": [
+            2.94,
+            0.34,
+            3.6
+          ],
+          "material": "MH_Metal_Dark"
+        }
+      ],
+      "slots": [],
+      "triangles": 144
+    },
+    {
+      "name": "door_wood_small",
+      "kind": "door",
+      "boxes": [
+        {
+          "name": "Oak_Plank",
+          "min": [
+            -1.5,
+            -0.25,
+            0
+          ],
+          "max": [
+            -1.125,
+            0.25,
+            3.5
+          ],
+          "material": "MH_Wood_AshGray"
+        },
+        {
+          "name": "Oak_Plank",
+          "min": [
+            -1.125,
+            -0.25,
+            0
+          ],
+          "max": [
+            -0.75,
+            0.25,
+            3.5
+          ],
+          "material": "MH_Wood_AshGray"
+        },
+        {
+          "name": "Oak_Plank",
+          "min": [
+            -0.75,
+            -0.25,
+            0
+          ],
+          "max": [
+            -0.375,
+            0.25,
+            3.5
+          ],
+          "material": "MH_Wood_AshGray"
+        },
+        {
+          "name": "Oak_Plank",
+          "min": [
+            -0.375,
+            -0.25,
+            0
+          ],
+          "max": [
+            0.0,
+            0.25,
+            3.5
+          ],
+          "material": "MH_Wood_AshGray"
+        },
+        {
+          "name": "Oak_Plank",
+          "min": [
+            0.0,
+            -0.25,
+            0
+          ],
+          "max": [
+            0.375,
+            0.25,
+            3.5
+          ],
+          "material": "MH_Wood_AshGray"
+        },
+        {
+          "name": "Oak_Plank",
+          "min": [
+            0.375,
+            -0.25,
+            0
+          ],
+          "max": [
+            0.75,
+            0.25,
+            3.5
+          ],
+          "material": "MH_Wood_AshGray"
+        },
+        {
+          "name": "Oak_Plank",
+          "min": [
+            0.75,
+            -0.25,
+            0
+          ],
+          "max": [
+            1.125,
+            0.25,
+            3.5
+          ],
+          "material": "MH_Wood_AshGray"
+        },
+        {
+          "name": "Oak_Plank",
+          "min": [
+            1.125,
+            -0.25,
+            0
+          ],
+          "max": [
+            1.5,
+            0.25,
+            3.5
+          ],
+          "material": "MH_Wood_AshGray"
+        },
+        {
+          "name": "Continuous_Iron_Strap",
+          "min": [
+            -1.44,
+            -0.34,
+            0.77
+          ],
+          "max": [
+            1.44,
+            -0.25,
+            0.95
+          ],
+          "material": "MH_Metal_Dark"
+        },
+        {
+          "name": "Continuous_Iron_Strap",
+          "min": [
+            -1.44,
+            -0.34,
+            2.66
+          ],
+          "max": [
+            1.44,
+            -0.25,
+            2.8400000000000003
+          ],
+          "material": "MH_Metal_Dark"
+        },
+        {
+          "name": "Continuous_Iron_Strap",
+          "min": [
+            -1.44,
+            0.25,
+            0.77
+          ],
+          "max": [
+            1.44,
+            0.34,
+            0.95
+          ],
+          "material": "MH_Metal_Dark"
+        },
+        {
+          "name": "Continuous_Iron_Strap",
+          "min": [
+            -1.44,
+            0.25,
+            2.66
+          ],
+          "max": [
+            1.44,
+            0.34,
+            2.8400000000000003
+          ],
+          "material": "MH_Metal_Dark"
+        }
+      ],
+      "slots": [],
+      "triangles": 144
+    },
+    {
+      "name": "gate_big",
+      "kind": "door",
+      "boxes": [
+        {
+          "name": "Oak_Plank",
+          "min": [
+            -5.0,
+            -0.25,
+            0
+          ],
+          "max": [
+            -4.0,
+            0.25,
+            5.5
+          ],
+          "material": "MH_Wood_AshGray"
+        },
+        {
+          "name": "Oak_Plank",
+          "min": [
+            -4.0,
+            -0.25,
+            0
+          ],
+          "max": [
+            -3.0,
+            0.25,
+            6.25
+          ],
+          "material": "MH_Wood_AshGray"
+        },
+        {
+          "name": "Oak_Plank",
+          "min": [
+            -3.0,
+            -0.25,
+            0
+          ],
+          "max": [
+            -2.0,
+            0.25,
+            7
+          ],
+          "material": "MH_Wood_AshGray"
+        },
+        {
+          "name": "Oak_Plank",
+          "min": [
+            -2.0,
+            -0.25,
+            0
+          ],
+          "max": [
+            -1.0,
+            0.25,
+            7
+          ],
+          "material": "MH_Wood_AshGray"
+        },
+        {
+          "name": "Oak_Plank",
+          "min": [
+            -1.0,
+            -0.25,
+            0
+          ],
+          "max": [
+            0.0,
+            0.25,
+            7
+          ],
+          "material": "MH_Wood_AshGray"
+        },
+        {
+          "name": "Oak_Plank",
+          "min": [
+            0.0,
+            -0.25,
+            0
+          ],
+          "max": [
+            1.0,
+            0.25,
+            7
+          ],
+          "material": "MH_Wood_AshGray"
+        },
+        {
+          "name": "Oak_Plank",
+          "min": [
+            1.0,
+            -0.25,
+            0
+          ],
+          "max": [
+            2.0,
+            0.25,
+            7
+          ],
+          "material": "MH_Wood_AshGray"
+        },
+        {
+          "name": "Oak_Plank",
+          "min": [
+            2.0,
+            -0.25,
+            0
+          ],
+          "max": [
+            3.0,
+            0.25,
+            7
+          ],
+          "material": "MH_Wood_AshGray"
+        },
+        {
+          "name": "Oak_Plank",
+          "min": [
+            3.0,
+            -0.25,
+            0
+          ],
+          "max": [
+            4.0,
+            0.25,
+            6.25
+          ],
+          "material": "MH_Wood_AshGray"
+        },
+        {
+          "name": "Oak_Plank",
+          "min": [
+            4.0,
+            -0.25,
+            0
+          ],
+          "max": [
+            5.0,
+            0.25,
+            5.5
+          ],
+          "material": "MH_Wood_AshGray"
+        },
+        {
+          "name": "Continuous_Iron_Strap",
+          "min": [
+            -4.94,
+            -0.34,
+            1
+          ],
+          "max": [
+            4.94,
+            -0.25,
+            1.18
+          ],
+          "material": "MH_Metal_Dark"
+        },
+        {
+          "name": "Continuous_Iron_Strap",
+          "min": [
+            -4.94,
+            -0.34,
+            3
+          ],
+          "max": [
+            4.94,
+            -0.25,
+            3.18
+          ],
+          "material": "MH_Metal_Dark"
+        },
+        {
+          "name": "Continuous_Iron_Strap",
+          "min": [
+            -4.94,
+            -0.34,
+            4.8
+          ],
+          "max": [
+            4.94,
+            -0.25,
+            4.9799999999999995
+          ],
+          "material": "MH_Metal_Dark"
+        },
+        {
+          "name": "Stepped_Iron_Crown",
+          "min": [
+            -5.0,
+            -0.34,
+            5.34
+          ],
+          "max": [
+            -4.0,
+            -0.25,
+            5.5
+          ],
+          "material": "MH_Metal_Dark"
+        },
+        {
+          "name": "Stepped_Iron_Crown",
+          "min": [
+            -4.0,
+            -0.34,
+            6.09
+          ],
+          "max": [
+            -3.0,
+            -0.25,
+            6.25
+          ],
+          "material": "MH_Metal_Dark"
+        },
+        {
+          "name": "Stepped_Iron_Crown",
+          "min": [
+            -3.0,
+            -0.34,
+            6.84
+          ],
+          "max": [
+            -2.0,
+            -0.25,
+            7
+          ],
+          "material": "MH_Metal_Dark"
+        },
+        {
+          "name": "Stepped_Iron_Crown",
+          "min": [
+            -2.0,
+            -0.34,
+            6.84
+          ],
+          "max": [
+            -1.0,
+            -0.25,
+            7
+          ],
+          "material": "MH_Metal_Dark"
+        },
+        {
+          "name": "Stepped_Iron_Crown",
+          "min": [
+            -1.0,
+            -0.34,
+            6.84
+          ],
+          "max": [
+            0.0,
+            -0.25,
+            7
+          ],
+          "material": "MH_Metal_Dark"
+        },
+        {
+          "name": "Stepped_Iron_Crown",
+          "min": [
+            0.0,
+            -0.34,
+            6.84
+          ],
+          "max": [
+            1.0,
+            -0.25,
+            7
+          ],
+          "material": "MH_Metal_Dark"
+        },
+        {
+          "name": "Stepped_Iron_Crown",
+          "min": [
+            1.0,
+            -0.34,
+            6.84
+          ],
+          "max": [
+            2.0,
+            -0.25,
+            7
+          ],
+          "material": "MH_Metal_Dark"
+        },
+        {
+          "name": "Stepped_Iron_Crown",
+          "min": [
+            2.0,
+            -0.34,
+            6.84
+          ],
+          "max": [
+            3.0,
+            -0.25,
+            7
+          ],
+          "material": "MH_Metal_Dark"
+        },
+        {
+          "name": "Stepped_Iron_Crown",
+          "min": [
+            3.0,
+            -0.34,
+            6.09
+          ],
+          "max": [
+            4.0,
+            -0.25,
+            6.25
+          ],
+          "material": "MH_Metal_Dark"
+        },
+        {
+          "name": "Stepped_Iron_Crown",
+          "min": [
+            4.0,
+            -0.34,
+            5.34
+          ],
+          "max": [
+            5.0,
+            -0.25,
+            5.5
+          ],
+          "material": "MH_Metal_Dark"
+        },
+        {
+          "name": "Continuous_Iron_Strap",
+          "min": [
+            -4.94,
+            0.25,
+            1
+          ],
+          "max": [
+            4.94,
+            0.34,
+            1.18
+          ],
+          "material": "MH_Metal_Dark"
+        },
+        {
+          "name": "Continuous_Iron_Strap",
+          "min": [
+            -4.94,
+            0.25,
+            3
+          ],
+          "max": [
+            4.94,
+            0.34,
+            3.18
+          ],
+          "material": "MH_Metal_Dark"
+        },
+        {
+          "name": "Continuous_Iron_Strap",
+          "min": [
+            -4.94,
+            0.25,
+            4.8
+          ],
+          "max": [
+            4.94,
+            0.34,
+            4.9799999999999995
+          ],
+          "material": "MH_Metal_Dark"
+        },
+        {
+          "name": "Stepped_Iron_Crown",
+          "min": [
+            -5.0,
+            0.25,
+            5.34
+          ],
+          "max": [
+            -4.0,
+            0.34,
+            5.5
+          ],
+          "material": "MH_Metal_Dark"
+        },
+        {
+          "name": "Stepped_Iron_Crown",
+          "min": [
+            -4.0,
+            0.25,
+            6.09
+          ],
+          "max": [
+            -3.0,
+            0.34,
+            6.25
+          ],
+          "material": "MH_Metal_Dark"
+        },
+        {
+          "name": "Stepped_Iron_Crown",
+          "min": [
+            -3.0,
+            0.25,
+            6.84
+          ],
+          "max": [
+            -2.0,
+            0.34,
+            7
+          ],
+          "material": "MH_Metal_Dark"
+        },
+        {
+          "name": "Stepped_Iron_Crown",
+          "min": [
+            -2.0,
+            0.25,
+            6.84
+          ],
+          "max": [
+            -1.0,
+            0.34,
+            7
+          ],
+          "material": "MH_Metal_Dark"
+        },
+        {
+          "name": "Stepped_Iron_Crown",
+          "min": [
+            -1.0,
+            0.25,
+            6.84
+          ],
+          "max": [
+            0.0,
+            0.34,
+            7
+          ],
+          "material": "MH_Metal_Dark"
+        },
+        {
+          "name": "Stepped_Iron_Crown",
+          "min": [
+            0.0,
+            0.25,
+            6.84
+          ],
+          "max": [
+            1.0,
+            0.34,
+            7
+          ],
+          "material": "MH_Metal_Dark"
+        },
+        {
+          "name": "Stepped_Iron_Crown",
+          "min": [
+            1.0,
+            0.25,
+            6.84
+          ],
+          "max": [
+            2.0,
+            0.34,
+            7
+          ],
+          "material": "MH_Metal_Dark"
+        },
+        {
+          "name": "Stepped_Iron_Crown",
+          "min": [
+            2.0,
+            0.25,
+            6.84
+          ],
+          "max": [
+            3.0,
+            0.34,
+            7
+          ],
+          "material": "MH_Metal_Dark"
+        },
+        {
+          "name": "Stepped_Iron_Crown",
+          "min": [
+            3.0,
+            0.25,
+            6.09
+          ],
+          "max": [
+            4.0,
+            0.34,
+            6.25
+          ],
+          "material": "MH_Metal_Dark"
+        },
+        {
+          "name": "Stepped_Iron_Crown",
+          "min": [
+            4.0,
+            0.25,
+            5.34
+          ],
+          "max": [
+            5.0,
+            0.34,
+            5.5
+          ],
+          "material": "MH_Metal_Dark"
+        }
+      ],
+      "slots": [],
+      "triangles": 432
+    }
+  ],
+  "units": "meters",
+  "slotConvention": "outer mating plane; Blender +Y outward; Unity +Z outward",
+  "tileMeters": 4,
+  "sceneName": "MAZEHELL_Architecture_Revised"
+}

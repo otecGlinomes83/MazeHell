@@ -1,0 +1,59 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a9ef37c789210b009e7a29c1294ffef, type: 3}
+  m_Name: CameraMotion
+  m_EditorClassIdentifier: MazeHell.Runtime::MazeHell.Configuration.CameraMotionConfig
+  _mouseSensitivity: 0.12
+  _minMouseSensitivity: 0.02
+  _maxMouseSensitivity: 0.4
+  _pitchLimitDegrees: 85
+  _baseFieldOfView: 90
+  _speedFieldOfViewBonus: 8
+  _speedFieldOfViewReferenceSpeed: 12
+  _fieldOfViewSmoothTime: 0.2
+  _bobVerticalAmplitude: 0.025
+  _bobLateralAmplitude: 0.018
+  _bobFrequency: 2.2
+  _jumpImpulse:
+    _positionOffset: 0.025
+    _rotationDegrees: 0.6
+    _attackTime: 0.04
+    _returnTime: 0.24
+  _landImpulse:
+    _positionOffset: 0.035
+    _rotationDegrees: 0.9
+    _attackTime: 0.04
+    _returnTime: 0.32
+  _dashImpulse:
+    _positionOffset: 0.05
+    _rotationDegrees: 0.8
+    _attackTime: 0.035
+    _returnTime: 0.3
+  _hitImpulse:
+    _positionOffset: 0.045
+    _rotationDegrees: 1.2
+    _attackTime: 0.025
+    _returnTime: 0.36
+  _shotImpulse:
+    _positionOffset: 0.012
+    _rotationDegrees: 0.5
+    _attackTime: 0.02
+    _returnTime: 0.2
+  _blockImpulse:
+    _positionOffset: 0.025
+    _rotationDegrees: 1
+    _attackTime: 0.025
+    _returnTime: 0.3
+  _volleyShotMultiplier: 2
+  _landingImpactReferenceSpeed: 7
+  _maxTotalPositionOffset: 0.12
+  _maxTotalRotationDegrees: 3

@@ -1,0 +1,368 @@
+[
+  {
+    "path": "Enemies/Imp/Walk/walk_1.png",
+    "width": 256,
+    "height": 256,
+    "kind": "enemy"
+  },
+  {
+    "path": "Enemies/Imp/Walk/walk_2.png",
+    "width": 256,
+    "height": 256,
+    "kind": "enemy"
+  },
+  {
+    "path": "Enemies/Imp/Windup/windup.png",
+    "width": 256,
+    "height": 256,
+    "kind": "enemy"
+  },
+  {
+    "path": "Enemies/Imp/Lunge/lunge.png",
+    "width": 256,
+    "height": 256,
+    "kind": "enemy"
+  },
+  {
+    "path": "Enemies/Imp/Pain/pain.png",
+    "width": 256,
+    "height": 256,
+    "kind": "enemy"
+  },
+  {
+    "path": "Enemies/Imp/Corpse/corpse.png",
+    "width": 256,
+    "height": 256,
+    "kind": "enemy"
+  },
+  {
+    "path": "Player/Weapons/Shotgun/Idle/idle.png",
+    "width": 640,
+    "height": 256,
+    "kind": "weapon"
+  },
+  {
+    "path": "Player/Weapons/Shotgun/FireSingle/shot_1.png",
+    "width": 640,
+    "height": 256,
+    "kind": "weapon"
+  },
+  {
+    "path": "Player/Weapons/Shotgun/FireDouble/volley.png",
+    "width": 640,
+    "height": 256,
+    "kind": "weapon"
+  },
+  {
+    "path": "Player/Weapons/Shotgun/ReloadOpen/reload_1.png",
+    "width": 640,
+    "height": 256,
+    "kind": "weapon"
+  },
+  {
+    "path": "Player/Weapons/Shotgun/ReloadInsert/reload_2.png",
+    "width": 640,
+    "height": 256,
+    "kind": "weapon"
+  },
+  {
+    "path": "Player/Weapons/Shotgun/Empty/empty.png",
+    "width": 640,
+    "height": 256,
+    "kind": "weapon"
+  },
+  {
+    "path": "HUD/Crosshair/crosshair.png",
+    "width": 64,
+    "height": 64,
+    "kind": "icon"
+  },
+  {
+    "path": "HUD/Ammo/barrel_full.png",
+    "width": 64,
+    "height": 64,
+    "kind": "icon"
+  },
+  {
+    "path": "HUD/Ammo/barrel_empty.png",
+    "width": 64,
+    "height": 64,
+    "kind": "icon"
+  },
+  {
+    "path": "HUD/Dash/dash_ready.png",
+    "width": 64,
+    "height": 64,
+    "kind": "icon"
+  },
+  {
+    "path": "HUD/Dash/dash_cooldown.png",
+    "width": 64,
+    "height": 64,
+    "kind": "icon"
+  },
+  {
+    "path": "HUD/EnemyCounter/enemy_skull.png",
+    "width": 64,
+    "height": 64,
+    "kind": "icon"
+  },
+  {
+    "path": "World/Walls/Hellstone/wall_base.png",
+    "width": 256,
+    "height": 256,
+    "kind": "tile"
+  },
+  {
+    "path": "Menu/MainMenu/menu_background.png",
+    "width": 1920,
+    "height": 1080,
+    "kind": "menu"
+  },
+  {
+    "path": "World/Walls/Lava/wall_lava.png",
+    "width": 256,
+    "height": 256,
+    "kind": "tile"
+  },
+  {
+    "path": "World/Walls/Bones/wall_bones.png",
+    "width": 256,
+    "height": 256,
+    "kind": "tile"
+  },
+  {
+    "path": "World/Floor/CrackedStone/floor_cracked.png",
+    "width": 256,
+    "height": 256,
+    "kind": "tile"
+  },
+  {
+    "path": "Player/Face/Healthy/healthy_00.png",
+    "width": 128,
+    "height": 128,
+    "kind": "face",
+    "state": "healthy",
+    "frame": 0
+  },
+  {
+    "path": "Player/Face/Healthy/healthy_01.png",
+    "width": 128,
+    "height": 128,
+    "kind": "face",
+    "state": "healthy",
+    "frame": 1
+  },
+  {
+    "path": "Player/Face/Healthy/healthy_02.png",
+    "width": 128,
+    "height": 128,
+    "kind": "face",
+    "state": "healthy",
+    "frame": 2
+  },
+  {
+    "path": "Player/Face/Healthy/healthy_03.png",
+    "width": 128,
+    "height": 128,
+    "kind": "face",
+    "state": "healthy",
+    "frame": 3
+  },
+  {
+    "path": "Player/Face/Scratched/scratched_00.png",
+    "width": 128,
+    "height": 128,
+    "kind": "face",
+    "state": "scratched",
+    "frame": 0
+  },
+  {
+    "path": "Player/Face/Scratched/scratched_01.png",
+    "width": 128,
+    "height": 128,
+    "kind": "face",
+    "state": "scratched",
+    "frame": 1
+  },
+  {
+    "path": "Player/Face/Scratched/scratched_02.png",
+    "width": 128,
+    "height": 128,
+    "kind": "face",
+    "state": "scratched",
+    "frame": 2
+  },
+  {
+    "path": "Player/Face/Scratched/scratched_03.png",
+    "width": 128,
+    "height": 128,
+    "kind": "face",
+    "state": "scratched",
+    "frame": 3
+  },
+  {
+    "path": "Player/Face/Bleeding/bleeding_00.png",
+    "width": 128,
+    "height": 128,
+    "kind": "face",
+    "state": "bleeding",
+    "frame": 0
+  },
+  {
+    "path": "Player/Face/Bleeding/bleeding_01.png",
+    "width": 128,
+    "height": 128,
+    "kind": "face",
+    "state": "bleeding",
+    "frame": 1
+  },
+  {
+    "path": "Player/Face/Bleeding/bleeding_02.png",
+    "width": 128,
+    "height": 128,
+    "kind": "face",
+    "state": "bleeding",
+    "frame": 2
+  },
+  {
+    "path": "Player/Face/Bleeding/bleeding_03.png",
+    "width": 128,
+    "height": 128,
+    "kind": "face",
+    "state": "bleeding",
+    "frame": 3
+  },
+  {
+    "path": "Player/Face/Critical/critical_00.png",
+    "width": 128,
+    "height": 128,
+    "kind": "face",
+    "state": "critical",
+    "frame": 0
+  },
+  {
+    "path": "Player/Face/Critical/critical_01.png",
+    "width": 128,
+    "height": 128,
+    "kind": "face",
+    "state": "critical",
+    "frame": 1
+  },
+  {
+    "path": "Player/Face/Critical/critical_02.png",
+    "width": 128,
+    "height": 128,
+    "kind": "face",
+    "state": "critical",
+    "frame": 2
+  },
+  {
+    "path": "Player/Face/Critical/critical_03.png",
+    "width": 128,
+    "height": 128,
+    "kind": "face",
+    "state": "critical",
+    "frame": 3
+  },
+  {
+    "path": "Player/Face/NearDeath/near_dead_00.png",
+    "width": 128,
+    "height": 128,
+    "kind": "face",
+    "state": "near_dead",
+    "frame": 0
+  },
+  {
+    "path": "Player/Face/NearDeath/near_dead_01.png",
+    "width": 128,
+    "height": 128,
+    "kind": "face",
+    "state": "near_dead",
+    "frame": 1
+  },
+  {
+    "path": "Player/Face/NearDeath/near_dead_02.png",
+    "width": 128,
+    "height": 128,
+    "kind": "face",
+    "state": "near_dead",
+    "frame": 2
+  },
+  {
+    "path": "Player/Face/NearDeath/near_dead_03.png",
+    "width": 128,
+    "height": 128,
+    "kind": "face",
+    "state": "near_dead",
+    "frame": 3
+  },
+  {
+    "path": "Player/Face/Hit/hit_00.png",
+    "width": 128,
+    "height": 128,
+    "kind": "face",
+    "state": "hit",
+    "frame": 0
+  },
+  {
+    "path": "Player/Face/Hit/hit_01.png",
+    "width": 128,
+    "height": 128,
+    "kind": "face",
+    "state": "hit",
+    "frame": 1
+  },
+  {
+    "path": "Player/Face/Hit/hit_02.png",
+    "width": 128,
+    "height": 128,
+    "kind": "face",
+    "state": "hit",
+    "frame": 2
+  },
+  {
+    "path": "Player/Face/Hit/hit_03.png",
+    "width": 128,
+    "height": 128,
+    "kind": "face",
+    "state": "hit",
+    "frame": 3
+  },
+  {
+    "path": "Enemies/Imp/WalkBack/walk_back_1.png",
+    "width": 256,
+    "height": 256,
+    "kind": "enemy"
+  },
+  {
+    "path": "Enemies/Imp/WalkBack/walk_back_2.png",
+    "width": 256,
+    "height": 256,
+    "kind": "enemy"
+  },
+  {
+    "path": "Enemies/Imp/WalkSide/walk_side_1.png",
+    "width": 256,
+    "height": 256,
+    "kind": "enemy"
+  },
+  {
+    "path": "Enemies/Imp/WalkSide/walk_side_2.png",
+    "width": 256,
+    "height": 256,
+    "kind": "enemy"
+  },
+  {
+    "path": "Player/Weapons/Shotgun/Block/block.png",
+    "width": 640,
+    "height": 256,
+    "kind": "weapon"
+  },
+  {
+    "path": "World/Wood/AshGray/wood_ash_gray.png",
+    "width": 1254,
+    "height": 1254,
+    "kind": "tile"
+  }
+]

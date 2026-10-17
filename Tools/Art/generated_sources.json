@@ -1,0 +1,361 @@
+[
+  {
+    "id": "imp_walk_1",
+    "source": "ArtSource/Generated/Enemies/Imp/Walk/walk_1.png",
+    "output": "Enemies/Imp/Walk/walk_1.png",
+    "size": [
+      256,
+      256
+    ],
+    "kind": "enemy",
+    "prompt": "Single 256x256 square sprite, front-facing full-body imp enemy billboard isolated on genuine transparency. Lean muscular blood-red demon, two curved ivory horns, amber eyes, broad toothy mouth, long clawed hands, digitigrade legs, no wings, no weapon. Walking pose first frame left foot forward right foot back, claws at waist. Whole character centered, fixed camera directly frontal, feet baseline 90 percent image height, horns at 8 percent, generous transparent padding. Render actual 256x256 pixel art with crisp nearest neighbor pixels.",
+    "generated_with": "built-in image_gen",
+    "original_source": "/home/otecglinomes/.codex/generated_images/01a141e0-48cd-7983-8a7c-02c954bdf0ed/exec-793cd7b5-bd79-4bf7-9a52-29da4f1a8d80.png"
+  },
+  {
+    "id": "imp_walk_2",
+    "source": "ArtSource/Generated/Enemies/Imp/Walk/walk_2.png",
+    "output": "Enemies/Imp/Walk/walk_2.png",
+    "size": [
+      256,
+      256
+    ],
+    "kind": "enemy",
+    "prompt": "Use case: stylized-concept. Original MazeHell indie horror game art, hand-dithered crisp chunky pixel art, restrained charcoal, oxblood, burnt orange and ivory palette. No Doom character or weapon likeness; custom original designs. No text, labels, frame, watermark. Reference is identity reference. Exactly same front-facing red imp, proportions, pixel style and palette. Single 256x256 transparent sprite, second walk frame: RIGHT foot forward, LEFT back, arms counter-swing. Keep horns height and ground baseline same reference, full body visible, no cropping.",
+    "generated_with": "built-in image_gen",
+    "original_source": "/home/otecglinomes/.codex/generated_images/01a141e0-48cd-7983-8a7c-02c954bdf0ed/exec-a919e747-a8a3-43e6-a049-e7e132b85c3d.png"
+  },
+  {
+    "id": "imp_windup",
+    "source": "ArtSource/Generated/Enemies/Imp/Windup/windup.png",
+    "output": "Enemies/Imp/Windup/windup.png",
+    "size": [
+      256,
+      256
+    ],
+    "kind": "enemy",
+    "prompt": "Use case: stylized-concept. Original MazeHell indie horror game art, hand-dithered crisp chunky pixel art, restrained charcoal, oxblood, burnt orange and ivory palette. No Doom character or weapon likeness; custom original designs. No text, labels, frame, watermark. Reference identity same imp. Single 256x256 true transparent front-facing sprite. Attack telegraph windup: raises body, both clawed hands high beside horns, elbows wide, mouth opened into furious roar, legs planted and knees bent to launch. Dramatic clearly distinct pose, same horn design and red skin. Whole character fits with margins.",
+    "generated_with": "built-in image_gen",
+    "original_source": "/home/otecglinomes/.codex/generated_images/01a141e0-48cd-7983-8a7c-02c954bdf0ed/exec-c9f2b2d8-d0cd-44b5-824f-8ed8c1dbab28.png"
+  },
+  {
+    "id": "imp_lunge",
+    "source": "ArtSource/Generated/Enemies/Imp/Lunge/lunge.png",
+    "output": "Enemies/Imp/Lunge/lunge.png",
+    "size": [
+      256,
+      256
+    ],
+    "kind": "enemy",
+    "prompt": "Use case: stylized-concept. Original MazeHell indie horror game art, hand-dithered crisp chunky pixel art, restrained charcoal, oxblood, burnt orange and ivory palette. No Doom character or weapon likeness; custom original designs. No text, labels, frame, watermark. Reference same imp identity. Single 256x256 true transparent front-facing sprite. Aggressive airborne lunge TOWARDS camera: torso pitched forward, both long arms extended towards viewer with claw palms forward, foreshortened hands dominant, legs trail tucked behind body. Same red demon anatomy horns eyes. Full silhouette visible no crop, no streak background.",
+    "generated_with": "built-in image_gen",
+    "original_source": "/home/otecglinomes/.codex/generated_images/01a141e0-48cd-7983-8a7c-02c954bdf0ed/exec-c346f035-5374-46c3-ae85-b96a3ce11a82.png"
+  },
+  {
+    "id": "imp_pain",
+    "source": "ArtSource/Generated/Enemies/Imp/Pain/pain.png",
+    "output": "Enemies/Imp/Pain/pain.png",
+    "size": [
+      256,
+      256
+    ],
+    "kind": "enemy",
+    "prompt": "Use case: stylized-concept. Original MazeHell indie horror game art, hand-dithered crisp chunky pixel art, restrained charcoal, oxblood, burnt orange and ivory palette. No Doom character or weapon likeness; custom original designs. No text, labels, frame, watermark. Reference same imp identity. Single 256x256 true transparent front-facing sprite. Hurt recoil: hunched and curled torso, twisted shoulders, one arm clutching stomach and other claw recoiling, knees buckled, eyes squeezed, grimacing mouth. Same scale palette horns. Whole character visible.",
+    "generated_with": "built-in image_gen",
+    "original_source": "/home/otecglinomes/.codex/generated_images/01a141e0-48cd-7983-8a7c-02c954bdf0ed/exec-f64cdade-d8d3-4dfb-84d2-4ddb8b976e36.png"
+  },
+  {
+    "id": "imp_corpse",
+    "source": "ArtSource/Generated/Enemies/Imp/Corpse/corpse.png",
+    "output": "Enemies/Imp/Corpse/corpse.png",
+    "size": [
+      256,
+      256
+    ],
+    "kind": "enemy",
+    "prompt": "Use case: stylized-concept. Original MazeHell indie horror game art, hand-dithered crisp chunky pixel art, restrained charcoal, oxblood, burnt orange and ivory palette. No Doom character or weapon likeness; custom original designs. No text, labels, frame, watermark. Reference same imp identity. Single 256x256 true transparent sprite. Dead red imp collapsed into low crumpled heap on ground, recognizable paired ivory horns and clawed limbs, lifeless amber eyes extinguished, modest dark blood puddle. Body occupies lower half square with ground baseline matching reference at 92% height. Front-facing billboard view, no standing parts, full silhouette no crop.",
+    "generated_with": "built-in image_gen",
+    "original_source": "/home/otecglinomes/.codex/generated_images/01a141e0-48cd-7983-8a7c-02c954bdf0ed/exec-188d293e-e5af-42a9-af97-6edda1373874.png"
+  },
+  {
+    "id": "shotgun_idle",
+    "source": "ArtSource/Generated/Player/Weapons/Shotgun/Idle/idle.png",
+    "output": "Player/Weapons/Shotgun/Idle/idle.png",
+    "size": [
+      640,
+      256
+    ],
+    "kind": "weapon",
+    "prompt": "Use case: stylized-concept. Original MazeHell indie horror game art, hand-dithered crisp chunky pixel art, restrained charcoal, oxblood, burnt orange and ivory palette. No Doom character or weapon likeness; custom original designs. No text, labels, frame, watermark. Correct the reference weapon grip and redesign weapon as an original practical break-action double-barrel shotgun. Wide 640x256 true transparent FPS bottom-screen sprite. Two parallel dark steel barrels and worn walnut fore-end with ONE brass reinforcing band, asymmetrical small copper rune on receiver. Anatomically correct shooting stance: weapon held at right shoulder just off screen, gun lies diagonally from bottom-right receiver towards upper-center muzzle; RIGHT hand wraps slender wrist of wooden stock immediately BEHIND receiver, index finger adjacent trigger guard BELOW breech; LEFT hand reaches from lower-left and cups wooden FORE-END UNDER barrels farther forward. Hands are at DIFFERENT longitudinal positions, never grasp both sides of breech or barrels. Only two hands. Player looks along the TOP of barrels in correct foreshortening. No twin hammer-like ornaments from reference, no flash, no smoke. Keep top half mostly transparent, stock extends off bottom-right.",
+    "generated_with": "built-in image_gen",
+    "original_source": "/home/otecglinomes/.codex/generated_images/01a141e0-48cd-7983-8a7c-02c954bdf0ed/exec-e862e9d1-e188-442e-8de1-09fb4503be82.png"
+  },
+  {
+    "id": "shotgun_shot_1",
+    "source": "ArtSource/Generated/Player/Weapons/Shotgun/FireSingle/shot_1.png",
+    "output": "Player/Weapons/Shotgun/FireSingle/shot_1.png",
+    "size": [
+      640,
+      256
+    ],
+    "kind": "weapon",
+    "prompt": "Use case: precise-object-edit. EDIT TARGET is the reference shotgun idle sprite. Make ONE minimal localized EDIT only: add muzzle flash at the far upper-left/upper-center tip where the EXISTING two barrels end. Everything else must remain PIXEL-FOR-PIXEL unchanged: exact two parallel barrels, shared muzzle end, perspective, barrel lengths, receiver rune, two hands grip, fore-end, brass band, stock, framing. This is NOT a redesign. The gun has EXACTLY TWO barrel tubes TOTAL, exactly TWO muzzle holes TOTAL side by side, no extra duplicated tubes near flash, no four-hole nozzle, no doubled gun silhouettes, no motion ghosting. ONE single orange-ivory flash emerges from ONLY the left muzzle hole at the shared paired muzzle tip. Other muzzle remains unchanged. Very little smoke. Do not draw duplicate muzzle edges or a new tube. Keep same wide 640x256 aspect ratio, real transparent background and pixel art. No text or watermark. Recoil will be applied in engine, do not alter the pose or muzzle perspective.",
+    "generated_with": "built-in image_gen",
+    "original_source": "/home/otecglinomes/.codex/generated_images/01a141e0-48cd-7983-8a7c-02c954bdf0ed/exec-10826bea-a60e-4357-8496-bddf9af6395d.png"
+  },
+  {
+    "id": "shotgun_volley",
+    "source": "ArtSource/Generated/Player/Weapons/Shotgun/FireDouble/volley.png",
+    "output": "Player/Weapons/Shotgun/FireDouble/volley.png",
+    "size": [
+      640,
+      256
+    ],
+    "kind": "weapon",
+    "prompt": "Use case: precise-object-edit. EDIT TARGET is the reference shotgun idle sprite. Make ONE minimal localized EDIT only: add muzzle flash at the far upper-left/upper-center tip where the EXISTING two barrels end. Everything else must remain PIXEL-FOR-PIXEL unchanged: exact two parallel barrels, shared muzzle end, perspective, barrel lengths, receiver rune, two hands grip, fore-end, brass band, stock, framing. This is NOT a redesign. The gun has EXACTLY TWO barrel tubes TOTAL, exactly TWO muzzle holes TOTAL side by side, no extra duplicated tubes near flash, no four-hole nozzle, no doubled gun silhouettes, no motion ghosting. A SINGLE combined forked orange-ivory flash emerges from the EXISTING TWO muzzle holes at the shared muzzle tip. Its two bright cores align to these existing holes. No new metal outline, no duplication of barrels, no additional dark holes. The flash may occlude the last few pixels of both muzzles, keep the visible tube geometry EXACTLY same as reference. Keep same wide 640x256 aspect ratio, real transparent background and pixel art. No text or watermark. Recoil will be applied in engine, do not alter the pose or muzzle perspective.",
+    "generated_with": "built-in image_gen",
+    "original_source": "/home/otecglinomes/.codex/generated_images/01a141e0-48cd-7983-8a7c-02c954bdf0ed/exec-30283d7b-f035-4d48-9df3-a0794832890c.png"
+  },
+  {
+    "id": "shotgun_reload_1",
+    "source": "ArtSource/Generated/Player/Weapons/Shotgun/ReloadOpen/reload_1.png",
+    "output": "Player/Weapons/Shotgun/ReloadOpen/reload_1.png",
+    "size": [
+      640,
+      256
+    ],
+    "kind": "weapon",
+    "prompt": "Use case: precise-object-edit. Reference is exact original MazeHell shotgun IDENTITY and pixel-art STYLE reference, change pose only to a mechanically correct BROKEN-OPEN break-action reload. Single wide transparent 640x256 FPS weapon sprite. CRITICAL mechanical anatomy: EXACTLY TWO barrel tubes TOTAL, side by side, forming ONE hinged assembly pointing diagonally DOWN-LEFT. At their rear ends facing camera are EXACTLY TWO adjacent circular chamber mouths TOTAL. Receiver at lower RIGHT is a SOLID SHORT metal breech block with copper star rune, stock behind it to bottom-right; receiver has NO long barrels projecting forward and NO extra round holes. The two-barrel assembly swings DOWN from bottom front hinge of receiver at a clear 50 degree opening angle. No four-barrel gun; only two connected tubes and two holes. Walnut fore-end and brass band swing with barrels. Two hands only wearing same dark fingerless gloves. LEFT hand cups the wooden fore-end UNDER the opened barrel assembly pointing down-left. Both round chamber mouths are empty and clearly visible. No cartridges in hands. Right hand holds stock. Full scene fits wide canvas; transparent backdrop, no text, labels, diagram, watermark; crisp chunky pixel art original game asset.",
+    "generated_with": "built-in image_gen",
+    "original_source": "/home/otecglinomes/.codex/generated_images/01a141e0-48cd-7983-8a7c-02c954bdf0ed/exec-e8d8b425-56be-4289-9e75-674f1257cc34.png"
+  },
+  {
+    "id": "shotgun_reload_2",
+    "source": "ArtSource/Generated/Player/Weapons/Shotgun/ReloadInsert/reload_2.png",
+    "output": "Player/Weapons/Shotgun/ReloadInsert/reload_2.png",
+    "size": [
+      640,
+      256
+    ],
+    "kind": "weapon",
+    "prompt": "Use case: precise-object-edit. Reference is exact original MazeHell shotgun IDENTITY and pixel-art STYLE reference, change pose only to a mechanically correct BROKEN-OPEN break-action reload. Single wide transparent 640x256 FPS weapon sprite. CRITICAL mechanical anatomy: EXACTLY TWO barrel tubes TOTAL, side by side, forming ONE hinged assembly pointing diagonally DOWN-LEFT. At their rear ends facing camera are EXACTLY TWO adjacent circular chamber mouths TOTAL. Receiver at lower RIGHT is a SOLID SHORT metal breech block with copper star rune, stock behind it to bottom-right; receiver has NO long barrels projecting forward and NO extra round holes. The two-barrel assembly swings DOWN from bottom front hinge of receiver at a clear 50 degree opening angle. No four-barrel gun; only two connected tubes and two holes. Walnut fore-end and brass band swing with barrels. Two hands only wearing same dark fingerless gloves. LEFT hand holds exactly TWO red shotgun cartridges together, inserting them into the TWO chamber mouths at the raised breech end of opened barrels. Right hand holds stock. No third hand. Full scene fits wide canvas; transparent backdrop, no text, labels, diagram, watermark; crisp chunky pixel art original game asset.",
+    "generated_with": "built-in image_gen",
+    "original_source": "/home/otecglinomes/.codex/generated_images/01a141e0-48cd-7983-8a7c-02c954bdf0ed/exec-34342180-1c34-47b2-9e2b-e73c98e06c17.png"
+  },
+  {
+    "id": "shotgun_empty",
+    "source": "ArtSource/Generated/Player/Weapons/Shotgun/Empty/empty.png",
+    "output": "Player/Weapons/Shotgun/Empty/empty.png",
+    "size": [
+      640,
+      256
+    ],
+    "kind": "weapon",
+    "prompt": "Use case: stylized-concept. Single wide 640x256 true transparent first-person weapon overlay for original MazeHell. Reference is EXACT weapon identity, anatomy, grip, camera, composition and pixel art style. Keep worn dark steel side-by-side double barrels, walnut wood, ONE brass band, copper star-rune on receiver, black leather fingerless gloves. Gun diagonal from lower-right receiver towards upper-center muzzle, player's hands anatomically credible. No text, no watermark, no background. Action frame: Both barrels spent empty, gun returns to same ready stance and exact angle as reference. No flash. TWO wisps of thin translucent gray smoke rise from both muzzle holes, both barrels mechanically intact. Same support left hand under wooden fore-end, right hand around stock wrist behind receiver.",
+    "generated_with": "built-in image_gen",
+    "original_source": "/home/otecglinomes/.codex/generated_images/01a141e0-48cd-7983-8a7c-02c954bdf0ed/exec-4693d98a-999d-40b8-a4df-43b4ca4b0353.png"
+  },
+  {
+    "id": "crosshair",
+    "source": "ArtSource/Generated/HUD/Crosshair/crosshair.png",
+    "output": "HUD/Crosshair/crosshair.png",
+    "size": [
+      64,
+      64
+    ],
+    "kind": "icon",
+    "prompt": "Original MazeHell pixel-art HUD icon. Minimal precise aiming reticle: four short ivory pixel strokes around a tiny orange center dot. Symmetric centered thin cross, dark 1 pixel outlines, total glyph about 20x20 at target 64.",
+    "generated_with": "built-in image_gen",
+    "original_source": "/home/otecglinomes/.codex/generated_images/01a141e0-48cd-7983-8a7c-02c954bdf0ed/exec-b45bb056-9362-430c-97f4-a939fe1e49eb.png"
+  },
+  {
+    "id": "barrel_full",
+    "source": "ArtSource/Generated/HUD/Ammo/barrel_full.png",
+    "output": "HUD/Ammo/barrel_full.png",
+    "size": [
+      64,
+      64
+    ],
+    "kind": "icon",
+    "prompt": "Original MazeHell pixel-art HUD icon. One upright loaded shotgun cartridge pip, brass cap at bottom, crimson red shell casing, bright ivory highlight, solid filled silhouette, tiny top notch. Clear FULL ammo icon.",
+    "generated_with": "built-in image_gen",
+    "original_source": "/home/otecglinomes/.codex/generated_images/01a141e0-48cd-7983-8a7c-02c954bdf0ed/exec-da5ca83a-ec5c-4b9d-a8e1-c0b0ceac6aa6.png"
+  },
+  {
+    "id": "barrel_empty",
+    "source": "ArtSource/Generated/HUD/Ammo/barrel_empty.png",
+    "output": "HUD/Ammo/barrel_empty.png",
+    "size": [
+      64,
+      64
+    ],
+    "kind": "icon",
+    "prompt": "Original MazeHell pixel-art HUD icon. Same upright shotgun cartridge pip shape and scale but EMPTY: hollow charcoal interior, dark red ivory outline and empty cutout center, spent open rim, no bright solid fill. Distinguishable without relying on color.",
+    "generated_with": "built-in image_gen",
+    "original_source": "/home/otecglinomes/.codex/generated_images/01a141e0-48cd-7983-8a7c-02c954bdf0ed/exec-c34ebbad-0432-4c68-9264-d2812e6cdbac.png"
+  },
+  {
+    "id": "dash_ready",
+    "source": "ArtSource/Generated/HUD/Dash/dash_ready.png",
+    "output": "HUD/Dash/dash_ready.png",
+    "size": [
+      64,
+      64
+    ],
+    "kind": "icon",
+    "prompt": "Original MazeHell pixel-art HUD icon. Dash ability READY pip: small bold double-chevron lightning arrow pointing right, luminous amber gold fill, ivory center highlight, charcoal outline. Compact angular runic shape.",
+    "generated_with": "built-in image_gen",
+    "original_source": "/home/otecglinomes/.codex/generated_images/01a141e0-48cd-7983-8a7c-02c954bdf0ed/exec-6f3629a2-73e9-49bc-801a-3877837b25db.png"
+  },
+  {
+    "id": "dash_cooldown",
+    "source": "ArtSource/Generated/HUD/Dash/dash_cooldown.png",
+    "output": "HUD/Dash/dash_cooldown.png",
+    "size": [
+      64,
+      64
+    ],
+    "kind": "icon",
+    "prompt": "Original MazeHell pixel-art HUD icon. Dash ability on COOLDOWN pip: same double-chevron lightning arrow shape pointing right but dim charcoal gray outlined, with small ivory clock hand arc overlay at lower right. Clearly unavailable.",
+    "generated_with": "built-in image_gen",
+    "original_source": "/home/otecglinomes/.codex/generated_images/01a141e0-48cd-7983-8a7c-02c954bdf0ed/exec-1423abb6-074a-4ae1-a8b0-4353f4348a71.png"
+  },
+  {
+    "id": "enemy_skull",
+    "source": "ArtSource/Generated/HUD/EnemyCounter/enemy_skull.png",
+    "output": "HUD/EnemyCounter/enemy_skull.png",
+    "size": [
+      64,
+      64
+    ],
+    "kind": "icon",
+    "prompt": "Original MazeHell pixel-art HUD icon. Enemy counter icon: stylized small angular ivory demon skull, two short broken horns, black triangular eye sockets, no jaw, burnt orange glint, thick dark silhouette. Original shape.",
+    "generated_with": "built-in image_gen",
+    "original_source": "/home/otecglinomes/.codex/generated_images/01a141e0-48cd-7983-8a7c-02c954bdf0ed/exec-6a1eeb5c-ade7-4311-9c98-3e80ada0d2c5.png"
+  },
+  {
+    "id": "wall_base",
+    "source": "ArtSource/Generated/World/Walls/Hellstone/wall_base.png",
+    "output": "World/Walls/Hellstone/wall_base.png",
+    "size": [
+      256,
+      256
+    ],
+    "kind": "tile",
+    "prompt": "Single square 256x256 SEAMLESS TILEABLE albedo texture, dark red hell stone masonry, irregular large rough basalt blocks and black mortar. Flat orthographic surface, uniform diffuse lighting, no perspective, no vignette, no directional cast shadows. Opposite edges must match exactly for seamless repetition in both axes. Edge to edge texture, no frame.",
+    "generated_with": "built-in image_gen",
+    "original_source": "/home/otecglinomes/.codex/generated_images/01a141e0-48cd-7983-8a7c-02c954bdf0ed/exec-af535b76-ca0b-47dd-9ac7-90fe417163d1.png"
+  },
+  {
+    "id": "menu_background",
+    "source": "ArtSource/Generated/Menu/MainMenu/menu_background.png",
+    "output": "Menu/MainMenu/menu_background.png",
+    "size": [
+      1920,
+      1080
+    ],
+    "kind": "menu",
+    "prompt": "Single wide 16:9 1920x1080 main menu background, hellish stone labyrinth seen from raised first-person viewpoint, oppressive dark crimson basalt maze walls, iron braziers burning orange at path junctions, red fog pools, distant infernal gate and lava glow, strong dark silhouette architecture. No characters, no guns, no HUD, no lettering. Central upper third relatively dark and calm to place menu title, lower center dark space for buttons. Cohesive retro pixel art game scene with deliberate pixel clusters, dramatic depth.",
+    "generated_with": "built-in image_gen",
+    "original_source": "/home/otecglinomes/.codex/generated_images/01a141e0-48cd-7983-8a7c-02c954bdf0ed/exec-a193ee13-bdc0-4367-a8ed-14ee6880409a.png"
+  },
+  {
+    "id": "wall_lava",
+    "source": "ArtSource/Generated/World/Walls/Lava/wall_lava.png",
+    "output": "World/Walls/Lava/wall_lava.png",
+    "size": [
+      256,
+      256
+    ],
+    "kind": "tile",
+    "prompt": "Use case: stylized-concept. Original MazeHell indie horror game art, hand-dithered crisp chunky pixel art, restrained charcoal, oxblood, burnt orange and ivory palette. No Doom character or weapon likeness; custom original designs. No text, labels, frame, watermark. Square seamless 256x256 TILEABLE flat albedo texture for same stone masonry as reference. Black crimson basalt rocks with deep branching fissures of white-hot orange lava, bright emissive-ready lava separated from dark rock. Uniform diffuse surface light, orthographic, no vignette or perspective. Opposite edges match perfectly, fills canvas.",
+    "generated_with": "built-in image_gen",
+    "original_source": "/home/otecglinomes/.codex/generated_images/01a141e0-48cd-7983-8a7c-02c954bdf0ed/exec-7e3ce844-45d3-423f-b92e-59ff58b0015d.png"
+  },
+  {
+    "id": "wall_bones",
+    "source": "ArtSource/Generated/World/Walls/Bones/wall_bones.png",
+    "output": "World/Walls/Bones/wall_bones.png",
+    "size": [
+      256,
+      256
+    ],
+    "kind": "tile",
+    "prompt": "Use case: stylized-concept. Original MazeHell indie horror game art, hand-dithered crisp chunky pixel art, restrained charcoal, oxblood, burnt orange and ivory palette. No Doom character or weapon likeness; custom original designs. No text, labels, frame, watermark. Square seamless 256x256 TILEABLE flat albedo texture same crimson basalt masonry as reference but ancient small bone fragments and 3 weathered ivory human skulls embedded irregularly in mortar, sparse enough masonry remains dominant. Orthographic flat wall surface, no perspective, uniform lighting, opposite edges match perfectly, edge-to-edge.",
+    "generated_with": "built-in image_gen",
+    "original_source": "/home/otecglinomes/.codex/generated_images/01a141e0-48cd-7983-8a7c-02c954bdf0ed/exec-896b1277-0f3a-4493-a3f2-5c0eef5545c3.png"
+  },
+  {
+    "id": "floor_cracked",
+    "source": "ArtSource/Generated/World/Floor/CrackedStone/floor_cracked.png",
+    "output": "World/Floor/CrackedStone/floor_cracked.png",
+    "size": [
+      256,
+      256
+    ],
+    "kind": "tile",
+    "prompt": "Use case: stylized-concept. Original MazeHell indie horror game art, hand-dithered crisp chunky pixel art, restrained charcoal, oxblood, burnt orange and ivory palette. No Doom character or weapon likeness; custom original designs. No text, labels, frame, watermark. Square seamless 256x256 TILEABLE flat albedo texture top down cracked black charcoal basalt floor, irregular large flat slabs, deep oxblood fissures, scattered burnt stone chips. Much darker and less saturated than walls, no lava glow, no skulls. Uniform light, no vignette, opposite edges match perfectly.",
+    "generated_with": "built-in image_gen",
+    "original_source": "/home/otecglinomes/.codex/generated_images/01a141e0-48cd-7983-8a7c-02c954bdf0ed/exec-83d34c46-4508-48af-9e47-4c4c1f6f7299.png"
+  },
+  {
+    "id": "healthy",
+    "source": "ArtSource/Generated/Player/Face/Healthy/animation_sheet.png",
+    "kind": "face_sheet",
+    "prompt": "Use case: stylized-concept. Original MazeHell game assets, precise chunky pixel art, charcoal oxblood ivory burnt orange palette, original character design, no existing game likeness, no labels text watermarks. Create ONE production 2x2 animation sprite sheet, exactly square canvas, FOUR separate front-facing head sprites, each fully contained in its own equal square quadrant with generous transparent margins. True transparent background everywhere outside heads. No panel lines or labels. Read order top-left frame0, top-right frame1, bottom-left frame2, bottom-right frame3. Reference image is the EXACT identity: angular long face, hooked nose, copper skin, tied-back dark hair, single prominent ivory forelock on viewer LEFT, small pointed goatee, brass hoop on viewer RIGHT, burgundy scarf. Lock face proportions, head size, hair silhouette, pixel grid, colors, lighting, canvas placement identically in every cell; only expression changes a little. Each head centered in its quadrant with identical eyes baseline, no overlap with other cells. 128x128 target per frame, crisp pixel art. State and motion: Healthy, sly close-mouth half-smile, no wounds. Frame 0 neutral smile gaze center. Frame 1 tiny breath with slightly raised brow gaze a few pixels left. Frame 2 eyes gently closed mid-blink same smile. Frame 3 eyes open gaze center relaxing.",
+    "generated_with": "built-in image_gen",
+    "original_source": "/home/otecglinomes/.codex/generated_images/01a141e0-48cd-7983-8a7c-02c954bdf0ed/exec-174c7820-9e56-4b38-abbc-0695d5c7106e.png",
+    "output_directory": "Player/Face/Healthy",
+    "preview_output": "Player/Face/Healthy/animation.gif"
+  },
+  {
+    "id": "scratched",
+    "source": "ArtSource/Generated/Player/Face/Scratched/animation_sheet.png",
+    "kind": "face_sheet",
+    "prompt": "Use case: stylized-concept. Original MazeHell game assets, precise chunky pixel art, charcoal oxblood ivory burnt orange palette, original character design, no existing game likeness, no labels text watermarks. Create ONE production 2x2 animation sprite sheet, exactly square canvas, FOUR separate front-facing head sprites, each fully contained in its own equal square quadrant with generous transparent margins. True transparent background everywhere outside heads. No panel lines or labels. Read order top-left frame0, top-right frame1, bottom-left frame2, bottom-right frame3. Reference image is the EXACT identity: angular long face, hooked nose, copper skin, tied-back dark hair, single prominent ivory forelock on viewer LEFT, small pointed goatee, brass hoop on viewer RIGHT, burgundy scarf. Lock face proportions, head size, hair silhouette, pixel grid, colors, lighting, canvas placement identically in every cell; only expression changes a little. Each head centered in its quadrant with identical eyes baseline, no overlap with other cells. 128x128 target per frame, crisp pixel art. State and motion: Lightly injured with TWO small fresh scratches on viewer-left cheek, a tiny cut on eyebrow, otherwise healthy. Same wound locations in all frames. Frame 0 alert neutral; frame 1 subtle breath and glance slightly right; frame 2 blink eyes closed; frame 3 eyes reopen into faint resilient smile.",
+    "generated_with": "built-in image_gen",
+    "original_source": "/home/otecglinomes/.codex/generated_images/01a141e0-48cd-7983-8a7c-02c954bdf0ed/exec-8231bd18-c582-4cf9-b225-e22927c36158.png",
+    "output_directory": "Player/Face/Scratched",
+    "preview_output": "Player/Face/Scratched/animation.gif"
+  },
+  {
+    "id": "bleeding",
+    "source": "ArtSource/Generated/Player/Face/Bleeding/animation_sheet.png",
+    "kind": "face_sheet",
+    "prompt": "Use case: stylized-concept. Original MazeHell game assets, precise chunky pixel art, charcoal oxblood ivory burnt orange palette, original character design, no existing game likeness, no labels text watermarks. Create ONE production 2x2 animation sprite sheet, exactly square canvas, FOUR separate front-facing head sprites, each fully contained in its own equal square quadrant with generous transparent margins. True transparent background everywhere outside heads. No panel lines or labels. Read order top-left frame0, top-right frame1, bottom-left frame2, bottom-right frame3. Reference image is the EXACT identity: angular long face, hooked nose, copper skin, tied-back dark hair, single prominent ivory forelock on viewer LEFT, small pointed goatee, brass hoop on viewer RIGHT, burgundy scarf. Lock face proportions, head size, hair silhouette, pixel grid, colors, lighting, canvas placement identically in every cell; only expression changes a little. Each head centered in its quadrant with identical eyes baseline, no overlap with other cells. 128x128 target per frame, crisp pixel art. State and motion: Moderate damage: streak of blood from viewer-left eyebrow down cheek, split lower lip, bruised cheek. Keep exactly same injuries across all four frames. Frame 0 tense forward gaze mouth slightly parted; frame 1 tired breath with slightly lowered jaw; frame 2 slow blink closed eyelids; frame 3 eyes reopen grim determined expression.",
+    "generated_with": "built-in image_gen",
+    "original_source": "/home/otecglinomes/.codex/generated_images/01a141e0-48cd-7983-8a7c-02c954bdf0ed/exec-81318d9d-c51f-4565-bc3f-7b3b49f1dae5.png",
+    "output_directory": "Player/Face/Bleeding",
+    "preview_output": "Player/Face/Bleeding/animation.gif"
+  },
+  {
+    "id": "critical",
+    "source": "ArtSource/Generated/Player/Face/Critical/animation_sheet.png",
+    "kind": "face_sheet",
+    "prompt": "Use case: stylized-concept. Original MazeHell game assets, precise chunky pixel art, charcoal oxblood ivory burnt orange palette, original character design, no existing game likeness, no labels text watermarks. Create ONE production 2x2 animation sprite sheet, exactly square canvas, FOUR separate front-facing head sprites, each fully contained in its own equal square quadrant with generous transparent margins. True transparent background everywhere outside heads. No panel lines or labels. Read order top-left frame0, top-right frame1, bottom-left frame2, bottom-right frame3. Reference image is the EXACT identity: angular long face, hooked nose, copper skin, tied-back dark hair, single prominent ivory forelock on viewer LEFT, small pointed goatee, brass hoop on viewer RIGHT, burgundy scarf. Lock face proportions, head size, hair silhouette, pixel grid, colors, lighting, canvas placement identically in every cell; only expression changes a little. Each head centered in its quadrant with identical eyes baseline, no overlap with other cells. 128x128 target per frame, crisp pixel art. State and motion: Severe damage: broad blood streaks forehead and viewer-left cheek, bruised swollen viewer-right eye, bleeding nose, split lip, blood on burgundy scarf. Fixed injury locations in all frames. Frame 0 exhausted eyes half-open; frame 1 labored breath mouth opens slightly; frame 2 eyes squeeze shut in pain; frame 3 eyes open again with clenched teeth.",
+    "generated_with": "built-in image_gen",
+    "original_source": "/home/otecglinomes/.codex/generated_images/01a141e0-48cd-7983-8a7c-02c954bdf0ed/exec-ec8af4b5-03ba-443b-87cf-ca714c7ba3e1.png",
+    "output_directory": "Player/Face/Critical",
+    "preview_output": "Player/Face/Critical/animation.gif"
+  },
+  {
+    "id": "near_dead",
+    "source": "ArtSource/Generated/Player/Face/NearDeath/animation_sheet.png",
+    "kind": "face_sheet",
+    "prompt": "Use case: stylized-concept. Original MazeHell game assets, precise chunky pixel art, charcoal oxblood ivory burnt orange palette, original character design, no existing game likeness, no labels text watermarks. Create ONE production 2x2 animation sprite sheet, exactly square canvas, FOUR separate front-facing head sprites, each fully contained in its own equal square quadrant with generous transparent margins. True transparent background everywhere outside heads. No panel lines or labels. Read order top-left frame0, top-right frame1, bottom-left frame2, bottom-right frame3. Reference image is the EXACT identity: angular long face, hooked nose, copper skin, tied-back dark hair, single prominent ivory forelock on viewer LEFT, small pointed goatee, brass hoop on viewer RIGHT, burgundy scarf. Lock face proportions, head size, hair silhouette, pixel grid, colors, lighting, canvas placement identically in every cell; only expression changes a little. Each head centered in its quadrant with identical eyes baseline, no overlap with other cells. 128x128 target per frame, crisp pixel art. State and motion: Almost dead: face pale ash-brown, multiple thick blood streaks, viewer-right eye nearly swollen shut, busted nose and bleeding lips. No exposed bones, no dismemberment. Same wounds all four frames. Frame 0 barely open eyes staring; frame 1 faltering breath jaw slightly drops; frame 2 eyes close briefly with strained brow; frame 3 eyes partially reopen, exhausted.",
+    "generated_with": "built-in image_gen",
+    "original_source": "/home/otecglinomes/.codex/generated_images/01a141e0-48cd-7983-8a7c-02c954bdf0ed/exec-15ff42ec-1f32-4417-96ed-1eb9b3601ad9.png",
+    "output_directory": "Player/Face/NearDeath",
+    "preview_output": "Player/Face/NearDeath/animation.gif"
+  },
+  {
+    "id": "hit",
+    "source": "ArtSource/Generated/Player/Face/Hit/animation_sheet.png",
+    "kind": "face_sheet",
+    "prompt": "Use case: stylized-concept. Original MazeHell game assets, precise chunky pixel art, charcoal oxblood ivory burnt orange palette, original character design, no existing game likeness, no labels text watermarks. Create ONE production 2x2 animation sprite sheet, exactly square canvas, FOUR separate front-facing head sprites, each fully contained in its own equal square quadrant with generous transparent margins. True transparent background everywhere outside heads. No panel lines or labels. Read order top-left frame0, top-right frame1, bottom-left frame2, bottom-right frame3. Reference image is the EXACT identity: angular long face, hooked nose, copper skin, tied-back dark hair, single prominent ivory forelock on viewer LEFT, small pointed goatee, brass hoop on viewer RIGHT, burgundy scarf. Lock face proportions, head size, hair silhouette, pixel grid, colors, lighting, canvas placement identically in every cell; only expression changes a little. Each head centered in its quadrant with identical eyes baseline, no overlap with other cells. 128x128 target per frame, crisp pixel art. State and motion: Short received-hit grimace overlay animation. No permanent new wounds, face same healthy character. Frame 0 impact flinch eyebrows drawn together mouth opens; frame 1 peak pain eyes squeezed shut clenched teeth and slight head tilt 3 degrees; frame 2 wince one eye reopens jaw clenched; frame 3 relaxes toward neutral gaze front.",
+    "generated_with": "built-in image_gen",
+    "original_source": "/home/otecglinomes/.codex/generated_images/01a141e0-48cd-7983-8a7c-02c954bdf0ed/exec-e25e7260-b0a9-42f1-b494-e576c599f471.png",
+    "output_directory": "Player/Face/Hit",
+    "preview_output": "Player/Face/Hit/animation.gif"
+  }
+]
