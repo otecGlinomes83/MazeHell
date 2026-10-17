@@ -51,7 +51,7 @@ namespace MazeHell.Tests
             Assert.AreEqual(CursorLockMode.None, Cursor.lockState);
             Assert.IsTrue(Cursor.visible);
             Assert.IsNotNull(composition.Hud.Screens.ActivePause);
-            int firstPauseId = composition.Hud.Screens.ActivePause.GetInstanceID();
+            int firstPauseId = composition.Hud.Screens.ActivePause.GetEntityId();
             PointerEventData click = new PointerEventData(EventSystem.current);
             composition.Hud.Screens.ActivePause.Settings.OnPointerClick(click);
             Assert.IsNotNull(composition.Hud.Screens.ActiveSettings);
@@ -71,7 +71,7 @@ namespace MazeHell.Tests
             yield return null;
             Assert.IsTrue(pauser.IsPaused);
             Assert.IsNotNull(composition.Hud.Screens.ActivePause);
-            Assert.AreNotEqual(firstPauseId, composition.Hud.Screens.ActivePause.GetInstanceID());
+            Assert.AreNotEqual(firstPauseId, composition.Hud.Screens.ActivePause.GetEntityId());
             Assert.IsTrue(Cursor.visible);
             pauser.Resume();
             Assert.AreEqual(CursorLockMode.Locked, Cursor.lockState);
