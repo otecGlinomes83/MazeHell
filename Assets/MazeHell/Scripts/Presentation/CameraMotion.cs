@@ -58,6 +58,8 @@ namespace MazeHell.Presentation
         private Vector3 _rotationOffset;
 
         private bool _isSetupFinished;
+        private bool _isGateShaking;
+        private float _gateShakeElapsed;
 
         public Vector3 PositionOffset => _positionOffset;
 
@@ -106,6 +108,7 @@ namespace MazeHell.Presentation
 
             UpdateBob(clampedSpeed, isGrounded, clampedDeltaTime);
             UpdateImpulses(clampedDeltaTime);
+            UpdateGateShake(clampedDeltaTime);
             ApplyPivot();
             UpdateFieldOfView(clampedSpeed, clampedDeltaTime);
         }
@@ -173,6 +176,32 @@ namespace MazeHell.Presentation
                 new Vector3(0f, 0f, 1f) * blockImpulse.RotationDegrees, blockImpulse);
         }
 
+        public void ReactGateOpen()
+        {
+            AssertSetup();
+            _gateShakeElapsed = 0f;
+            _isGateShaking = true;
+        }
+
+        private void UpdateGateShake(float deltaTime)
+        {
+            if (_isGateShaking == false)
+            {
+                return;
+            }
+
+            _gateShakeElapsed += deltaTime;
+            float progress = Mathf.Clamp01(_gateShakeElapsed / _config.GateShakeDuration);
+            float envelope = (1f - progress) * (1f - progress);
+            float phase = _gateShakeElapsed * _config.GateShakeFrequency * Mathf.PI * 2f;
+            Vector3 oscillation = new Vector3(Mathf.Sin(phase), Mathf.Sin(phase * 1.37f), Mathf.Sin(phase * 0.73f));
+            _positionOffset = ClampComponentwise(_positionOffset + oscillation * (_config.GateShakePosition * envelope),
+                _config.MaxTotalPositionOffset);
+            _rotationOffset = ClampComponentwise(_rotationOffset + oscillation * (_config.GateShakeDegrees * envelope),
+                _config.MaxTotalRotationDegrees);
+            _isGateShaking = progress < 1f;
+        }
+
         public void ResetMotion()
         {
             AssertSetup();
@@ -183,6 +212,7 @@ namespace MazeHell.Presentation
             }
 
             _impulseCursor = 0;
+            _isGateShaking = false;
             _bobPhase = 0f;
             _bobWeight = 0f;
             _bobOffset = Vector3.zero;

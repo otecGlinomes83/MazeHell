@@ -12,6 +12,9 @@ namespace MazeHell.Level
         private Vector3 _closedPosition;
         private float _lift;
         private float _holdTimer;
+        private bool _isOpening;
+
+        public event Action<ProximityDoor> Opening;
 
         public void Setup(DoorConfig config)
         {
@@ -48,6 +51,13 @@ namespace MazeHell.Level
             }
 
             bool shouldOpen = distance <= openDistance || _holdTimer > 0f || distance <= _config.CloseDistance && _lift > 0f;
+
+            if (shouldOpen && _isOpening == false)
+            {
+                Opening?.Invoke(this);
+            }
+
+            _isOpening = shouldOpen;
             float target = 0f;
             float speed = _config.LiftHeight / _config.CloseDuration;
 

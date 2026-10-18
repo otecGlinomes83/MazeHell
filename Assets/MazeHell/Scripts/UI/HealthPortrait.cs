@@ -10,6 +10,12 @@ namespace MazeHell.UI
     [RequireComponent(typeof(Image))]
     public class HealthPortrait : MonoBehaviour
     {
+        [SerializeField] private Sprite[] _speakingFrames = new Sprite[0];
+        [Min(0.05f)] [SerializeField] private float _speakingFrameDuration = 0.14f;
+        private bool _isSpeaking;
+        private float _speakingTimer;
+        private int _speakingFrameIndex;
+
         private Image _image;
 
         private Health _health;
@@ -85,6 +91,20 @@ namespace MazeHell.UI
 
             float clampedDeltaTime = Mathf.Max(0f, deltaTime);
 
+            if (_isSpeaking && _speakingFrames.Length > 0)
+            {
+                _speakingTimer += clampedDeltaTime;
+
+                while (_speakingTimer >= _speakingFrameDuration)
+                {
+                    _speakingTimer -= _speakingFrameDuration;
+                    _speakingFrameIndex = (_speakingFrameIndex + 1) % _speakingFrames.Length;
+                }
+
+                _image.sprite = _speakingFrames[_speakingFrameIndex];
+                return;
+            }
+
             if (_hitOverrideTimer > 0f)
             {
                 _hitOverrideTimer = Mathf.Max(0f, _hitOverrideTimer - clampedDeltaTime);
@@ -99,6 +119,18 @@ namespace MazeHell.UI
             }
 
             AnimateState(_displayedState, clampedDeltaTime);
+        }
+
+        public void SetSpeaking(bool isSpeaking)
+        {
+            _isSpeaking = isSpeaking;
+            _speakingTimer = 0f;
+            _speakingFrameIndex = 0;
+
+            if (isSpeaking == false && _isSetupFinished)
+            {
+                SwitchState(_currentState);
+            }
         }
 
         private void OnEnable()

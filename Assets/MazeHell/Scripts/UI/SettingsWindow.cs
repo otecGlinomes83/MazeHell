@@ -11,6 +11,8 @@ namespace MazeHell.UI
         [SerializeField] private MenuClick _increase;
         [SerializeField] private TMP_Text _soundText;
         [SerializeField] private TMP_Text _sensitivityText;
+        [SerializeField] private TMP_Text _title;
+        [SerializeField] private TMP_Text _closeText;
 
         public MenuClick Close => _close;
         public MenuClick Sound => _sound;
@@ -19,6 +21,8 @@ namespace MazeHell.UI
 
         public void Refresh(Localization localization, bool soundOn, float sensitivity)
         {
+            _title.text = localization.Get("settings_title");
+            _closeText.text = localization.Get("window_back");
             string soundKey = "sound_off";
 
             if (soundOn)

@@ -15,6 +15,7 @@ namespace MazeHell.Level
         private bool _enemiesCleared;
 
         public bool IsUnlocked => _isUnlocked;
+        public event Action<ExitGate> Opened;
 
         public void Setup(LevelPresentationConfig presentationConfig)
         {
@@ -55,10 +56,11 @@ namespace MazeHell.Level
             Vector3 offset = position - _leafClosedPosition;
             offset.y = 0f;
 
-            if ((_presentationConfig.ExitRequiresAllKills == false || _enemiesCleared) &&
+            if (_isUnlocked == false && (_presentationConfig.ExitRequiresAllKills == false || _enemiesCleared) &&
                 offset.magnitude <= _presentationConfig.GateActivationDistance)
             {
                 _isUnlocked = true;
+                Opened?.Invoke(this);
             }
 
             if (_isUnlocked && offset.magnitude <= velocity.magnitude * deltaTime + 0.6f)

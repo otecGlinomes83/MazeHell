@@ -83,7 +83,7 @@ namespace MazeHell.UI
 
             HudPresenter presenter = view.gameObject.AddComponent<HudPresenter>();
 
-            presenter.Setup(view, player, _interface, _animations, _hud, _movement, _gun);
+            presenter.Setup(view, player, _interface, _animations, _hud, _movement, _gun, localization);
 
             HudScreens screens = view.gameObject.AddComponent<HudScreens>();
 

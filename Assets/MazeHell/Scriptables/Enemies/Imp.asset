@@ -49,9 +49,9 @@ MonoBehaviour:
   _flinchTime: 0.2
   _body:
     _bodyRadius: 0.55
-    _bodyHeight: 2.8
+    _bodyHeight: 3.8
     _agentRadius: 0.5
-    _agentHeight: 2.8
+    _agentHeight: 3.8
     _agentAcceleration: 20
     _agentAngularSpeed: 540
     _agentStoppingDistance: 2.2

@@ -111,6 +111,12 @@ namespace MazeHell.Session
 
             Subscribe();
             _session.Start(1, ResolveRunSeed());
+
+            if (_screens.IsNarrativeOpen)
+            {
+                _pauser.RequestPause();
+            }
+
             SetCursorLocked(_pauser.IsPaused == false);
         }
 
@@ -120,6 +126,18 @@ namespace MazeHell.Session
 
             if (_session.State == RunState.Dead)
             {
+                return;
+            }
+
+            if (_screens.IsNarrativeOpen)
+            {
+                _hud.Presenter.LateTick(Time.unscaledDeltaTime);
+
+                if (_input.IsAnyKeyPressed())
+                {
+                    _screens.DismissMonologue();
+                }
+
                 return;
             }
 
@@ -199,6 +217,7 @@ namespace MazeHell.Session
             _screens.MenuRequested += OnMenuRequested;
             _screens.VolumeChanged += OnVolumeChanged;
             _screens.SensitivityChanged += OnSensitivityChanged;
+            _screens.NarrativeCompleted += OnNarrativeCompleted;
             _pauser.Changed += OnPauseChanged;
             _isSubscribed = true;
         }
@@ -217,6 +236,7 @@ namespace MazeHell.Session
             _screens.MenuRequested -= OnMenuRequested;
             _screens.VolumeChanged -= OnVolumeChanged;
             _screens.SensitivityChanged -= OnSensitivityChanged;
+            _screens.NarrativeCompleted -= OnNarrativeCompleted;
             _pauser.Changed -= OnPauseChanged;
             _isSubscribed = false;
         }
@@ -262,6 +282,11 @@ namespace MazeHell.Session
             _screens.ShowDeath(session.LevelNumber, session.Kills, session.RunTime);
         }
 
+        private void OnNarrativeCompleted(HudScreens screens)
+        {
+            _pauser.Resume();
+        }
+
         private void OnResumeRequested(HudScreens screens)
         {
             _pauser.Resume();
@@ -293,7 +318,7 @@ namespace MazeHell.Session
         private void OnPauseChanged(bool isPaused)
         {
             bool isDead = _session.State == RunState.Dead;
-            _screens.ShowPause(isPaused && isDead == false);
+            _screens.ShowPause(isPaused && isDead == false && _screens.IsNarrativeOpen == false);
             SetCursorLocked(isPaused == false && isDead == false);
 
             if (isPaused == false && isDead == false)

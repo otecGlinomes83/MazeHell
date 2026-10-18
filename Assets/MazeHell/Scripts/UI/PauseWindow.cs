@@ -26,7 +26,7 @@ namespace MazeHell.UI
             _resumeText.text = localization.Get("pause_resume");
             _restartText.text = localization.Get("pause_restart");
             _menuText.text = localization.Get("pause_menu");
-            _settingsText.text = "НАСТРОЙКИ";
+            _settingsText.text = localization.Get("settings_title");
         }
     }
 }

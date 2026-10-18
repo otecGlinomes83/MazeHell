@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4668112e7658a9548af85cd086bb5945, type: 3}
   m_Name: Doors
   m_EditorClassIdentifier: MazeHell.Runtime::MazeHell.Configuration.DoorConfig
-  _openDistance: 32
-  _closeDistance: 40
-  _openDuration: 0.3
-  _closeDuration: 0.8
-  _holdOpenDuration: 1.5
-  _anticipationTime: 0.7
+  _openDistance: 8
+  _closeDistance: 12
+  _openDuration: 0.65
+  _closeDuration: 1.2
+  _holdOpenDuration: 0.6
+  _anticipationTime: 0.18
   _collisionMargin: 0.5
   _liftHeight: 5

@@ -20,7 +20,7 @@ namespace MazeHell.UI
         private DeathWindow _death;
         private SettingsWindow _settings;
         private NarrativePopup _narrative;
-        private float _narrativeRemaining;
+        private bool _isNarrativeOpen;
         private float _sensitivity;
         private bool _soundOn;
         private bool _resumeAfterClose;
@@ -30,6 +30,8 @@ namespace MazeHell.UI
         public event Action<HudScreens> MenuRequested;
         public event Action<float> VolumeChanged;
         public event Action<float> SensitivityChanged;
+        public event Action<HudScreens> NarrativeCompleted;
+        public bool IsNarrativeOpen => _isNarrativeOpen;
         public PauseWindow ActivePause => _pause;
         public DeathWindow ActiveDeath => _death;
         public SettingsWindow ActiveSettings => _settings;
@@ -101,18 +103,13 @@ namespace MazeHell.UI
             _popups.Push(_death);
         }
 
-        public void ShowMonologue(string text, float duration)
+        public void ShowMonologue(string text)
         {
             ReleaseNarrative();
 
-            if (duration <= 0f)
-            {
-                return;
-            }
-
             _narrative = _spawner.Spawn(_view.NarrativePrefab);
-            _narrative.Setup(text);
-            _narrativeRemaining = duration;
+            _narrative.Setup(text, _view.Portrait, _localization.Get("intro_continue"));
+            _isNarrativeOpen = true;
             _narrative.Closed += OnNarrativeClosed;
             _narrative.Show();
         }
@@ -124,9 +121,12 @@ namespace MazeHell.UI
                 return;
             }
 
-            _narrativeRemaining -= deltaTime;
+            _narrative.Tick(deltaTime);
+        }
 
-            if (_narrativeRemaining <= 0f)
+        public void DismissMonologue()
+        {
+            if (_narrative != null)
             {
                 _narrative.BeginClose();
             }
@@ -297,6 +297,7 @@ namespace MazeHell.UI
         private void OnNarrativeClosed(BaseWindow window)
         {
             ReleaseNarrative();
+            NarrativeCompleted?.Invoke(this);
         }
 
         private void ReleaseNarrative()
@@ -309,6 +310,7 @@ namespace MazeHell.UI
             _narrative.Closed -= OnNarrativeClosed;
             _spawner.Release(_narrative);
             _narrative = null;
+            _isNarrativeOpen = false;
         }
 
         private void OnDisable()

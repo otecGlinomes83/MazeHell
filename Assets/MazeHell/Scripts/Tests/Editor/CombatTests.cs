@@ -86,9 +86,6 @@ namespace MazeHell.Tests
             Assert.AreEqual(0, _gun.Ammo);
             Assert.AreEqual(ShotgunState.Reloading, _gun.State);
             _gun.Tick(new InputSnapshot(), _config.ReloadDuration);
-            Assert.AreEqual(1, _gun.Ammo);
-            Assert.AreEqual(ShotgunState.Reloading, _gun.State);
-            _gun.Tick(new InputSnapshot(), _config.ReloadDuration);
             Assert.AreEqual(2, _gun.Ammo);
             Assert.AreEqual(ShotgunState.Ready, _gun.State);
         }
@@ -145,15 +142,29 @@ namespace MazeHell.Tests
         }
 
         [Test]
-        public void FireInterruptsReloadAfterFirstShell()
+        public void FireInterruptsManualReloadWithLoadedShell()
         {
             _gun.Tick(FireInput(), 0f);
-            _gun.Tick(FireInput(), _config.MinShotInterval);
-            _gun.Tick(new InputSnapshot(), _config.ReloadDuration);
+            InputSnapshot reload = new InputSnapshot(Vector2.zero, Vector2.zero, false, false, false, false, false, true);
+            _gun.Tick(reload, _config.MinShotInterval);
+            _gun.Tick(new InputSnapshot(), _config.ReloadDuration * 0.5f);
             Assert.AreEqual(1, _gun.Ammo);
             _gun.Tick(FireInput(), 0f);
             Assert.AreEqual(0, _gun.Ammo);
-            Assert.AreEqual(3, _noiseCount);
+            Assert.AreEqual(2, _noiseCount);
+        }
+
+        [Test]
+        public void EmptyReloadRemainsEmptyUntilWholeCycleCompletes()
+        {
+            _gun.Tick(FireInput(), 0f);
+            _gun.Tick(FireInput(), _config.MinShotInterval);
+            _gun.Tick(new InputSnapshot(), _config.ReloadDuration * 0.5f);
+            Assert.AreEqual(0, _gun.Ammo);
+            Assert.AreEqual(ShotgunState.Reloading, _gun.State);
+            _gun.Tick(new InputSnapshot(), _config.ReloadDuration * 0.5f);
+            Assert.AreEqual(2, _gun.Ammo);
+            Assert.AreEqual(ShotgunState.Ready, _gun.State);
         }
 
         private PlayerDefense CreateDefense()

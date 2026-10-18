@@ -35,7 +35,7 @@ namespace MazeHell.UI
         private bool _isSetupFinished;
 
         public void Setup(HudView view, PlayerRig player, InterfaceConfig ui, AnimationLibrary animations,
-            HudMotionConfig hud, PlayerMovementConfig movement, ShotgunConfig gun)
+            HudMotionConfig hud, PlayerMovementConfig movement, ShotgunConfig gun, Localization localization)
         {
             if (view == null)
             {
@@ -72,6 +72,11 @@ namespace MazeHell.UI
                 throw new ArgumentNullException(nameof(gun));
             }
 
+            if (localization == null)
+            {
+                throw new ArgumentNullException(nameof(localization));
+            }
+
             if (view.Spring == null || view.Portrait == null || view.WeaponAnimator == null ||
                 view.PortraitImage == null || view.WeaponImage == null || view.BarrelLeft == null ||
                 view.BarrelRight == null || view.DashImage == null || view.HealthFill == null ||
@@ -87,7 +92,7 @@ namespace MazeHell.UI
             _player = player;
             _interface = ui;
             _movement = movement;
-            _localization = null;
+            _localization = localization;
             _damageFlashTimer = 0f;
             _splashRemaining = 0f;
             _isSetupFinished = true;
@@ -158,12 +163,12 @@ namespace MazeHell.UI
 
             if (_view.ObjectiveText != null)
             {
-                _view.ObjectiveText.text = presentation.ObjectiveText;
+                _view.ObjectiveText.text = localization.Get(presentation.ObjectiveKey);
             }
 
             if (level == 1)
             {
-                _view.Screens.ShowMonologue(presentation.FirstLevelMonologue, presentation.MonologueDuration);
+                _view.Screens.ShowMonologue(localization.Get(presentation.FirstLevelMonologueKey));
             }
         }
 
@@ -177,7 +182,8 @@ namespace MazeHell.UI
             }
 
             _view.HealthFill.fillAmount = healthFraction;
-            _view.HealthText.text = Mathf.CeilToInt(healthFraction * 100f).ToString() + "%";
+            int currentHealth = Mathf.CeilToInt(health.CurrentHealth);
+            _view.HealthText.text = string.Format(_localization.Get("hud_health_format"), currentHealth);
         }
 
         private void OnShotgunChanged(Shotgun gun)

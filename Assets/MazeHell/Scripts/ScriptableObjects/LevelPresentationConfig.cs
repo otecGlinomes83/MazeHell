@@ -14,6 +14,16 @@ namespace MazeHell.Configuration
         [Header("Lighting")]
         [SerializeField] private Color _ambientLightColor = Color.white;
 
+        [Header("Wall Progression")]
+        [SerializeField] private Color _wallTintStart = new Color(1f, 0.64f, 0.52f, 1f);
+        [SerializeField] private Color _wallTintDeep = new Color(1.25f, 0.18f, 0.12f, 1f);
+        [Range(0.001f, 1f)] [SerializeField] private float _wallReddeningPerLevel = 0.08f;
+        [Range(0f, 1f)] [SerializeField] private float _wallSaturation = 0.55f;
+        [Range(0f, 3f)] [SerializeField] private float _wallBrightness = 1.4f;
+        [Range(0f, 1f)] [SerializeField] private float _wallCorruptionStart = 0.03f;
+        [Range(0f, 1f)] [SerializeField] private float _wallCorruptionPerLevel = 0.09f;
+        [Min(0.1f)] [SerializeField] private float _wallCorruptionTileSize = 8f;
+
         [Header("Exit Gate")]
         [SerializeField] private GameObject _gateLeafPrefab;
 
@@ -32,9 +42,8 @@ namespace MazeHell.Configuration
         [Min(1f)] [SerializeField] private float _entranceSpawnInset = 8f;
 
         [Header("Objective")]
-        [TextArea(3, 6)] [SerializeField] private string _firstLevelMonologue = "Я спущусь в самый центр ада.\nНужно найти проход глубже.\nБесы на пути меня не остановят.";
-        [TextArea(1, 3)] [SerializeField] private string _objectiveText = "НАЙДИ ВЫХОД В СЛЕДУЮЩИЙ КРУГ";
-        [Min(0f)] [SerializeField] private float _monologueDuration = 10f;
+        [SerializeField] private string _firstLevelMonologueKey = "intro_monologue";
+        [SerializeField] private string _objectiveKey = "level_objective";
 
         [Min(0.1f)]
         [SerializeField] private float _transitionEndInset = 1f;
@@ -51,6 +60,14 @@ namespace MazeHell.Configuration
         public float FogDensity => _fogDensity;
 
         public Color AmbientLightColor => _ambientLightColor;
+        public Color WallTintStart => _wallTintStart;
+        public Color WallTintDeep => _wallTintDeep;
+        public float WallReddeningPerLevel => _wallReddeningPerLevel;
+        public float WallSaturation => _wallSaturation;
+        public float WallBrightness => _wallBrightness;
+        public float WallCorruptionStart => _wallCorruptionStart;
+        public float WallCorruptionPerLevel => _wallCorruptionPerLevel;
+        public float WallCorruptionTileSize => _wallCorruptionTileSize;
 
         public GameObject GateLeafPrefab => _gateLeafPrefab;
 
@@ -61,9 +78,8 @@ namespace MazeHell.Configuration
         public bool ExitRequiresAllKills => _exitRequiresAllKills;
         public GameObject BlackCorridorPrefab => _blackCorridorPrefab;
         public float EntranceSpawnInset => _entranceSpawnInset;
-        public string FirstLevelMonologue => _firstLevelMonologue;
-        public string ObjectiveText => _objectiveText;
-        public float MonologueDuration => _monologueDuration;
+        public string FirstLevelMonologueKey => _firstLevelMonologueKey;
+        public string ObjectiveKey => _objectiveKey;
 
         public float DarkCorridorLength => _darkCorridorLength;
 

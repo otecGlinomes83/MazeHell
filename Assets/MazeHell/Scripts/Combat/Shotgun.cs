@@ -141,15 +141,7 @@ namespace MazeHell.Combat
                 return;
             }
 
-            _ammo = Mathf.Min(_ammo + 1, _config.BarrelCount);
-
-            if (_ammo < _config.BarrelCount)
-            {
-                _reloadTimer = _config.ReloadDuration;
-                ReloadStarted?.Invoke(this);
-                Changed?.Invoke(this);
-                return;
-            }
+            _ammo = _config.BarrelCount;
 
             if (_isBlocking == false)
             {

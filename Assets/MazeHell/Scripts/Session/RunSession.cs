@@ -16,8 +16,8 @@ namespace MazeHell.Session
 
         public event Action<RunSession> Died;
 
-        private const string GateHornCueId = "gate_horn";
-        private const string GateMoveCueId = "gate_move";
+        private const string DoorOpenCueId = "door_open";
+        private const string GateOpenCueId = "gate_open";
         private const float CorridorLateralTolerance = 1f;
         private const float FadeAlphaEpsilon = 0.001f;
 
@@ -46,7 +46,6 @@ namespace MazeHell.Session
         private float _runTime;
         private float _transitionProgress;
         private float _generationWait;
-        private bool _isGateHornPlayed;
         private bool _isStarted;
 
         public RunState State => _state;
@@ -264,10 +263,20 @@ namespace MazeHell.Session
         private void BuildLevel(int levelNumber, int seed)
         {
             _levelNumber = levelNumber;
-            _isGateHornPlayed = false;
             _currentLevel = _levelFactory.Build(levelNumber, seed, _levelParent, _pendingLayout);
             _pendingLayout = null;
             _exitGate = _currentLevel.ExitGate;
+            _exitGate.Opened += OnExitGateOpened;
+
+            foreach (ProximityDoor door in _currentLevel.Root.GetComponentsInChildren<ProximityDoor>())
+            {
+                door.Opening += OnDoorOpening;
+            }
+
+            foreach (DecorationBillboard decoration in _currentLevel.GeometryRoot.GetComponentsInChildren<DecorationBillboard>())
+            {
+                decoration.Setup(_player.Camera);
+            }
             _presenter.ShowLevel(levelNumber, _localization, _presentation);
 
             SpawnEnemies();
@@ -313,6 +322,12 @@ namespace MazeHell.Session
             }
 
             _currentLevel.NavMeshSurface.RemoveData();
+            _exitGate.Opened -= OnExitGateOpened;
+
+            foreach (ProximityDoor door in _currentLevel.Root.GetComponentsInChildren<ProximityDoor>())
+            {
+                door.Opening -= OnDoorOpening;
+            }
             _currentLevel.Root.SetActive(false);
             UnityEngine.Object.Destroy(_currentLevel.Root);
             _currentLevel = null;
@@ -325,6 +340,7 @@ namespace MazeHell.Session
             _registry.CountChanged -= OnRegistryCountChanged;
             _registry.EnemyKilled -= OnEnemyKilled;
             _registry.Clear();
+            DestroyCurrentLevel();
         }
 
         private void PrecomputeNextLevel()
@@ -389,14 +405,17 @@ namespace MazeHell.Session
             _presenter.SetEnemyCount(remainingCount);
             _exitGate.SetRemainingEnemies(remainingCount);
 
-            if (remainingCount > 0 || _isGateHornPlayed)
-            {
-                return;
-            }
+        }
 
-            _isGateHornPlayed = true;
-            _audio.Play(GateHornCueId, Vector3.zero);
-            _audio.Play(GateMoveCueId, _exitGate.transform.position);
+        private void OnDoorOpening(ProximityDoor door)
+        {
+            _audio.Play(DoorOpenCueId, door.transform.position);
+        }
+
+        private void OnExitGateOpened(ExitGate gate)
+        {
+            _audio.Play(GateOpenCueId, Vector3.zero);
+            _player.CameraMotion.ReactGateOpen();
         }
 
         private void OnEnemyKilled(float healOnKill)

@@ -61,6 +61,12 @@ namespace MazeHell.Configuration
         [Min(0.01f)]
         [SerializeField] private float _landingImpactReferenceSpeed = 7f;
 
+        [Header("Gate Shake")]
+        [Min(0.01f)] [SerializeField] private float _gateShakeDuration = 0.85f;
+        [Min(0.1f)] [SerializeField] private float _gateShakeFrequency = 14f;
+        [Min(0f)] [SerializeField] private float _gateShakePosition = 0.06f;
+        [Min(0f)] [SerializeField] private float _gateShakeDegrees = 1.8f;
+
         [Header("Limits")]
         [Min(0f)]
         [SerializeField] private float _maxTotalPositionOffset = 0.3f;
@@ -69,6 +75,10 @@ namespace MazeHell.Configuration
         [SerializeField] private float _maxTotalRotationDegrees = 8f;
 
         public float MouseSensitivity => _mouseSensitivity;
+        public float GateShakeDuration => _gateShakeDuration;
+        public float GateShakeFrequency => _gateShakeFrequency;
+        public float GateShakePosition => _gateShakePosition;
+        public float GateShakeDegrees => _gateShakeDegrees;
 
         public float MinMouseSensitivity => _minMouseSensitivity;
 

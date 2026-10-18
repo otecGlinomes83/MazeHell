@@ -329,6 +329,8 @@ namespace MazeHell.Audio
                 return;
             }
 
+            int availableSource = -1;
+
             for (int sourceIndex = 0; sourceIndex < _sourceCount; sourceIndex++)
             {
                 if (_sfxSources[sourceIndex].isPlaying)
@@ -336,25 +338,41 @@ namespace MazeHell.Audio
                     continue;
                 }
 
-                _sourceCueIndices[sourceIndex] = cueIndex;
-                _sourceBaseVolumes[sourceIndex] = cue.Volume * _config.SfxVolume;
-
-                AudioSource source = _sfxSources[sourceIndex];
-                float pitchVariation = cue.PitchVariation;
-
-                source.spatialBlend = cue.SpatialBlend;
-                source.minDistance = cue.MinDistance;
-                source.maxDistance = cue.MaxDistance;
-                source.rolloffMode = AudioRolloffMode.Linear;
-                source.ignoreListenerPause = cue.IgnoreListenerPause;
-                source.clip = cue.Clip;
-                source.volume = _sourceBaseVolumes[sourceIndex] * _masterVolume;
-                source.pitch = BasePitch + UnityEngine.Random.Range(-pitchVariation, pitchVariation);
-                source.transform.position = position;
-                source.Play();
-
-                return;
+                availableSource = sourceIndex;
+                break;
             }
+
+            if (availableSource < 0)
+            {
+                if (cue.IsCritical == false)
+                {
+                    return;
+                }
+
+                availableSource = 0;
+            }
+
+            PlayOnSource(availableSource, cueIndex, cue, position);
+        }
+
+        private void PlayOnSource(int sourceIndex, int cueIndex, AudioCueData cue, Vector3 position)
+        {
+            _sourceCueIndices[sourceIndex] = cueIndex;
+            _sourceBaseVolumes[sourceIndex] = cue.Volume * _config.SfxVolume;
+
+            AudioSource source = _sfxSources[sourceIndex];
+            float pitchVariation = cue.PitchVariation;
+
+            source.spatialBlend = cue.SpatialBlend;
+            source.minDistance = cue.MinDistance;
+            source.maxDistance = cue.MaxDistance;
+            source.rolloffMode = AudioRolloffMode.Linear;
+            source.ignoreListenerPause = cue.IgnoreListenerPause;
+            source.clip = cue.Clip;
+            source.volume = _sourceBaseVolumes[sourceIndex] * _masterVolume;
+            source.pitch = BasePitch + UnityEngine.Random.Range(-pitchVariation, pitchVariation);
+            source.transform.position = position;
+            source.Play();
         }
 
         private float ComputeMusicTargetVolume()

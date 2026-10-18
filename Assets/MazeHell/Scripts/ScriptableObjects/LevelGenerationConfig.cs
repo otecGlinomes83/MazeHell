@@ -88,7 +88,6 @@ namespace MazeHell.Configuration
         [Min(0.5f)] [SerializeField] private float _decorationWallInset = 2f;
         [Min(0.5f)] [SerializeField] private float _decorationSpacing = 4f;
         [Min(0.5f)] [SerializeField] private float _doorwayClearance = 5f;
-        [Min(1f)] [SerializeField] private float _decorationRouteClearance = 2.5f;
 
         [Header("Module Catalog")]
         [SerializeField] private ModuleCatalogEntry[] _moduleCatalog = new ModuleCatalogEntry[0];
@@ -146,7 +145,6 @@ namespace MazeHell.Configuration
         public float DecorationWallInset => _decorationWallInset;
         public float DecorationSpacing => _decorationSpacing;
         public float DoorwayClearance => _doorwayClearance;
-        public float DecorationRouteClearance => _decorationRouteClearance;
     }
 
     [Serializable]

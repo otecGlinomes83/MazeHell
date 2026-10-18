@@ -129,8 +129,9 @@ namespace MazeHell.Level
             entranceDoor.Setup(_generationConfig.DoorConfig);
             doors.Add(entranceDoor);
             ModuleCatalogEntry black = new ModuleCatalogEntry("black_corridor", _presentationConfig.BlackCorridorPrefab, straight.FootprintSize);
-            Vector3 entranceEnd = PlaceExitCorridor(root.GeometryRoot, black, entrance.TransitionAnchor);
-            Vector3 entranceSpawn = entranceEnd - entrance.TransitionAnchor.forward * _presentationConfig.EntranceSpawnInset;
+            PlaceExitCorridor(root.GeometryRoot, black, entrance.TransitionAnchor);
+            Vector3 entranceSpawn = entrance.TransitionAnchor.position +
+                entrance.TransitionAnchor.forward * _presentationConfig.EntranceSpawnInset;
             HashSet<int> branchCells = PlaceSideRooms(root, layout, rooms, straight, doors, spawnAreas, random);
             Transform exitPort = rooms[layout.ExitCellIndex].GetPort(MazeDirection.East);
             LevelModule exitConnector = Attach(straight, exitPort, MazeDirection.South, root.GeometryRoot);
@@ -159,11 +160,11 @@ namespace MazeHell.Level
 
             Vector3 corridorEnd = PlaceExitCorridor(root.GeometryRoot, black, corridorStart);
             Physics.SyncTransforms();
+            ApplyWallTint(root.GeometryRoot, levelNumber);
             root.Navigation.BuildNavMesh();
             root.Resources.Setup(root.Navigation.navMeshData);
             Vector3 spawn = SnapToNavMesh(entranceSpawn, seed);
-            List<Vector3[]> protectedPaths = CollectProtectedPaths(root.GeometryRoot, spawn);
-            PlaceDecorations(root.GeometryRoot, protectedPaths, new System.Random(seed));
+            PlaceDecorations(root.GeometryRoot, new System.Random(seed));
             Physics.SyncTransforms();
             Vector3[] enemies = SampleSpawnPositions(spawn, ComputeEnemyCount(levelNumber), _generationConfig.EnemyMinSpawnDistance,
                 _generationConfig.EnemyMinSpacing, spawnAreas, random, seed);
@@ -172,6 +173,40 @@ namespace MazeHell.Level
             return new GeneratedLevel(root.gameObject, root.GeometryRoot, spawn, Quaternion.LookRotation(-entrance.TransitionAnchor.forward),
                 layout, exitGate, corridorStart.position, corridorEnd, corridorStart.forward, straight.FootprintSize.x * 0.5f,
                 enemies, pickups, root.Navigation, doors.ToArray());
+        }
+
+        private void ApplyWallTint(Transform root, int levelNumber)
+        {
+            float progress = Mathf.Clamp01((levelNumber - 1) * _presentationConfig.WallReddeningPerLevel);
+            Color tint = Color.Lerp(_presentationConfig.WallTintStart, _presentationConfig.WallTintDeep, progress);
+            MaterialPropertyBlock properties = new MaterialPropertyBlock();
+            Renderer[] renderers = root.GetComponentsInChildren<Renderer>();
+
+            foreach (Renderer renderer in renderers)
+            {
+                Material[] materials = renderer.sharedMaterials;
+
+                for (int materialIndex = 0; materialIndex < materials.Length; materialIndex++)
+                {
+                    Material material = materials[materialIndex];
+
+                    if (material == null || material.shader.name != "MazeHell/Environment Unlit")
+                    {
+                        continue;
+                    }
+
+                    properties.Clear();
+                    renderer.GetPropertyBlock(properties, materialIndex);
+                    properties.SetColor("_BaseColor", tint);
+                    properties.SetFloat("_Saturation", _presentationConfig.WallSaturation);
+                    properties.SetFloat("_Brightness", _presentationConfig.WallBrightness);
+                    float corruption = Mathf.Clamp01(_presentationConfig.WallCorruptionStart +
+                        (levelNumber - 1) * _presentationConfig.WallCorruptionPerLevel);
+                    properties.SetFloat("_GrimeAmount", corruption);
+                    properties.SetFloat("_GrimeScale", _presentationConfig.WallCorruptionTileSize);
+                    renderer.SetPropertyBlock(properties, materialIndex);
+                }
+            }
         }
 
         private LevelModule[] PlaceGridRooms(Transform parent, MazeLayout layout, ModuleCatalogEntry[] entries, float pitch,
@@ -316,7 +351,7 @@ namespace MazeHell.Level
             return branchCells;
         }
 
-        private void PlaceDecorations(Transform root, List<Vector3[]> protectedPaths, System.Random random)
+        private void PlaceDecorations(Transform root, System.Random random)
         {
             GameObject[] prefabs = _generationConfig.DecorationPrefabs;
 
@@ -349,7 +384,6 @@ namespace MazeHell.Level
                     availablePoints.RemoveAt(index);
 
                     if (HasNearbyPosition(point.position, placedPositions, _generationConfig.DecorationSpacing) ||
-                        IsNearRoute(point.position, protectedPaths) ||
                         modules[moduleIndex].IsNearDoorway(point.position, _generationConfig.DoorwayClearance) ||
                         Physics.CheckBox(point.position + Vector3.up * 1.4f,
                             new Vector3(_generationConfig.DecorationWallInset * 0.5f, 1.3f, _generationConfig.DecorationWallInset * 0.5f), point.rotation,
@@ -370,54 +404,6 @@ namespace MazeHell.Level
                     placed++;
                 }
             }
-        }
-
-        private List<Vector3[]> CollectProtectedPaths(Transform root, Vector3 origin)
-        {
-            List<Vector3[]> paths = new List<Vector3[]>();
-            LevelModule[] modules = root.GetComponentsInChildren<LevelModule>();
-            NavMeshPath path = new NavMeshPath();
-
-            for (int moduleIndex = 0; moduleIndex < modules.Length; moduleIndex++)
-            {
-                Transform port = modules[moduleIndex].GetPort(MazeDirection.South);
-                Vector3 target = port.position - port.forward * SpawnInset + Vector3.up;
-
-                if (NavMesh.SamplePosition(target, out NavMeshHit hit, NavMeshSampleRadius, NavMesh.AllAreas) &&
-                    NavMesh.CalculatePath(origin, hit.position, NavMesh.AllAreas, path) && path.status == NavMeshPathStatus.PathComplete)
-                {
-                    paths.Add(path.corners);
-                }
-            }
-
-            return paths;
-        }
-
-        private bool IsNearRoute(Vector3 point, List<Vector3[]> paths)
-        {
-            point.y = 0f;
-
-            for (int pathIndex = 0; pathIndex < paths.Count; pathIndex++)
-            {
-                Vector3[] corners = paths[pathIndex];
-
-                for (int cornerIndex = 1; cornerIndex < corners.Length; cornerIndex++)
-                {
-                    Vector3 start = corners[cornerIndex - 1];
-                    Vector3 end = corners[cornerIndex];
-                    start.y = 0f;
-                    end.y = 0f;
-                    Vector3 span = end - start;
-                    float progress = Mathf.Clamp01(Vector3.Dot(point - start, span) / Mathf.Max(0.001f, span.sqrMagnitude));
-
-                    if (Vector3.Distance(point, start + span * progress) < _generationConfig.DecorationRouteClearance)
-                    {
-                        return true;
-                    }
-                }
-            }
-
-            return false;
         }
 
         private void PlaceClosedDoor(Transform port, Transform parent)

@@ -6,6 +6,12 @@ namespace MazeHell.Input
     [DisallowMultipleComponent]
     public class DesktopInput : MonoBehaviour
     {
+        public bool IsAnyKeyPressed()
+        {
+            Keyboard keyboard = Keyboard.current;
+            return keyboard != null && keyboard.anyKey.wasPressedThisFrame;
+        }
+
         public InputSnapshot Poll()
         {
             Keyboard keyboard = Keyboard.current;

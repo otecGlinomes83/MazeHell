@@ -66,6 +66,8 @@ namespace MazeHell.Configuration
             new AudioCueData("heal"),
             new AudioCueData("gate_horn"),
             new AudioCueData("gate_move"),
+            new AudioCueData("door_open"),
+            new AudioCueData("gate_open"),
             new AudioCueData("ui_click")
         };
 
@@ -117,6 +119,7 @@ namespace MazeHell.Configuration
         [SerializeField] private float _maxDistance = 40f;
 
         [SerializeField] private bool _ignoreListenerPause;
+        [SerializeField] private bool _isCritical;
 
         public AudioCueData()
         {
@@ -142,5 +145,6 @@ namespace MazeHell.Configuration
         public float MaxDistance => _maxDistance;
 
         public bool IgnoreListenerPause => _ignoreListenerPause;
+        public bool IsCritical => _isCritical;
     }
 }

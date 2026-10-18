@@ -44,12 +44,13 @@ MonoBehaviour:
   - {fileID: 9033084025851967740, guid: ee9ed7484fe294449996a0fb774bc02d, type: 3}
   - {fileID: 60110699629777371, guid: 77955f50c7d75ad48ad8bf0f0b4863fb, type: 3}
   - {fileID: 200471985472480722, guid: 745387805c19d11408b246ff83288c12, type: 3}
-  _decorationsPerRoomMin: 3
-  _decorationsPerRoomMax: 6
+  - {fileID: 431791465552198164, guid: 90cc0b7681996d74fbc0dd2d9da77d4f, type: 3}
+  - {fileID: 6641517383454263061, guid: cef10270694d75241bae63f4eb92b740, type: 3}
+  _decorationsPerRoomMin: 6
+  _decorationsPerRoomMax: 10
   _decorationWallInset: 2
-  _decorationSpacing: 4
+  _decorationSpacing: 3
   _doorwayClearance: 5
-  _decorationRouteClearance: 2.5
   _moduleCatalog:
   - _moduleId: room_quarters
     _prefab: {fileID: 4391102051133032310, guid: 2da64404262d55b13a8486a8962d90ce, type: 3}

@@ -51,7 +51,15 @@ namespace MazeHell.Configuration
             new LocalizationEntry("death_level_format", "УРОВЕНЬ: {0}", "LEVEL: {0}"),
             new LocalizationEntry("death_kills_format", "УБИЙСТВА: {0}", "KILLS: {0}"),
             new LocalizationEntry("death_time_format", "ВРЕМЯ: {0} С", "TIME: {0} S"),
-            new LocalizationEntry("death_best_format", "РЕКОРД: УР. {0} · {1} УБ.", "BEST: LV. {0} · {1} KILLS")
+            new LocalizationEntry("death_best_format", "РЕКОРД: УР. {0} · {1} УБ.", "BEST: LV. {0} · {1} KILLS"),
+            new LocalizationEntry("settings_title", "НАСТРОЙКИ", "SETTINGS"),
+            new LocalizationEntry("window_back", "НАЗАД", "BACK"),
+            new LocalizationEntry("intro_continue", "НАЖМИ ЛЮБУЮ КЛАВИШУ", "PRESS ANY KEY"),
+            new LocalizationEntry("hud_health_format", "{0} ХП", "{0} HP"),
+            new LocalizationEntry("level_objective", "НАЙДИ ПРОХОД В СЛЕДУЮЩИЙ КРУГ", "FIND THE PASSAGE TO THE NEXT CIRCLE"),
+            new LocalizationEntry("intro_monologue",
+                "Я дойду до самого центра ада. Найду проход в каждый следующий круг.\nИ уничтожу их всех нахуй. Пусть попробуют меня остановить.",
+                "I'll reach the very heart of Hell. Find a way through every circle.\nAnd fucking destroy them all. Let them try to stop me.")
         };
 
         public GameLanguage DefaultLanguage => _defaultLanguage;

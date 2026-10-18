@@ -76,6 +76,16 @@ namespace MazeHell.Tests
         }
 
         [Test]
+        public void GateShakeMovesCameraThenSettles()
+        {
+            _motion.ReactGateOpen();
+            _motion.Tick(0f, true, 0.016f);
+            Assert.Greater(_motion.RotationOffset.sqrMagnitude, 0.001f);
+            _motion.Tick(0f, true, _cameraConfig.GateShakeDuration + 0.1f);
+            Assert.Less(_motion.RotationOffset.sqrMagnitude, 0.00001f);
+        }
+
+        [Test]
         public void PortraitSubscribesWhenSetupRunsOnActiveObject()
         {
             AnimationLibrary sprites = AssetDatabase.LoadAssetAtPath<AnimationLibrary>(

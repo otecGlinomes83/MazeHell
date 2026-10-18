@@ -32,6 +32,7 @@ MonoBehaviour:
     _minDistance: 3
     _maxDistance: 40
     _ignoreListenerPause: 0
+    _isCritical: 0
   - _cueId: shotgun_volley
     _clip: {fileID: 8300000, guid: cdc53522ba03d811e92fb4f555d199eb, type: 3}
     _volume: 1
@@ -40,6 +41,7 @@ MonoBehaviour:
     _minDistance: 3
     _maxDistance: 40
     _ignoreListenerPause: 0
+    _isCritical: 0
   - _cueId: shotgun_reload
     _clip: {fileID: 8300000, guid: ec1f1669e1c5cffffbfae4b7a5565da5, type: 3}
     _volume: 1
@@ -48,6 +50,7 @@ MonoBehaviour:
     _minDistance: 3
     _maxDistance: 40
     _ignoreListenerPause: 0
+    _isCritical: 0
   - _cueId: footstep
     _clip: {fileID: 8300000, guid: 58521c579895101b187c9ee21aa49c6e, type: 3}
     _volume: 1
@@ -56,6 +59,7 @@ MonoBehaviour:
     _minDistance: 3
     _maxDistance: 40
     _ignoreListenerPause: 0
+    _isCritical: 0
   - _cueId: heartbeat
     _clip: {fileID: 8300000, guid: 4325b2050bd5ea812854b8876b807d13, type: 3}
     _volume: 1
@@ -64,6 +68,7 @@ MonoBehaviour:
     _minDistance: 3
     _maxDistance: 40
     _ignoreListenerPause: 0
+    _isCritical: 0
   - _cueId: jump
     _clip: {fileID: 8300000, guid: 74a70eb81b684c969b17092543c04d86, type: 3}
     _volume: 1
@@ -72,6 +77,7 @@ MonoBehaviour:
     _minDistance: 3
     _maxDistance: 40
     _ignoreListenerPause: 0
+    _isCritical: 0
   - _cueId: land
     _clip: {fileID: 8300000, guid: b217e60e99292dda3a5281c78f33564b, type: 3}
     _volume: 1
@@ -80,6 +86,7 @@ MonoBehaviour:
     _minDistance: 3
     _maxDistance: 40
     _ignoreListenerPause: 0
+    _isCritical: 0
   - _cueId: dash
     _clip: {fileID: 8300000, guid: 174b124e2c6623757974f45ed588aac9, type: 3}
     _volume: 1
@@ -88,6 +95,7 @@ MonoBehaviour:
     _minDistance: 3
     _maxDistance: 40
     _ignoreListenerPause: 0
+    _isCritical: 0
   - _cueId: block
     _clip: {fileID: 8300000, guid: 001cc527956a296279c5928fcaf21e07, type: 3}
     _volume: 1
@@ -96,6 +104,7 @@ MonoBehaviour:
     _minDistance: 3
     _maxDistance: 40
     _ignoreListenerPause: 0
+    _isCritical: 0
   - _cueId: player_hit
     _clip: {fileID: 8300000, guid: 67be1172753fe6e148af4e3a337e38e3, type: 3}
     _volume: 1
@@ -104,6 +113,7 @@ MonoBehaviour:
     _minDistance: 3
     _maxDistance: 40
     _ignoreListenerPause: 0
+    _isCritical: 0
   - _cueId: imp_alert
     _clip: {fileID: 8300000, guid: a46476b3b4fde4155b12dc3720506daf, type: 3}
     _volume: 1
@@ -112,6 +122,7 @@ MonoBehaviour:
     _minDistance: 3
     _maxDistance: 40
     _ignoreListenerPause: 0
+    _isCritical: 0
   - _cueId: imp_windup
     _clip: {fileID: 8300000, guid: 9793f0d66d2dc744c930065270c934d8, type: 3}
     _volume: 1
@@ -120,6 +131,7 @@ MonoBehaviour:
     _minDistance: 3
     _maxDistance: 40
     _ignoreListenerPause: 0
+    _isCritical: 0
   - _cueId: imp_lunge
     _clip: {fileID: 8300000, guid: af0fad56c45f1323d912d5d9ce946ffd, type: 3}
     _volume: 1
@@ -128,6 +140,7 @@ MonoBehaviour:
     _minDistance: 3
     _maxDistance: 40
     _ignoreListenerPause: 0
+    _isCritical: 0
   - _cueId: imp_pain
     _clip: {fileID: 8300000, guid: 8cf291d62bc2f30d1aca814a7e82cc9c, type: 3}
     _volume: 1
@@ -136,6 +149,7 @@ MonoBehaviour:
     _minDistance: 3
     _maxDistance: 40
     _ignoreListenerPause: 0
+    _isCritical: 0
   - _cueId: imp_death
     _clip: {fileID: 8300000, guid: 409528bf8b5711cd6812dc6c802d97c8, type: 3}
     _volume: 1
@@ -144,6 +158,7 @@ MonoBehaviour:
     _minDistance: 3
     _maxDistance: 40
     _ignoreListenerPause: 0
+    _isCritical: 0
   - _cueId: heal
     _clip: {fileID: 8300000, guid: ba099d399408fc439b690f4e2b7c82f0, type: 3}
     _volume: 1
@@ -152,6 +167,7 @@ MonoBehaviour:
     _minDistance: 3
     _maxDistance: 40
     _ignoreListenerPause: 0
+    _isCritical: 0
   - _cueId: gate_horn
     _clip: {fileID: 8300000, guid: 0f6b85a93297e2128816d914857bdade, type: 3}
     _volume: 1
@@ -160,6 +176,7 @@ MonoBehaviour:
     _minDistance: 3
     _maxDistance: 40
     _ignoreListenerPause: 0
+    _isCritical: 0
   - _cueId: gate_move
     _clip: {fileID: 8300000, guid: b237d12ba23e8a0e69f439a4be6240ac, type: 3}
     _volume: 1
@@ -168,6 +185,7 @@ MonoBehaviour:
     _minDistance: 3
     _maxDistance: 40
     _ignoreListenerPause: 0
+    _isCritical: 0
   - _cueId: ui_click
     _clip: {fileID: 8300000, guid: c8c5deaf8b540c13c882ccf253f7ac2b, type: 3}
     _volume: 1
@@ -176,6 +194,7 @@ MonoBehaviour:
     _minDistance: 3
     _maxDistance: 40
     _ignoreListenerPause: 1
+    _isCritical: 0
   - _cueId: imp_footstep
     _clip: {fileID: 8300000, guid: 58521c579895101b187c9ee21aa49c6e, type: 3}
     _volume: 0.45
@@ -184,3 +203,22 @@ MonoBehaviour:
     _minDistance: 3
     _maxDistance: 40
     _ignoreListenerPause: 0
+    _isCritical: 0
+  - _cueId: door_open
+    _clip: {fileID: 8300000, guid: b3d5f3b1d597f9648990b710d58888e7, type: 3}
+    _volume: 0.9
+    _pitchVariation: 0.025
+    _spatialBlend: 1
+    _minDistance: 4
+    _maxDistance: 30
+    _ignoreListenerPause: 0
+    _isCritical: 0
+  - _cueId: gate_open
+    _clip: {fileID: 8300000, guid: f0b6a2d434a904c48872e1d558d98d4b, type: 3}
+    _volume: 0.9
+    _pitchVariation: 0.025
+    _spatialBlend: 0
+    _minDistance: 4
+    _maxDistance: 30
+    _ignoreListenerPause: 0
+    _isCritical: 1

@@ -147,8 +147,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06ab0e982e82982f0bcadfa56d2f3b21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: MazeHell.Runtime::MazeHell.Enemies.EnemySpriteAnimator
-  _worldHeight: 2.8
-  _corpseWorldHeight: 0.8
+  _worldHeight: 4.2
+  _corpseWorldHeight: 1.6
 --- !u!114 &5647151622520964826
 MonoBehaviour:
   m_ObjectHideFlags: 0
