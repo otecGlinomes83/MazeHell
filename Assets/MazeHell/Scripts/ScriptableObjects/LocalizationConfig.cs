@@ -58,6 +58,7 @@ namespace MazeHell.Configuration
             new LocalizationEntry("window_back", "НАЗАД", "BACK"),
             new LocalizationEntry("intro_continue", "НАЖМИ ЛЮБУЮ КЛАВИШУ", "PRESS ANY KEY"),
             new LocalizationEntry("hud_health_format", "{0} ХП", "{0} HP"),
+            new LocalizationEntry("level_objective_exit", "ВРАГИ УНИЧТОЖЕНЫ · ПРОЙДИ К ВЫХОДУ", "AREA CLEARED · REACH THE EXIT"),
             new LocalizationEntry("level_objective_kill_format", "УБЕЙ ВРАГОВ · ОСТАЛОСЬ: {0}", "KILL THE ENEMIES · REMAINING: {0}"),
             new LocalizationEntry("level_objective", "НАЙДИ ПРОХОД В СЛЕДУЮЩИЙ КРУГ", "FIND THE PASSAGE TO THE NEXT CIRCLE"),
             new LocalizationEntry("intro_monologue",

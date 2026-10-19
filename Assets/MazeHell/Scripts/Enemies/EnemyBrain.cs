@@ -220,6 +220,11 @@ namespace MazeHell.Enemies
             }
 
             _loseSightTimer = Mathf.Max(0f, _loseSightTimer - deltaTime);
+
+            if (_loseSightTimer > 0f && _perception.HasTargetLineOfSight)
+            {
+                _lastSeenPosition = _targetTransform.position;
+            }
         }
 
         private void UpdateIdle()
@@ -279,10 +284,11 @@ namespace MazeHell.Enemies
 
         private void UpdateChasing()
         {
-            bool isTargetVisible = _perception.IsTargetVisible;
+            bool isTargetTracked = _perception.IsTargetVisible ||
+                (_loseSightTimer > 0f && _perception.HasTargetLineOfSight);
             float arrivalStoppingDistance = _config.Perception.ReturnToleranceDistance * ArrivalStoppingScale;
 
-            if (isTargetVisible)
+            if (isTargetTracked)
             {
                 _locomotion.SetDestination(_targetTransform.position, _config.Body.AgentStoppingDistance);
             }
@@ -295,7 +301,7 @@ namespace MazeHell.Enemies
 
             float attackRangeSqr = _config.Attack.AttackRange * _config.Attack.AttackRange;
 
-            if (isTargetVisible && _attackCooldownTimer <= 0f && FlatSqrDistanceTo(_targetTransform.position) <= attackRangeSqr)
+            if (isTargetTracked && _attackCooldownTimer <= 0f && FlatSqrDistanceTo(_targetTransform.position) <= attackRangeSqr)
             {
                 _locomotion.Stop();
                 _windupElapsed = 0f;
@@ -305,7 +311,7 @@ namespace MazeHell.Enemies
                 return;
             }
 
-            if (isTargetVisible)
+            if (_loseSightTimer > 0f)
             {
                 return;
             }

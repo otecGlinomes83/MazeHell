@@ -158,6 +158,7 @@ namespace MazeHell.Tests
 
             Assert.Less(Mathf.Abs(Vector3.Dot(enemies[0].Renderer.transform.forward, Vector3.up)), 0.01f);
             Assert.AreEqual(enemies.Length, session.Kills);
+            Assert.AreEqual(0, session.RemainingEnemies);
             Assert.Greater(composition.Player.Health.CurrentHealth, 50f);
             Assert.IsFalse(session.CurrentLevel.ExitGate.IsUnlocked);
             ExitGate gate = session.CurrentLevel.ExitGate;
@@ -175,6 +176,7 @@ namespace MazeHell.Tests
             Assert.AreEqual(RunState.Generating, session.State);
             session.Tick(10f);
             Assert.AreEqual(2, session.LevelNumber);
+            Assert.AreEqual(session.Enemies.Length, session.RemainingEnemies);
             Assert.AreNotSame(firstLevel.Map, session.CurrentLevel.Map);
             Assert.AreSame(session.CurrentLevel.Map, composition.Hud.Minimap.Map);
             Assert.AreEqual(session.CurrentLevel.Map.EntranceRoomIndex, session.CurrentLevel.Map.CurrentRoomIndex);

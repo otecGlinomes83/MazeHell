@@ -130,6 +130,9 @@ MonoBehaviour:
   - _key: hud_health_format
     _russian: "{0} \u0425\u041F"
     _english: '{0} HP'
+  - _key: level_objective_exit
+    _russian: 'ВРАГИ УНИЧТОЖЕНЫ · ПРОЙДИ К ВЫХОДУ'
+    _english: AREA CLEARED · REACH THE EXIT
   - _key: level_objective_kill_format
     _russian: 'УБЕЙ ВРАГОВ · ОСТАЛОСЬ: {0}'
     _english: 'KILL THE ENEMIES · REMAINING: {0}'

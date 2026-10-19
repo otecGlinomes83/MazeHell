@@ -18,11 +18,14 @@ namespace MazeHell.Enemies
 
         private float _perceptionTimer;
         private bool _isVisible;
+        private bool _hasTargetLineOfSight;
         private Vector3 _noisePosition;
         private bool _hasFreshNoise;
         private bool _isSubscribed;
 
         public bool IsTargetVisible => _isVisible;
+
+        public bool HasTargetLineOfSight => _hasTargetLineOfSight;
 
         public void Setup(Transform targetTransform, ShotNoise noise, EnemyConfig config)
         {
@@ -55,6 +58,7 @@ namespace MazeHell.Enemies
 
             _perceptionTimer = 0f;
             _isVisible = false;
+            _hasTargetLineOfSight = false;
             _hasFreshNoise = false;
             _noisePosition = Vector3.zero;
 
@@ -145,6 +149,7 @@ namespace MazeHell.Enemies
 
         private bool ComputeVisibility()
         {
+            _hasTargetLineOfSight = false;
             EnemyPerceptionData perception = _config.Perception;
             float chestHeight = _config.Body.BodyHeight * EyeHeightFraction;
             Vector3 eyePosition = transform.position + Vector3.up * chestHeight;
@@ -154,6 +159,22 @@ namespace MazeHell.Enemies
             float flatDistance = flatOffset.magnitude;
 
             if (flatDistance > perception.VisionRange)
+            {
+                return false;
+            }
+
+            Vector3 lineOfSight = targetChest - eyePosition;
+            float sightDistance = lineOfSight.magnitude;
+
+            _hasTargetLineOfSight = true;
+
+            if (sightDistance > 0f && Physics.Raycast(eyePosition, lineOfSight, out RaycastHit hit,
+                sightDistance, perception.PerceptionMask, QueryTriggerInteraction.Ignore))
+            {
+                _hasTargetLineOfSight = hit.transform.IsChildOf(_targetTransform);
+            }
+
+            if (_hasTargetLineOfSight == false)
             {
                 return false;
             }
@@ -170,20 +191,7 @@ namespace MazeHell.Enemies
                 }
             }
 
-            Vector3 lineOfSight = targetChest - eyePosition;
-            float sightDistance = lineOfSight.magnitude;
-
-            if (sightDistance <= 0f)
-            {
-                return true;
-            }
-
-            if (Physics.Raycast(eyePosition, lineOfSight, out RaycastHit hit, sightDistance, perception.PerceptionMask, QueryTriggerInteraction.Ignore) == false)
-            {
-                return true;
-            }
-
-            return hit.transform.IsChildOf(_targetTransform);
+            return true;
         }
 
         private void OnDisable()

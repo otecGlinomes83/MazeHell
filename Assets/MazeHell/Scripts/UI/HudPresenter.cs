@@ -13,9 +13,11 @@ namespace MazeHell.UI
     {
         private const string LevelSplashFormatKey = "level_splash_format";
         private const string KillObjectiveFormatKey = "level_objective_kill_format";
+        private const string ClearedObjectiveKey = "level_objective_exit";
 
         private ObjectiveBanner _objective;
-        private int _remainingEnemies;
+        private EnemyRegistry _enemyRegistry;
+        private int _displayedRemainingEnemies = -1;
         private bool _isExitDiscovered;
 
         private const float MinimalDashCooldown = 0.01f;
@@ -163,7 +165,7 @@ namespace MazeHell.UI
             _splashRemaining = Mathf.Max(0f, presentation.LevelSplashDuration);
 
             _isExitDiscovered = false;
-            _remainingEnemies = 0;
+            _displayedRemainingEnemies = -1;
             _objective.Reset(localization.Get(presentation.ObjectiveKey));
 
             if (level == 1)
@@ -172,39 +174,80 @@ namespace MazeHell.UI
             }
         }
 
-        public void SetEnemyCount(int count)
+        public void BindEnemyRegistry(EnemyRegistry registry)
         {
             AssertSetup();
 
-            if (count < 0)
+            if (registry == null)
             {
-                throw new ArgumentOutOfRangeException(nameof(count));
+                throw new ArgumentNullException(nameof(registry));
             }
 
-            _remainingEnemies = count;
+            _enemyRegistry = registry;
+        }
 
-            if (_isExitDiscovered)
+        public void RefreshEnemyObjective()
+        {
+            AssertSetup();
+
+            if (_isExitDiscovered == false || _enemyRegistry == null)
             {
-                _objective.UpdateText(BuildKillObjective());
+                return;
             }
+
+            int remainingEnemies = _enemyRegistry.RemainingCount;
+
+            if (remainingEnemies == _displayedRemainingEnemies)
+            {
+                return;
+            }
+
+            bool completionChanged = remainingEnemies == 0 || _displayedRemainingEnemies == 0;
+            _displayedRemainingEnemies = remainingEnemies;
+            string text = BuildEnemyObjective(remainingEnemies);
+
+            if (completionChanged)
+            {
+                _objective.Change(text);
+                return;
+            }
+
+            _objective.UpdateText(text);
         }
 
         private void UpdateObjective()
         {
             LevelMap map = _view.Minimap.Map;
 
-            if (_isExitDiscovered || map == null || map.IsRoomDiscovered(map.ExitRoomIndex) == false)
+            if (_enemyRegistry == null || map == null)
+            {
+                return;
+            }
+
+            if (_isExitDiscovered)
+            {
+                RefreshEnemyObjective();
+                return;
+            }
+
+            if (map.IsRoomDiscovered(map.ExitRoomIndex) == false)
             {
                 return;
             }
 
             _isExitDiscovered = true;
-            _objective.Change(BuildKillObjective());
+            _displayedRemainingEnemies = _enemyRegistry.RemainingCount;
+            _objective.Change(BuildEnemyObjective(_displayedRemainingEnemies));
         }
 
-        private string BuildKillObjective()
+        private string BuildEnemyObjective(int remainingEnemies)
         {
-            return string.Format(_localization.Get(KillObjectiveFormatKey), _remainingEnemies);
+            if (remainingEnemies == 0)
+            {
+                return _localization.Get(ClearedObjectiveKey);
+            }
+
+            return string.Format(_localization.Get(KillObjectiveFormatKey), remainingEnemies);
         }
 
         private void OnHealthChanged(Health health)

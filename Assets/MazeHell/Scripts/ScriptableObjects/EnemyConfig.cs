@@ -89,10 +89,10 @@ namespace MazeHell.Configuration
         [SerializeField] private float _visionFovDegrees = 90f;
 
         [Min(0f)]
-        [SerializeField] private float _hearingRadius = 25f;
+        [SerializeField] private float _hearingRadius = 40f;
 
         [Min(0.05f)]
-        [SerializeField] private float _loseSightGraceTime = 1f;
+        [SerializeField] private float _loseSightGraceTime = 3f;
 
         [Min(0.1f)]
         [SerializeField] private float _searchWaitDuration = 2.5f;

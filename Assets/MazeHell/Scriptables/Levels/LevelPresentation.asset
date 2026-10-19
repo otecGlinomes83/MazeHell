@@ -19,7 +19,6 @@ MonoBehaviour:
   _gateLiftHeight: 4
   _gateLiftDuration: 0.35
   _gateActivationDistance: 2.2
-  _exitRequiresAllKills: 0
   _darkCorridorLength: 120
   _blackCorridorPrefab: {fileID: 4959810375406999065, guid: b4f102facc056334da3897dce50667d3, type: 3}
   _entranceSpawnInset: 8

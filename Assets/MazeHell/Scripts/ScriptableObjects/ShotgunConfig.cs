@@ -46,7 +46,7 @@ namespace MazeHell.Configuration
 
         [Header("Shot Noise")]
         [Min(0f)]
-        [SerializeField] private float _noiseRadius = 25f;
+        [SerializeField] private float _noiseRadius = 40f;
 
         [Header("Muzzle Flash")]
         [Min(0f)]

@@ -33,6 +33,7 @@ namespace MazeHell.Level
             _leafClosedPosition = _leaf.position;
             _liftProgress = 0f;
             _isUnlocked = false;
+            _enemiesCleared = false;
             _isSetupFinished = true;
         }
 
@@ -56,7 +57,7 @@ namespace MazeHell.Level
             Vector3 offset = position - _leafClosedPosition;
             offset.y = 0f;
 
-            if (_isUnlocked == false && (_presentationConfig.ExitRequiresAllKills == false || _enemiesCleared) &&
+            if (_isUnlocked == false && _enemiesCleared &&
                 offset.magnitude <= _presentationConfig.GateActivationDistance)
             {
                 _isUnlocked = true;

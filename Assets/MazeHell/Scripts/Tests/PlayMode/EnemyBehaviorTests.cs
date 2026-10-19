@@ -253,6 +253,89 @@ namespace MazeHell.Tests
             Assert.IsTrue(_brain.State == EnemyState.Chasing || _brain.State == EnemyState.Windup);
         }
 
+        [UnityTest]
+        public IEnumerator SeenHeroRemainsTrackedBehindEnemyDuringGrace()
+        {
+            _hero.transform.position = new Vector3(GeometryOriginX, 0.05f, GeometryOriginZ + 6f);
+            Physics.SyncTransforms();
+            _brain.Tick(_enemyConfig.PathRefreshInterval);
+            Assert.AreEqual(EnemyState.Chasing, _brain.State);
+
+            _enemy.GetComponent<NavMeshAgent>().Warp(new Vector3(GeometryOriginX, 0f, GeometryOriginZ + 6f));
+            _hero.transform.position = new Vector3(GeometryOriginX, 0.05f, GeometryOriginZ - 5f);
+            Physics.SyncTransforms();
+            _brain.Tick(_enemyConfig.PathRefreshInterval);
+            _brain.Tick(_enemyConfig.PathRefreshInterval);
+
+            Assert.AreEqual(EnemyState.Chasing, _brain.State);
+            Vector3 destination = _enemy.GetComponent<NavMeshAgent>().destination;
+            Assert.AreEqual(_hero.transform.position.x, destination.x, 0.1f);
+            Assert.AreEqual(_hero.transform.position.z, destination.z, 0.1f);
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator TrackingBehindEnemyExpiresWithoutFreshSight()
+        {
+            _hero.transform.position = new Vector3(GeometryOriginX, 0.05f, GeometryOriginZ + 6f);
+            Physics.SyncTransforms();
+            _brain.Tick(_enemyConfig.PathRefreshInterval);
+            _hero.transform.position = new Vector3(GeometryOriginX, 0.05f, GeometryOriginZ - 6f);
+            Physics.SyncTransforms();
+
+            float elapsed = 0f;
+
+            while (elapsed <= _enemyConfig.Perception.LoseSightGraceTime + _enemyConfig.PathRefreshInterval)
+            {
+                _enemy.transform.rotation = Quaternion.identity;
+                _brain.Tick(_enemyConfig.Perception.PerceptionInterval);
+                elapsed += _enemyConfig.Perception.PerceptionInterval;
+            }
+
+            Assert.AreEqual(EnemyState.Investigating, _brain.State);
+            _hero.transform.position = new Vector3(GeometryOriginX + 8f, 0.05f, GeometryOriginZ - 6f);
+            Physics.SyncTransforms();
+            _brain.Tick(_enemyConfig.PathRefreshInterval);
+            Assert.AreEqual(EnemyState.Investigating, _brain.State);
+            Assert.Less(_enemy.GetComponent<NavMeshAgent>().destination.x, GeometryOriginX + 1f);
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator WallStopsUpdatingRememberedPlayerPosition()
+        {
+            _hero.transform.position = new Vector3(GeometryOriginX, 0.05f, GeometryOriginZ + 6f);
+            Physics.SyncTransforms();
+            _brain.Tick(_enemyConfig.PathRefreshInterval);
+            _wall = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            _wall.transform.position = new Vector3(GeometryOriginX, 1f, GeometryOriginZ + 3f);
+            _wall.transform.localScale = new Vector3(10f, 3f, 0.4f);
+            _hero.transform.position = new Vector3(GeometryOriginX + 2f, 0.05f, GeometryOriginZ + 6f);
+            Physics.SyncTransforms();
+            _brain.Tick(_enemyConfig.PathRefreshInterval);
+
+            Assert.AreEqual(EnemyState.Chasing, _brain.State);
+            Assert.AreEqual(GeometryOriginX, _enemy.GetComponent<NavMeshAgent>().destination.x, 0.1f);
+            Assert.AreEqual(HeroMaxHealth, _heroHealth.CurrentHealth);
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator HearingReachesFortyMetersButRespectsQuietNoiseRadius()
+        {
+            _hero.transform.position = new Vector3(GeometryOriginX, 0.05f, GeometryOriginZ + 30f);
+            Vector3 noisePosition = new Vector3(GeometryOriginX + 32f, 0f, GeometryOriginZ);
+            Physics.SyncTransforms();
+            _noise.Emit(noisePosition, 25f);
+            _brain.Tick(FixedDelta);
+            Assert.AreEqual(EnemyState.Idle, _brain.State);
+
+            _noise.Emit(noisePosition, 40f);
+            _brain.Tick(FixedDelta);
+            Assert.AreEqual(EnemyState.Investigating, _brain.State);
+            yield return null;
+        }
+
         private IEnumerator TickFrames(int frameCount)
         {
             for (int frameIndex = 0; frameIndex < frameCount; frameIndex += 1)

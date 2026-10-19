@@ -81,6 +81,7 @@ namespace MazeHell.Tests
 
             Assert.IsFalse(_level.ExitGate.IsUnlocked);
             _level.ExitGate.SetRemainingEnemies(1);
+            _level.ExitGate.TickPlayer(_level.ExitGate.transform.position, Vector3.zero, 1.8f, 0.1f);
             Assert.IsFalse(_level.ExitGate.IsUnlocked);
             _level.ExitGate.SetRemainingEnemies(0);
             Assert.IsFalse(_level.ExitGate.IsUnlocked);

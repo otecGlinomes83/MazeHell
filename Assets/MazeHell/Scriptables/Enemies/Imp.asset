@@ -24,8 +24,8 @@ MonoBehaviour:
   _perception:
     _visionRange: 12
     _visionFovDegrees: 90
-    _hearingRadius: 25
-    _loseSightGraceTime: 1
+    _hearingRadius: 40
+    _loseSightGraceTime: 3
     _searchWaitDuration: 2.5
     _returnToleranceDistance: 0.5
     _perceptionInterval: 0.1

@@ -54,6 +54,8 @@ namespace MazeHell.Session
 
         public int Kills => _kills;
 
+        public int RemainingEnemies => _registry.RemainingCount;
+
         public float RunTime => _runTime;
 
         public GeneratedLevel CurrentLevel => _currentLevel;
@@ -138,6 +140,7 @@ namespace MazeHell.Session
             _presentation = presentation;
             _levelParent = levelParent;
             _registry = new EnemyRegistry();
+            _presenter.BindEnemyRegistry(_registry);
             _enemies = new EnemyRig[0];
             _state = RunState.Generating;
 
@@ -404,7 +407,7 @@ namespace MazeHell.Session
         private void OnRegistryCountChanged(int remainingCount)
         {
             _exitGate.SetRemainingEnemies(remainingCount);
-            _presenter.SetEnemyCount(remainingCount);
+            _presenter.RefreshEnemyObjective();
         }
 
         private void OnDoorOpening(ProximityDoor door)

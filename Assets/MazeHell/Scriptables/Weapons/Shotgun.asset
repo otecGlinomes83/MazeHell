@@ -26,7 +26,7 @@ MonoBehaviour:
   _reloadBreakProgress: 0.4
   _shotSpriteHoldTime: 0.08
   _volleySpriteHoldTime: 0.12
-  _noiseRadius: 25
+  _noiseRadius: 40
   _muzzleFlashIntensity: 45
   _muzzleFlashDuration: 0.06
   _muzzleFlashRange: 8

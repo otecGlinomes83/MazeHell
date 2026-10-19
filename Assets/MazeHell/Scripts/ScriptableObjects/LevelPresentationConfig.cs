@@ -33,7 +33,6 @@ namespace MazeHell.Configuration
         [Min(0.1f)]
         [SerializeField] private float _gateLiftDuration = 1.5f;
         [Min(0.1f)] [SerializeField] private float _gateActivationDistance = 2.2f;
-        [SerializeField] private bool _exitRequiresAllKills = false;
 
         [Header("Transition Corridor")]
         [Min(1f)]
@@ -75,7 +74,6 @@ namespace MazeHell.Configuration
 
         public float GateLiftDuration => _gateLiftDuration;
         public float GateActivationDistance => _gateActivationDistance;
-        public bool ExitRequiresAllKills => _exitRequiresAllKills;
         public GameObject BlackCorridorPrefab => _blackCorridorPrefab;
         public float EntranceSpawnInset => _entranceSpawnInset;
         public string FirstLevelMonologueKey => _firstLevelMonologueKey;
