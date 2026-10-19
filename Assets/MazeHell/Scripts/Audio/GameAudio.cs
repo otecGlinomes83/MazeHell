@@ -15,6 +15,17 @@ namespace MazeHell.Audio
         private const float MinimalFadeDuration = 0.01f;
 
         private const float BasePitch = 1f;
+        private const float MinimumLinearVolume = 0.0001f;
+        private const string MusicVolumeParameter = "MusicVolume";
+        private const string SfxVolumeParameter = "SFXVolume";
+
+        private AudioSource _heartbeatSource;
+        private HeartbeatRhythm _heartbeat;
+        private float _musicSetting = 1f;
+        private float _sfxSetting = 1f;
+        private bool _areMixerVolumesDirty;
+        private AudioClip[] _playlist;
+        private int _trackIndex;
 
         private AudioConfig _config;
 
@@ -39,8 +50,6 @@ namespace MazeHell.Audio
         private float _masterVolume;
 
         private float _transitionProgress;
-
-        private float _heartbeatTimer;
 
         private float _stepDistanceAccumulator;
 
@@ -93,6 +102,11 @@ namespace MazeHell.Audio
                 throw new InvalidOperationException($"{name}: audio config has no cues array.");
             }
 
+            if (config.AudioMixer == null || config.MusicMixerGroup == null || config.SfxMixerGroup == null)
+            {
+                throw new InvalidOperationException($"{name}: audio mixer and Music/SFX groups must be assigned.");
+            }
+
             _config = config;
             _musicSource = musicSource;
             _sfxSources = sfxSources;
@@ -111,10 +125,31 @@ namespace MazeHell.Audio
 
             _masterVolume = Mathf.Clamp01(config.MasterVolume);
             _transitionProgress = 0f;
-            _heartbeatTimer = 0f;
+
             _stepDistanceAccumulator = 0f;
             _musicVolumeCurrent = 0f;
             _isMusicPlaying = false;
+            _heartbeat = new HeartbeatRhythm(config);
+            _musicSource.outputAudioMixerGroup = config.MusicMixerGroup;
+            _musicSource.playOnAwake = false;
+
+            foreach (AudioSource source in _sfxSources)
+            {
+                source.outputAudioMixerGroup = config.SfxMixerGroup;
+                source.playOnAwake = false;
+            }
+
+            if (_heartbeatSource == null)
+            {
+                _heartbeatSource = gameObject.AddComponent<AudioSource>();
+            }
+
+            _heartbeatSource.playOnAwake = false;
+            _heartbeatSource.spatialBlend = 0f;
+            _heartbeatSource.priority = 32;
+            _heartbeatSource.outputAudioMixerGroup = config.SfxMixerGroup;
+            _heartbeatSource.clip = _cues[_heartbeatCueIndex].Clip;
+            _areMixerVolumesDirty = true;
             _isSetupFinished = true;
         }
 
@@ -122,9 +157,18 @@ namespace MazeHell.Audio
         {
             AssertSetup();
 
+            ApplyMixerVolumes();
+
             if (_isMusicPlaying == false)
             {
                 return;
+            }
+
+            if (_playlist != null && _playlist.Length > 1 && _musicSource.isPlaying == false &&
+                AudioListener.pause == false)
+            {
+                _trackIndex = (_trackIndex + 1) % _playlist.Length;
+                PlayMusicClip(_playlist[_trackIndex], false);
             }
 
             float clampedDeltaTime = Mathf.Max(0f, deltaTime);
@@ -144,12 +188,87 @@ namespace MazeHell.Audio
                 return;
             }
 
+            _playlist = _config.GameplayMusicClips;
+            _trackIndex = 0;
+
+            if (_playlist != null && _playlist.Length > 0)
+            {
+                foreach (AudioClip clip in _playlist)
+                {
+                    if (clip == null)
+                    {
+                        throw new InvalidOperationException($"{name}: gameplay playlist contains a missing clip.");
+                    }
+                }
+
+                PlayMusicClip(_playlist[0], _playlist.Length == 1);
+                return;
+            }
+
+            PlayMusicClip(_config.MusicLoopClip, true);
+        }
+
+        public void StartMenuMusic()
+        {
+            AssertSetup();
+
+            if (_isMusicPlaying)
+            {
+                return;
+            }
+
+            _playlist = null;
+            AudioClip clip = _config.MenuMusicClip;
+
+            if (clip == null)
+            {
+                clip = _config.MusicLoopClip;
+            }
+
+            PlayMusicClip(clip, true);
+        }
+
+        private void PlayMusicClip(AudioClip clip, bool loop)
+        {
             _isMusicPlaying = true;
-            _musicSource.loop = true;
-            _musicSource.clip = _config.MusicLoopClip;
+            _musicSource.loop = loop;
+            _musicSource.clip = clip;
             _musicSource.volume = 0f;
             _musicVolumeCurrent = 0f;
             _musicSource.Play();
+        }
+
+        public void SetMusicVolume(float volume)
+        {
+            AssertSetup();
+            _musicSetting = Mathf.Clamp01(volume);
+            _areMixerVolumesDirty = true;
+        }
+
+        public void SetSfxVolume(float volume)
+        {
+            AssertSetup();
+            _sfxSetting = Mathf.Clamp01(volume);
+            _areMixerVolumesDirty = true;
+        }
+
+        private void ApplyMixerVolumes()
+        {
+            if (_areMixerVolumesDirty == false)
+            {
+                return;
+            }
+
+            float musicDecibels = Mathf.Log10(Mathf.Max(MinimumLinearVolume, _musicSetting)) * 20f;
+            float sfxDecibels = Mathf.Log10(Mathf.Max(MinimumLinearVolume, _sfxSetting)) * 20f;
+
+            if (_config.AudioMixer.SetFloat(MusicVolumeParameter, musicDecibels) == false ||
+                _config.AudioMixer.SetFloat(SfxVolumeParameter, sfxDecibels) == false)
+            {
+                throw new InvalidOperationException($"{name}: mixer must expose MusicVolume and SFXVolume.");
+            }
+
+            _areMixerVolumesDirty = false;
         }
 
         public void Play(string cueId, Vector3 position)
@@ -166,6 +285,7 @@ namespace MazeHell.Audio
             AssertSetup();
 
             _masterVolume = Mathf.Clamp01(volume);
+            _heartbeatSource.volume = _heartbeat.Volume * _config.SfxVolume * _masterVolume;
 
             for (int sourceIndex = 0; sourceIndex < _sourceCount; sourceIndex++)
             {
@@ -183,31 +303,19 @@ namespace MazeHell.Audio
         public void Heartbeat(float healthFraction, float deltaTime)
         {
             AssertSetup();
+            bool shouldBeat = _heartbeat.Tick(healthFraction, _transitionProgress, deltaTime);
+            _heartbeatSource.volume = _heartbeat.Volume * _config.SfxVolume * _masterVolume;
+            _heartbeatSource.pitch = _heartbeat.Pitch;
 
-            float clampedFraction = Mathf.Clamp01(healthFraction);
-            float clampedDeltaTime = Mathf.Max(0f, deltaTime);
-
-            bool isHeartActive = clampedFraction < 1f || _transitionProgress > 0f;
-
-            if (isHeartActive == false)
+            if (_heartbeat.IsActive == false)
             {
-                _heartbeatTimer = 0f;
-
+                _heartbeatSource.Stop();
                 return;
             }
 
-            float healthyInterval = _config.HeartbeatIntervalHealthy;
-            float criticalInterval = _config.HeartbeatIntervalCritical;
-            float healthInterval = Mathf.Lerp(healthyInterval, criticalInterval, 1f - clampedFraction);
-            float interval = Mathf.Lerp(healthInterval, criticalInterval, _transitionProgress);
-
-            _heartbeatTimer += clampedDeltaTime;
-
-            if (_heartbeatTimer >= interval)
+            if (shouldBeat)
             {
-                _heartbeatTimer = Mathf.Max(0f, _heartbeatTimer - interval);
-
-                PlayCue(_heartbeatCueIndex, Vector3.zero);
+                _heartbeatSource.Play();
             }
         }
 
@@ -241,6 +349,7 @@ namespace MazeHell.Audio
         {
             _isMusicPlaying = false;
             _musicSource.Stop();
+            _heartbeatSource.Stop();
 
             for (int sourceIndex = 0; sourceIndex < _sourceCount; sourceIndex++)
             {
@@ -249,7 +358,6 @@ namespace MazeHell.Audio
                 _sourceBaseVolumes[sourceIndex] = 0f;
             }
 
-            _heartbeatTimer = 0f;
         }
 
         private void BuildCueLookup(AudioCueData[] cues)
@@ -377,7 +485,8 @@ namespace MazeHell.Audio
 
         private float ComputeMusicTargetVolume()
         {
-            return _masterVolume * _config.MusicVolume * (1f - _transitionProgress);
+            float musicDuck = Mathf.Lerp(1f, _config.HeartbeatMusicDuck, _heartbeat.Intensity);
+            return _masterVolume * _config.MusicVolume * musicDuck;
         }
 
         private void AssertSetup()

@@ -108,8 +108,26 @@ namespace MazeHell.Level
                 roomEntries[roomIndex] = GetModuleEntry(_generationConfig.MainRoomIds[roomIndex]);
             }
             float pitch = ValidateGridModules(roomEntries, straight);
+            LevelMap map = new LevelMap();
             List<Bounds> spawnAreas = new List<Bounds>();
             LevelModule[] rooms = PlaceGridRooms(root.GeometryRoot, layout, roomEntries, pitch, random, spawnAreas);
+            for (int roomIndex = 0; roomIndex < rooms.Length; roomIndex++)
+            {
+                AddMapRoom(map, rooms[roomIndex], roomEntries[0]);
+            }
+
+            for (int cellIndex = 0; cellIndex < layout.Size; cellIndex++)
+            {
+                for (int directionIndex = 0; directionIndex < MazeDirections.Count; directionIndex++)
+                {
+                    if (layout.TryGetNeighborIndex(cellIndex, (MazeDirection)directionIndex, out int neighborIndex) &&
+                        neighborIndex > cellIndex)
+                    {
+                        map.Connect(cellIndex, neighborIndex);
+                    }
+                }
+            }
+
             ConnectGridRooms(root.GeometryRoot, root.transform, layout, rooms, straight, doors);
 
             Transform entryPort = rooms[layout.StartCellIndex].GetPort(MazeDirection.West);
@@ -117,6 +135,8 @@ namespace MazeHell.Level
             ModuleCatalogEntry entranceEntry = GetModuleEntry("room_gate");
             LevelModule entrance = Attach(entranceEntry, entryCorridor.GetPort(MazeDirection.North), MazeDirection.South, root.GeometryRoot);
             AddSpawnArea(spawnAreas, entrance, entranceEntry);
+            int entranceRoomIndex = AddMapRoom(map, entrance, entranceEntry);
+            map.Connect(entranceRoomIndex, layout.StartCellIndex);
             PlacePassageDoor(entryPort, root.transform, doors);
             PlacePassageDoor(entrance.GetPort(MazeDirection.South), root.transform, doors);
             GameObject entranceGate = UnityEngine.Object.Instantiate(_presentationConfig.GateLeafPrefab,
@@ -132,12 +152,16 @@ namespace MazeHell.Level
             PlaceExitCorridor(root.GeometryRoot, black, entrance.TransitionAnchor);
             Vector3 entranceSpawn = entrance.TransitionAnchor.position +
                 entrance.TransitionAnchor.forward * _presentationConfig.EntranceSpawnInset;
-            HashSet<int> branchCells = PlaceSideRooms(root, layout, rooms, straight, doors, spawnAreas, random);
+            HashSet<int> branchCells = PlaceSideRooms(root, layout, rooms, straight, doors, spawnAreas, random, map);
             Transform exitPort = rooms[layout.ExitCellIndex].GetPort(MazeDirection.East);
             LevelModule exitConnector = Attach(straight, exitPort, MazeDirection.South, root.GeometryRoot);
             ModuleCatalogEntry gateEntry = GetModuleEntry("room_gate");
             LevelModule gateRoom = Attach(gateEntry, exitConnector.GetPort(MazeDirection.North), MazeDirection.South, root.GeometryRoot);
             AddSpawnArea(spawnAreas, gateRoom, gateEntry);
+            int exitRoomIndex = AddMapRoom(map, gateRoom, gateEntry);
+            map.Connect(layout.ExitCellIndex, exitRoomIndex);
+            map.SetEndpoints(entranceRoomIndex, exitRoomIndex);
+            map.VisitPosition(map.Rooms[entranceRoomIndex].center);
             CloseGridPorts(root.GeometryRoot, layout, rooms, branchCells);
             PlacePassageDoor(exitPort, root.transform, doors);
             PlacePassageDoor(gateRoom.GetPort(MazeDirection.South), root.transform, doors);
@@ -172,7 +196,7 @@ namespace MazeHell.Level
                 _generationConfig.EnemyMinSpacing, spawnAreas, random, seed);
             return new GeneratedLevel(root.gameObject, root.GeometryRoot, spawn, Quaternion.LookRotation(-entrance.TransitionAnchor.forward),
                 layout, exitGate, corridorStart.position, corridorEnd, corridorStart.forward, straight.FootprintSize.x * 0.5f,
-                enemies, pickups, root.Navigation, doors.ToArray());
+                enemies, pickups, root.Navigation, doors.ToArray(), map);
         }
 
         private void ApplyWallTint(Transform root, int levelNumber)
@@ -310,7 +334,7 @@ namespace MazeHell.Level
         }
 
         private HashSet<int> PlaceSideRooms(LevelRoot root, MazeLayout layout, LevelModule[] rooms, ModuleCatalogEntry straight,
-            List<ProximityDoor> doors, List<Bounds> spawnAreas, System.Random random)
+            List<ProximityDoor> doors, List<Bounds> spawnAreas, System.Random random, LevelMap map)
         {
             HashSet<int> branchCells = new HashSet<int>();
             List<int> columns = new List<int>();
@@ -346,6 +370,8 @@ namespace MazeHell.Level
                 PlacePassageDoor(port, root.transform, doors);
                 PlacePassageDoor(branch.GetPort(MazeDirection.East), root.transform, doors);
                 AddSpawnArea(spawnAreas, branch, entry);
+                int branchRoomIndex = AddMapRoom(map, branch, entry);
+                map.Connect(cellIndex, branchRoomIndex, corner.transform.position);
             }
 
             return branchCells;
@@ -490,6 +516,16 @@ namespace MazeHell.Level
             }
 
             return roomWidth + length;
+        }
+
+        private int AddMapRoom(LevelMap map, LevelModule module, ModuleCatalogEntry entry)
+        {
+            Vector3 width = module.transform.right * entry.FootprintSize.x;
+            Vector3 depth = module.transform.forward * entry.FootprintSize.z;
+            Vector3 size = new Vector3(Mathf.Abs(width.x) + Mathf.Abs(depth.x), entry.FootprintSize.y,
+                Mathf.Abs(width.z) + Mathf.Abs(depth.z));
+            Vector3 center = module.transform.position + Vector3.up * size.y * 0.5f;
+            return map.AddRoom(new Bounds(center, size));
         }
 
         private void AddSpawnArea(List<Bounds> areas, LevelModule module, ModuleCatalogEntry entry)

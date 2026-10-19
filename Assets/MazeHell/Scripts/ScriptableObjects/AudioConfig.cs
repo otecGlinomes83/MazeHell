@@ -20,7 +20,12 @@ namespace MazeHell.Configuration
         [Header("Mixer")]
         [SerializeField] private AudioMixer _audioMixer;
 
+        [SerializeField] private AudioMixerGroup _musicMixerGroup;
+        [SerializeField] private AudioMixerGroup _sfxMixerGroup;
+
         [Header("Music")]
+        [SerializeField] private AudioClip _menuMusicClip;
+        [SerializeField] private AudioClip[] _gameplayMusicClips = new AudioClip[0];
         [SerializeField] private AudioClip _musicLoopClip;
 
         [Min(0f)]
@@ -39,6 +44,17 @@ namespace MazeHell.Configuration
 
         [Min(0.1f)]
         [SerializeField] private float _heartbeatIntervalCritical = 0.45f;
+
+        [Range(0.01f, 1f)]
+        [SerializeField] private float _heartbeatHealthThreshold = 0.3f;
+        [Range(0f, 1f)]
+        [SerializeField] private float _heartbeatVolumeHealthy = 0.55f;
+        [Range(0f, 1f)]
+        [SerializeField] private float _heartbeatVolumeCritical = 1f;
+        [Range(1f, 2f)]
+        [SerializeField] private float _heartbeatCriticalPitch = 1.3f;
+        [Range(0f, 1f)]
+        [SerializeField] private float _heartbeatMusicDuck = 0.55f;
 
         [Header("Footsteps")]
         [Min(0.1f)]
@@ -78,6 +94,15 @@ namespace MazeHell.Configuration
         public float SfxVolume => _sfxVolume;
 
         public AudioMixer AudioMixer => _audioMixer;
+        public AudioMixerGroup MusicMixerGroup => _musicMixerGroup;
+        public AudioMixerGroup SfxMixerGroup => _sfxMixerGroup;
+        public AudioClip MenuMusicClip => _menuMusicClip;
+        public AudioClip[] GameplayMusicClips => _gameplayMusicClips;
+        public float HeartbeatHealthThreshold => _heartbeatHealthThreshold;
+        public float HeartbeatVolumeHealthy => _heartbeatVolumeHealthy;
+        public float HeartbeatVolumeCritical => _heartbeatVolumeCritical;
+        public float HeartbeatCriticalPitch => _heartbeatCriticalPitch;
+        public float HeartbeatMusicDuck => _heartbeatMusicDuck;
 
         public AudioClip MusicLoopClip => _musicLoopClip;
 

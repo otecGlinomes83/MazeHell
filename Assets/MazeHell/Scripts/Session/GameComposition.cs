@@ -88,6 +88,8 @@ namespace MazeHell.Session
             _audio = gameObject.AddComponent<GameAudio>();
             _audio.Setup(_audioConfig, _musicSource, _sfxSources);
             _audio.SetVolume(_records.Volume);
+            _audio.SetMusicVolume(_records.MusicVolume);
+            _audio.SetSfxVolume(_records.SfxVolume);
             _audio.StartMusic();
 
             _noise = new ShotNoise();
@@ -216,6 +218,8 @@ namespace MazeHell.Session
             _screens.RestartRequested += OnRestartRequested;
             _screens.MenuRequested += OnMenuRequested;
             _screens.VolumeChanged += OnVolumeChanged;
+            _screens.MusicVolumeChanged += OnMusicVolumeChanged;
+            _screens.SfxVolumeChanged += OnSfxVolumeChanged;
             _screens.SensitivityChanged += OnSensitivityChanged;
             _screens.NarrativeCompleted += OnNarrativeCompleted;
             _pauser.Changed += OnPauseChanged;
@@ -235,6 +239,8 @@ namespace MazeHell.Session
             _screens.RestartRequested -= OnRestartRequested;
             _screens.MenuRequested -= OnMenuRequested;
             _screens.VolumeChanged -= OnVolumeChanged;
+            _screens.MusicVolumeChanged -= OnMusicVolumeChanged;
+            _screens.SfxVolumeChanged -= OnSfxVolumeChanged;
             _screens.SensitivityChanged -= OnSensitivityChanged;
             _screens.NarrativeCompleted -= OnNarrativeCompleted;
             _pauser.Changed -= OnPauseChanged;
@@ -275,6 +281,7 @@ namespace MazeHell.Session
 
         private void OnSessionDied(RunSession session)
         {
+            _audio.Heartbeat(0f, 0f);
             _records.TrySaveRecord(session.LevelNumber, session.Kills, session.RunTime);
             SetCursorLocked(false);
             _pauser.RequestPause();
@@ -307,6 +314,16 @@ namespace MazeHell.Session
         private void OnVolumeChanged(float volume)
         {
             _audio.SetVolume(volume);
+        }
+
+        private void OnMusicVolumeChanged(float volume)
+        {
+            _audio.SetMusicVolume(volume);
+        }
+
+        private void OnSfxVolumeChanged(float volume)
+        {
+            _audio.SetSfxVolume(volume);
         }
 
         private void OnSensitivityChanged(float sensitivity)

@@ -29,10 +29,6 @@ namespace MazeHell.UI
 
         private const string MenuRecordNoneKey = "menu_record_none";
 
-        private const string SoundOnKey = "sound_on";
-
-        private const string SoundOffKey = "sound_off";
-
         private const string MenuControlsHintKey = "menu_controls_hint";
 
         [SerializeField] private MenuView _view;
@@ -58,8 +54,13 @@ namespace MazeHell.UI
         private bool _isFirstUserClickHandled;
 
         private bool _isSoundOn;
+        private UiSpawner _spawner;
+        private MenuPopupStack _popups;
+        private SettingsWindow _settings;
 
         private bool _isStatusHintVisible;
+
+        public SettingsWindow ActiveSettings => _settings;
 
         private void Awake()
         {
@@ -74,6 +75,10 @@ namespace MazeHell.UI
 
             _audio.Setup(_audioConfig, _musicSource, _sfxSources);
             _audio.SetVolume(_records.Volume);
+            _audio.SetMusicVolume(_records.MusicVolume);
+            _audio.SetSfxVolume(_records.SfxVolume);
+            _spawner = new UiSpawner(_view.PopupRoot);
+            _popups = new MenuPopupStack(_view.MenuGroup);
 
             SetupSafeArea();
             SetupButton(_view.StartButton);
@@ -103,6 +108,8 @@ namespace MazeHell.UI
             {
                 return;
             }
+
+            ReleaseSettings();
 
             _view.StartButton.Clicked -= OnStartClicked;
             _view.LeaderboardButton.Clicked -= OnLeaderboardClicked;
@@ -148,20 +155,115 @@ namespace MazeHell.UI
         private void OnSoundClicked(MenuClick clicked)
         {
             HandleFirstUserClick();
+            _audio.Play(AudioClickCueId, Vector3.zero);
 
-            float newVolume = 0f;
+            if (_settings != null)
+            {
+                return;
+            }
+
+            _settings = _spawner.Spawn(_view.SettingsWindowPrefab);
+            SetupButton(_settings.Close);
+            SetupButton(_settings.Sound);
+            SetupButton(_settings.Decrease);
+            SetupButton(_settings.Increase);
+            _settings.Close.Clicked += OnSettingsClose;
+            _settings.Sound.Clicked += OnMasterSoundClicked;
+            _settings.Decrease.Clicked += OnDecrease;
+            _settings.Increase.Clicked += OnIncrease;
+            _settings.MusicSlider.Changed += OnMusicVolumeChanged;
+            _settings.SfxSlider.Changed += OnSfxVolumeChanged;
+            _settings.CloseRequested += OnSettingsCloseRequested;
+            _settings.Closed += OnSettingsClosed;
+            RefreshSettings();
+            _settings.Show();
+            _popups.Push(_settings);
+        }
+
+        private void OnMasterSoundClicked(MenuClick clicked)
+        {
+            float volume = 0f;
 
             if (_isSoundOn == false)
             {
-                newVolume = _interface.DefaultVolume;
+                volume = _interface.DefaultVolume;
             }
 
-            _isSoundOn = newVolume > 0f;
-            _records.SetVolume(newVolume);
-            _audio.SetVolume(newVolume);
-            _audio.Play(AudioClickCueId, Vector3.zero);
+            _isSoundOn = volume > 0f;
+            _records.SetVolume(volume);
+            _audio.SetVolume(volume);
+            RefreshSettings();
+        }
 
-            RefreshTexts();
+        private void OnMusicVolumeChanged(float volume)
+        {
+            _records.SetMusicVolume(volume);
+            _audio.SetMusicVolume(volume);
+        }
+
+        private void OnSfxVolumeChanged(float volume)
+        {
+            _records.SetSfxVolume(volume);
+            _audio.SetSfxVolume(volume);
+        }
+
+        private void OnDecrease(MenuClick clicked)
+        {
+            ChangeSensitivity(-_interface.SensitivityStep);
+        }
+
+        private void OnIncrease(MenuClick clicked)
+        {
+            ChangeSensitivity(_interface.SensitivityStep);
+        }
+
+        private void ChangeSensitivity(float delta)
+        {
+            float sensitivity = Mathf.Clamp(_records.MouseSensitivity + delta,
+                _cameraConfig.MinMouseSensitivity, _cameraConfig.MaxMouseSensitivity);
+            _records.SetMouseSensitivity(sensitivity);
+            RefreshSettings();
+        }
+
+        private void RefreshSettings()
+        {
+            _settings.Refresh(_localization, _isSoundOn, _records.MouseSensitivity,
+                _records.MusicVolume, _records.SfxVolume);
+        }
+
+        private void OnSettingsClose(MenuClick clicked)
+        {
+            _settings.BeginClose();
+        }
+
+        private void OnSettingsCloseRequested(BaseWindow window)
+        {
+            window.BeginClose();
+        }
+
+        private void OnSettingsClosed(BaseWindow window)
+        {
+            ReleaseSettings();
+        }
+
+        private void ReleaseSettings()
+        {
+            if (_settings == null)
+            {
+                return;
+            }
+
+            _settings.Close.Clicked -= OnSettingsClose;
+            _settings.Sound.Clicked -= OnMasterSoundClicked;
+            _settings.Decrease.Clicked -= OnDecrease;
+            _settings.Increase.Clicked -= OnIncrease;
+            _settings.MusicSlider.Changed -= OnMusicVolumeChanged;
+            _settings.SfxSlider.Changed -= OnSfxVolumeChanged;
+            _settings.CloseRequested -= OnSettingsCloseRequested;
+            _settings.Closed -= OnSettingsClosed;
+            _popups.Pop(_settings);
+            _spawner.Release(_settings);
+            _settings = null;
         }
 
         private void HandleFirstUserClick()
@@ -172,7 +274,7 @@ namespace MazeHell.UI
             }
 
             _isFirstUserClickHandled = true;
-            _audio.StartMusic();
+            _audio.StartMenuMusic();
         }
 
         private void SetupSafeArea()
@@ -204,21 +306,9 @@ namespace MazeHell.UI
             _view.LanguageText.text = _localization.Get(MenuLanguageKey) + ": " +
                 _localization.Get(LanguageValueKey);
 
-            RefreshSoundText();
+            _view.SoundText.text = _localization.Get("settings_title");
             RefreshRecordText();
             RefreshStatusText();
-        }
-
-        private void RefreshSoundText()
-        {
-            if (_isSoundOn)
-            {
-                _view.SoundText.text = _localization.Get(SoundOnKey);
-
-                return;
-            }
-
-            _view.SoundText.text = _localization.Get(SoundOffKey);
         }
 
         private void RefreshRecordText()
@@ -286,7 +376,8 @@ namespace MazeHell.UI
                 throw new InvalidOperationException($"{name}: sfx sources are not assigned.");
             }
 
-            if (_view.SafeRoot == null || _view.StartButton == null || _view.LeaderboardButton == null ||
+            if (_view.PopupRoot == null || _view.MenuGroup == null || _view.SettingsWindowPrefab == null ||
+                _view.SafeRoot == null || _view.StartButton == null || _view.LeaderboardButton == null ||
                 _view.LanguageButton == null || _view.SoundButton == null || _view.Title == null ||
                 _view.StartText == null || _view.LeaderboardText == null || _view.LanguageText == null ||
                 _view.SoundText == null || _view.RecordText == null || _view.StatusText == null)

@@ -17,6 +17,8 @@ namespace MazeHell.Tests
         private RecordStorage _records;
         private GameLanguage _language;
         private float _volume;
+        private float _musicVolume;
+        private float _sfxVolume;
         private Scene _menu;
 
         [UnitySetUp]
@@ -25,6 +27,8 @@ namespace MazeHell.Tests
             _records = new RecordStorage(1f, 0.12f);
             _language = _records.Language;
             _volume = _records.Volume;
+            _musicVolume = _records.MusicVolume;
+            _sfxVolume = _records.SfxVolume;
             _menu = EditorSceneManager.LoadSceneInPlayMode("Assets/MazeHell/Scenes/Menu.unity",
                 new LoadSceneParameters(LoadSceneMode.Single));
             yield return null;
@@ -36,13 +40,15 @@ namespace MazeHell.Tests
             RecordStorage restored = new RecordStorage(1f, 0.12f);
             restored.SetLanguage(_language);
             restored.SetVolume(_volume);
+            restored.SetMusicVolume(_musicVolume);
+            restored.SetSfxVolume(_sfxVolume);
             Scene blank = SceneManager.CreateScene("MenuTestCleanup");
             SceneManager.SetActiveScene(blank);
             yield return SceneManager.UnloadSceneAsync(_menu);
         }
 
         [UnityTest]
-        public IEnumerator SerializedMenuSupportsLanguageSoundAndLeaderboardActions()
+        public IEnumerator SerializedMenuSupportsLanguageSettingsAndLeaderboardActions()
         {
             MenuView view = null;
             GameObject[] roots = _menu.GetRootGameObjects();
@@ -65,9 +71,22 @@ namespace MazeHell.Tests
             Assert.AreNotEqual(language, view.LanguageText.text);
             view.LanguageButton.OnPointerClick(click);
             Assert.AreEqual(language, view.LanguageText.text);
-            string sound = view.SoundText.text;
             view.SoundButton.OnPointerClick(click);
-            Assert.AreNotEqual(sound, view.SoundText.text);
+            SettingsWindow settings = view.PopupRoot.GetComponentInChildren<SettingsWindow>();
+            Assert.IsNotNull(settings);
+            Assert.IsNotNull(settings.MusicSlider);
+            Assert.IsNotNull(settings.SfxSlider);
+            Assert.AreEqual(_musicVolume, settings.MusicSlider.value);
+            Assert.AreEqual(_sfxVolume, settings.SfxSlider.value);
+            settings.MusicSlider.value = 0.23f;
+            settings.SfxSlider.value = 0.67f;
+            RecordStorage changed = new RecordStorage(1f, 0.12f);
+            Assert.AreEqual(0.23f, changed.MusicVolume);
+            Assert.AreEqual(0.67f, changed.SfxVolume);
+            Assert.AreEqual(_volume, changed.Volume);
+            settings.Close.OnPointerClick(click);
+            yield return new WaitForSecondsRealtime(0.2f);
+            Assert.IsNull(view.PopupRoot.GetComponentInChildren<SettingsWindow>());
             view.LeaderboardButton.OnPointerClick(click);
             Assert.IsFalse(string.IsNullOrEmpty(view.StatusText.text));
             Assert.AreEqual(CursorLockMode.None, Cursor.lockState);

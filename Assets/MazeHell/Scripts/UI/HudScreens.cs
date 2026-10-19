@@ -29,6 +29,8 @@ namespace MazeHell.UI
         public event Action<HudScreens> RestartRequested;
         public event Action<HudScreens> MenuRequested;
         public event Action<float> VolumeChanged;
+        public event Action<float> MusicVolumeChanged;
+        public event Action<float> SfxVolumeChanged;
         public event Action<float> SensitivityChanged;
         public event Action<HudScreens> NarrativeCompleted;
         public bool IsNarrativeOpen => _isNarrativeOpen;
@@ -190,11 +192,13 @@ namespace MazeHell.UI
             SetupButton(_settings.Increase);
             _settings.Close.Clicked += OnSettingsClose;
             _settings.Sound.Clicked += OnSound;
+            _settings.MusicSlider.Changed += OnMusicVolumeChanged;
+            _settings.SfxSlider.Changed += OnSfxVolumeChanged;
             _settings.Decrease.Clicked += OnDecrease;
             _settings.Increase.Clicked += OnIncrease;
             _settings.Closed += OnSettingsClosed;
             _settings.CloseRequested += OnSettingsCloseRequested;
-            _settings.Refresh(_localization, _soundOn, _sensitivity);
+            _settings.Refresh(_localization, _soundOn, _sensitivity, _records.MusicVolume, _records.SfxVolume);
             _settings.Show();
             _popups.Push(_settings);
         }
@@ -226,7 +230,19 @@ namespace MazeHell.UI
             _soundOn = volume > 0f;
             _records.SetVolume(volume);
             VolumeChanged?.Invoke(volume);
-            _settings.Refresh(_localization, _soundOn, _sensitivity);
+            _settings.Refresh(_localization, _soundOn, _sensitivity, _records.MusicVolume, _records.SfxVolume);
+        }
+
+        private void OnMusicVolumeChanged(float volume)
+        {
+            _records.SetMusicVolume(volume);
+            MusicVolumeChanged?.Invoke(volume);
+        }
+
+        private void OnSfxVolumeChanged(float volume)
+        {
+            _records.SetSfxVolume(volume);
+            SfxVolumeChanged?.Invoke(volume);
         }
 
         private void OnDecrease(MenuClick button)
@@ -244,7 +260,7 @@ namespace MazeHell.UI
             _sensitivity = Mathf.Clamp(_sensitivity + delta, _camera.MinMouseSensitivity, _camera.MaxMouseSensitivity);
             _records.SetMouseSensitivity(_sensitivity);
             SensitivityChanged?.Invoke(_sensitivity);
-            _settings.Refresh(_localization, _soundOn, _sensitivity);
+            _settings.Refresh(_localization, _soundOn, _sensitivity, _records.MusicVolume, _records.SfxVolume);
         }
 
         private void SetupButton(MenuClick button)
@@ -285,6 +301,8 @@ namespace MazeHell.UI
 
             _settings.Close.Clicked -= OnSettingsClose;
             _settings.Sound.Clicked -= OnSound;
+            _settings.MusicSlider.Changed -= OnMusicVolumeChanged;
+            _settings.SfxSlider.Changed -= OnSfxVolumeChanged;
             _settings.Decrease.Clicked -= OnDecrease;
             _settings.Increase.Clicked -= OnIncrease;
             _settings.Closed -= OnSettingsClosed;

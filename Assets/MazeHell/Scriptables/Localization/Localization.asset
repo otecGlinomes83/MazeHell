@@ -130,6 +130,9 @@ MonoBehaviour:
   - _key: hud_health_format
     _russian: "{0} \u0425\u041F"
     _english: '{0} HP'
+  - _key: level_objective_kill_format
+    _russian: 'УБЕЙ ВРАГОВ · ОСТАЛОСЬ: {0}'
+    _english: 'KILL THE ENEMIES · REMAINING: {0}'
   - _key: level_objective
     _russian: "\u041D\u0410\u0419\u0414\u0418 \u041F\u0420\u041E\u0425\u041E\u0414
       \u0412 \u0421\u041B\u0415\u0414\u0423\u042E\u0429\u0418\u0419 \u041A\u0420\u0423\u0413"
@@ -149,3 +152,9 @@ MonoBehaviour:
   - _key: intro_continue
     _russian: "\u041D\u0410\u0416\u041C\u0418 \u041B\u042E\u0411\u0423\u042E \u041A\u041B\u0410\u0412\u0418\u0428\u0423"
     _english: PRESS ANY KEY
+  - _key: settings_music
+    _russian: МУЗЫКА
+    _english: MUSIC
+  - _key: settings_sfx
+    _russian: ЭФФЕКТЫ
+    _english: SOUND EFFECTS

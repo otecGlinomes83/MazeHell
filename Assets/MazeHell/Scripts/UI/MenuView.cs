@@ -7,6 +7,9 @@ namespace MazeHell.UI
     public class MenuView : MonoBehaviour
     {
         [SerializeField] private RectTransform _safeRoot;
+        [SerializeField] private RectTransform _popupRoot;
+        [SerializeField] private CanvasGroup _menuGroup;
+        [SerializeField] private SettingsWindow _settingsWindowPrefab;
         [SerializeField] private MenuClick _startButton;
         [SerializeField] private MenuClick _leaderboardButton;
         [SerializeField] private MenuClick _languageButton;
@@ -18,6 +21,10 @@ namespace MazeHell.UI
         [SerializeField] private TMP_Text _soundText;
         [SerializeField] private TMP_Text _recordText;
         [SerializeField] private TMP_Text _statusText;
+
+        public RectTransform PopupRoot => _popupRoot;
+        public CanvasGroup MenuGroup => _menuGroup;
+        public SettingsWindow SettingsWindowPrefab => _settingsWindowPrefab;
 
         public RectTransform SafeRoot => _safeRoot;
         public MenuClick StartButton => _startButton;

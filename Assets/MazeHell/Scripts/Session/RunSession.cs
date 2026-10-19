@@ -277,6 +277,7 @@ namespace MazeHell.Session
             {
                 decoration.Setup(_player.Camera);
             }
+            _presenter.ShowMap(_currentLevel.Map);
             _presenter.ShowLevel(levelNumber, _localization, _presentation);
 
             SpawnEnemies();
@@ -402,9 +403,8 @@ namespace MazeHell.Session
 
         private void OnRegistryCountChanged(int remainingCount)
         {
-            _presenter.SetEnemyCount(remainingCount);
             _exitGate.SetRemainingEnemies(remainingCount);
-
+            _presenter.SetEnemyCount(remainingCount);
         }
 
         private void OnDoorOpening(ProximityDoor door)

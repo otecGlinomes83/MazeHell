@@ -32,9 +32,11 @@ namespace MazeHell.Configuration
         [Min(0f)]
         [SerializeField] private float _overscanMarginPixels = 32f;
 
-        [Header("Crosshair")]
+        [Header("Status Panel")]
         [Range(0f, 1f)]
-        [SerializeField] private float _crosshairGainMultiplier = 0.25f;
+        [SerializeField] private float _statusMotionMultiplier = 0.06f;
+
+        public float StatusMotionMultiplier => _statusMotionMultiplier;
 
         [Header("Weapon")]
         [Range(0f, 10f)]
@@ -91,8 +93,6 @@ namespace MazeHell.Configuration
         public float MaxPixelAngle => _maxPixelAngle;
 
         public float OverscanMarginPixels => _overscanMarginPixels;
-
-        public float CrosshairGainMultiplier => _crosshairGainMultiplier;
 
         public float WeaponGainMultiplier => _weaponGainMultiplier;
 

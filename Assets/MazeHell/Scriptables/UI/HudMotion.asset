@@ -20,7 +20,7 @@ MonoBehaviour:
   _maxPixelDisplacement: 12
   _maxPixelAngle: 1.2
   _overscanMarginPixels: 32
-  _crosshairGainMultiplier: 0.25
+  _statusMotionMultiplier: 0.06
   _weaponGainMultiplier: 3
   _weaponMaxPixelDisplacement: 28
   _dashDisplacementPixels: 32

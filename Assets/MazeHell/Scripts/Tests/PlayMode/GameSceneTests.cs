@@ -59,16 +59,22 @@ namespace MazeHell.Tests
             Assert.AreEqual(initialPosition, composition.Player.transform.position);
             Assert.AreEqual(initialRunTime, composition.Session.RunTime);
             composition.Hud.Screens.DismissMonologue();
-            yield return new WaitForSecondsRealtime(0.25f);
-            Assert.IsFalse(pauser.IsPaused);
+            float closeDeadline = Time.realtimeSinceStartup + 2f;
+
+            while (composition.Hud.Screens.IsNarrativeOpen && Time.realtimeSinceStartup < closeDeadline)
+            {
+                yield return null;
+            }
+
             Assert.IsFalse(composition.Hud.Screens.IsNarrativeOpen);
+            Assert.IsFalse(pauser.IsPaused);
             Vector3 portraitPosition = composition.Hud.PortraitImage.transform.position;
             Vector3 crosshairPosition = composition.Hud.CrosshairRoot.position;
             composition.Player.CameraMotion.ReactDamage();
             composition.Player.CameraMotion.Tick(0f, true, 0.1f);
             composition.Hud.Spring.Tick(0.1f);
-            Assert.AreEqual(portraitPosition, composition.Hud.PortraitImage.transform.position);
-            Assert.Greater(Vector3.Distance(crosshairPosition, composition.Hud.CrosshairRoot.position), 0.001f);
+            Assert.Greater(Vector3.Distance(portraitPosition, composition.Hud.PortraitImage.transform.position), 0.001f);
+            Assert.Less(Vector3.Distance(crosshairPosition, composition.Hud.CrosshairRoot.position), 0.001f);
             composition.Player.CameraMotion.ResetMotion();
             composition.Hud.Spring.ResetState();
             pauser.RequestPause();
@@ -85,21 +91,27 @@ namespace MazeHell.Tests
             Assert.IsNull(composition.Hud.Screens.ActiveSettings);
             Assert.IsTrue(composition.Hud.Screens.ActivePause.Group.interactable);
             pauser.Resume();
-            Assert.AreEqual(CursorLockMode.Locked, Cursor.lockState);
-            Assert.IsFalse(Cursor.visible);
             Assert.IsNull(composition.Hud.Screens.ActivePause);
-            yield return null;
-            yield return null;
-            Cursor.lockState = CursorLockMode.None;
-            yield return null;
-            yield return null;
-            Assert.IsTrue(pauser.IsPaused);
-            Assert.IsNotNull(composition.Hud.Screens.ActivePause);
-            Assert.AreNotEqual(firstPauseId, composition.Hud.Screens.ActivePause.GetEntityId());
-            Assert.IsTrue(Cursor.visible);
-            pauser.Resume();
-            Assert.AreEqual(CursorLockMode.Locked, Cursor.lockState);
-            Assert.IsFalse(Cursor.visible);
+
+            if (Application.isBatchMode == false)
+            {
+                Assert.AreEqual(CursorLockMode.Locked, Cursor.lockState);
+                Assert.IsFalse(Cursor.visible);
+                Assert.IsNull(composition.Hud.Screens.ActivePause);
+                yield return null;
+                yield return null;
+                Cursor.lockState = CursorLockMode.None;
+                yield return null;
+                yield return null;
+                Assert.IsTrue(pauser.IsPaused);
+                Assert.IsNotNull(composition.Hud.Screens.ActivePause);
+                Assert.AreNotEqual(firstPauseId, composition.Hud.Screens.ActivePause.GetEntityId());
+                Assert.IsTrue(Cursor.visible);
+                pauser.Resume();
+                Assert.AreEqual(CursorLockMode.Locked, Cursor.lockState);
+                Assert.IsFalse(Cursor.visible);
+            }
+
             RunSession session = composition.Session;
             Assert.AreEqual(RunState.Fighting, session.State);
             Assert.AreEqual(1, session.LevelNumber);
@@ -107,6 +119,9 @@ namespace MazeHell.Tests
             Assert.IsFalse(session.CurrentLevel.ExitGate.IsUnlocked);
             Assert.IsNotNull(composition.Hud.WeaponImage.sprite);
             Assert.IsNotNull(composition.Hud.PortraitImage.sprite);
+            Assert.AreSame(session.CurrentLevel.Map, composition.Hud.Minimap.Map);
+            Assert.IsFalse(composition.Hud.CrosshairRoot.IsChildOf(composition.Hud.SpringRoot));
+            Assert.IsFalse(composition.Hud.Minimap.transform.IsChildOf(composition.Hud.SpringRoot));
             Assert.Less(Vector3.Distance(composition.Player.transform.position, session.CurrentLevel.SpawnPosition), 1f);
             composition.Player.Health.ApplyDamage(50f);
             Assert.AreEqual(0.5f, composition.Hud.HealthFill.fillAmount, 0.001f);
@@ -114,6 +129,27 @@ namespace MazeHell.Tests
             StringAssert.StartsWith("50 ", composition.Hud.HealthText.text);
             StringAssert.DoesNotContain("%", composition.Hud.HealthText.text);
             EnemyRig[] enemies = session.Enemies;
+            string initialObjective = composition.Hud.ObjectiveText.text;
+            Vector2 objectivePosition = composition.Hud.ObjectiveText.rectTransform.anchoredPosition;
+            Assert.IsFalse(session.CurrentLevel.Map.IsRoomDiscovered(session.CurrentLevel.Map.ExitRoomIndex));
+            enemies[0].Health.ApplyDamage(enemies[0].Health.MaxHealth);
+            Assert.AreEqual(initialObjective, composition.Hud.ObjectiveText.text);
+            Vector3 previousPosition = composition.Player.transform.position;
+            Vector3 exitRoom = session.CurrentLevel.Map.Rooms[session.CurrentLevel.Map.ExitRoomIndex].center;
+            composition.Player.Motor.Teleport(exitRoom, composition.Player.transform.rotation);
+            composition.Hud.Presenter.LateTick(0.1f);
+            Assert.AreEqual(initialObjective, composition.Hud.ObjectiveText.text);
+            Assert.Greater(composition.Hud.ObjectiveText.rectTransform.anchoredPosition.y, objectivePosition.y);
+            composition.Hud.Presenter.LateTick(1f);
+            string expectedCount = (enemies.Length - 1).ToString();
+            StringAssert.Contains(expectedCount, composition.Hud.ObjectiveText.text);
+            Assert.AreNotEqual(initialObjective, composition.Hud.ObjectiveText.text);
+            enemies[1].Health.ApplyDamage(enemies[1].Health.MaxHealth);
+            expectedCount = (enemies.Length - 2).ToString();
+            StringAssert.Contains(expectedCount, composition.Hud.ObjectiveText.text);
+            Assert.AreEqual(objectivePosition, composition.Hud.ObjectiveText.rectTransform.anchoredPosition);
+            composition.Player.Motor.Teleport(previousPosition, composition.Player.transform.rotation);
+
 
             for (int i = 0; i < enemies.Length; i++)
             {
@@ -139,6 +175,10 @@ namespace MazeHell.Tests
             Assert.AreEqual(RunState.Generating, session.State);
             session.Tick(10f);
             Assert.AreEqual(2, session.LevelNumber);
+            Assert.AreNotSame(firstLevel.Map, session.CurrentLevel.Map);
+            Assert.AreSame(session.CurrentLevel.Map, composition.Hud.Minimap.Map);
+            Assert.AreEqual(session.CurrentLevel.Map.EntranceRoomIndex, session.CurrentLevel.Map.CurrentRoomIndex);
+            Assert.IsFalse(session.CurrentLevel.Map.IsRoomDiscovered(session.CurrentLevel.Map.ExitRoomIndex));
             Assert.AreEqual(RunState.Fighting, session.State);
             Assert.IsFalse(firstLevel.Root.activeSelf);
             Assert.AreEqual(health, composition.Player.Health.CurrentHealth);

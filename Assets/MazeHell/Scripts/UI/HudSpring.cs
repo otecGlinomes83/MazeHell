@@ -14,6 +14,13 @@ namespace MazeHell.UI
         private const float CriticalDampingTolerance = 0.0001f;
 
         private const float MinimalOmega = 0.01f;
+        private const float StatusMaxDisplacement = 2f;
+        private const float StatusMaxAngle = 0.06f;
+
+        [SerializeField] private RectTransform _statusRoot;
+
+        private Vector2 _statusBaseAnchoredPosition;
+        private Vector3 _statusBaseLocalEulerAngles;
 
         private struct SpringState
         {
@@ -26,8 +33,6 @@ namespace MazeHell.UI
 
         private RectTransform _weaponRoot;
 
-        private RectTransform _crosshairRoot;
-
         private CameraMotion _motion;
 
         private HudMotionConfig _config;
@@ -36,23 +41,15 @@ namespace MazeHell.UI
 
         private Vector2 _weaponBaseAnchoredPosition;
 
-        private Vector2 _crosshairBaseAnchoredPosition;
-
         private Vector3 _hudBaseLocalEulerAngles;
 
         private Vector3 _weaponBaseLocalEulerAngles;
-
-        private Vector3 _crosshairBaseLocalEulerAngles;
 
         private SpringState _hudSpring;
 
         private SpringState _weaponSpring;
 
-        private SpringState _crosshairSpring;
-
         private bool _isWeaponChildOfHud;
-
-        private bool _isCrosshairChildOfHud;
 
         private bool _isSetupFinished;
         private PlayerMotor _motor;
@@ -60,7 +57,6 @@ namespace MazeHell.UI
         private SpringState _movementSpring;
         private Vector3 _hudBaseLocalScale;
         private Vector3 _weaponBaseLocalScale;
-        private Vector3 _crosshairBaseLocalScale;
         private float _dashZoom;
 
         public void BindMotor(PlayerMotor motor)
@@ -97,29 +93,36 @@ namespace MazeHell.UI
                 throw new ArgumentNullException(nameof(config));
             }
 
+            if (crosshairRoot.IsChildOf(hudRoot))
+            {
+                Vector2 anchoredPosition = crosshairRoot.anchoredPosition;
+                crosshairRoot.SetParent(hudRoot.parent, false);
+                crosshairRoot.anchoredPosition = anchoredPosition;
+            }
+
             _hudRoot = hudRoot;
             _weaponRoot = weaponRoot;
-            _crosshairRoot = crosshairRoot;
             _motion = motion;
             _config = config;
 
+            if (_statusRoot != null)
+            {
+                _statusBaseAnchoredPosition = _statusRoot.anchoredPosition;
+                _statusBaseLocalEulerAngles = _statusRoot.localEulerAngles;
+            }
+
             _hudBaseAnchoredPosition = hudRoot.anchoredPosition;
             _weaponBaseAnchoredPosition = weaponRoot.anchoredPosition;
-            _crosshairBaseAnchoredPosition = crosshairRoot.anchoredPosition;
             _hudBaseLocalScale = hudRoot.localScale;
             _weaponBaseLocalScale = weaponRoot.localScale;
-            _crosshairBaseLocalScale = crosshairRoot.localScale;
 
             _hudBaseLocalEulerAngles = hudRoot.localEulerAngles;
             _weaponBaseLocalEulerAngles = weaponRoot.localEulerAngles;
-            _crosshairBaseLocalEulerAngles = crosshairRoot.localEulerAngles;
 
             _isWeaponChildOfHud = weaponRoot.IsChildOf(hudRoot);
-            _isCrosshairChildOfHud = crosshairRoot.IsChildOf(hudRoot);
 
             _hudSpring = new SpringState();
             _weaponSpring = new SpringState();
-            _crosshairSpring = new SpringState();
             _isSetupFinished = true;
 
             ApplyAll();
@@ -138,24 +141,16 @@ namespace MazeHell.UI
                 _config.MaxPixelAngle);
             Vector3 weaponTarget = BuildTarget(motionPosition, motionRotation, _config.WeaponGainMultiplier,
                 _config.WeaponMaxPixelDisplacement, _config.MaxPixelAngle);
-            Vector3 crosshairTarget = BuildTarget(motionPosition, motionRotation, _config.CrosshairGainMultiplier,
-                _config.MaxPixelDisplacement, _config.MaxPixelAngle);
 
             if (_isWeaponChildOfHud)
             {
                 weaponTarget -= _hudSpring.Position;
             }
 
-            if (_isCrosshairChildOfHud)
-            {
-                crosshairTarget -= _hudSpring.Position;
-            }
-
             float omega = Mathf.Max(MinimalOmega, _config.SpringFrequency) * Mathf.PI * 2f;
             float dampingRatio = _config.SpringDampingRatio;
             _hudSpring = Integrate(_hudSpring, hudTarget, omega, dampingRatio, clampedDeltaTime);
             _weaponSpring = Integrate(_weaponSpring, weaponTarget, omega, dampingRatio, clampedDeltaTime);
-            _crosshairSpring = Integrate(_crosshairSpring, crosshairTarget, omega, dampingRatio, clampedDeltaTime);
             UpdateMovement(clampedDeltaTime, omega, dampingRatio);
 
             ApplyAll();
@@ -167,7 +162,6 @@ namespace MazeHell.UI
 
             _hudSpring = new SpringState();
             _weaponSpring = new SpringState();
-            _crosshairSpring = new SpringState();
             _movementSpring = new SpringState();
             _previousVelocity = Vector3.zero;
             _dashZoom = 0f;
@@ -236,23 +230,25 @@ namespace MazeHell.UI
         {
             SpringState combined = _hudSpring;
             combined.Position += _movementSpring.Position;
+
+            if (_statusRoot != null)
+            {
+                SpringState status = combined;
+                status.Position *= _config.StatusMotionMultiplier;
+                ApplyRoot(_statusRoot, _statusBaseAnchoredPosition, _statusBaseLocalEulerAngles, status,
+                    StatusMaxDisplacement, StatusMaxAngle);
+            }
+
             ApplyRoot(_hudRoot, _hudBaseAnchoredPosition, _hudBaseLocalEulerAngles, combined,
                 _config.MaxPixelDisplacement + _config.MovementMaxDisplacement, _config.MaxPixelAngle);
             ApplyRoot(_weaponRoot, _weaponBaseAnchoredPosition, _weaponBaseLocalEulerAngles, _weaponSpring,
                 _config.WeaponMaxPixelDisplacement, _config.MaxPixelAngle);
-            ApplyRoot(_crosshairRoot, _crosshairBaseAnchoredPosition, _crosshairBaseLocalEulerAngles,
-                _crosshairSpring, _config.MaxPixelDisplacement, _config.MaxPixelAngle);
             float zoom = 1f + _dashZoom;
             _hudRoot.localScale = _hudBaseLocalScale * zoom;
 
             if (_isWeaponChildOfHud == false)
             {
                 _weaponRoot.localScale = _weaponBaseLocalScale * zoom;
-            }
-
-            if (_isCrosshairChildOfHud == false)
-            {
-                _crosshairRoot.localScale = _crosshairBaseLocalScale * zoom;
             }
         }
 

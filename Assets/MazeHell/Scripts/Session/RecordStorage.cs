@@ -16,6 +16,10 @@ namespace MazeHell.Session
 
         private const string VolumeKey = "MazeHell.Volume";
 
+        private const string MusicVolumeKey = "MazeHell.MusicVolume";
+
+        private const string SfxVolumeKey = "MazeHell.SfxVolume";
+
         private const string MouseSensitivityKey = "MazeHell.MouseSensitivity";
 
         private int _bestLevel;
@@ -27,6 +31,10 @@ namespace MazeHell.Session
         private GameLanguage _language;
 
         private float _volume;
+
+        private float _musicVolume;
+
+        private float _sfxVolume;
 
         private float _mouseSensitivity;
 
@@ -48,6 +56,8 @@ namespace MazeHell.Session
             }
 
             _volume = Mathf.Clamp01(PlayerPrefs.GetFloat(VolumeKey, Mathf.Clamp01(defaultVolume)));
+            _musicVolume = Mathf.Clamp01(PlayerPrefs.GetFloat(MusicVolumeKey, 1f));
+            _sfxVolume = Mathf.Clamp01(PlayerPrefs.GetFloat(SfxVolumeKey, 1f));
             _mouseSensitivity = PlayerPrefs.GetFloat(MouseSensitivityKey, defaultMouseSensitivity);
 
             if (float.IsNaN(_mouseSensitivity) || _mouseSensitivity <= 0f)
@@ -65,6 +75,10 @@ namespace MazeHell.Session
         public GameLanguage Language => _language;
 
         public float Volume => _volume;
+
+        public float MusicVolume => _musicVolume;
+
+        public float SfxVolume => _sfxVolume;
 
         public float MouseSensitivity => _mouseSensitivity;
 
@@ -127,6 +141,20 @@ namespace MazeHell.Session
             _volume = clampedVolume;
 
             PlayerPrefs.SetFloat(VolumeKey, clampedVolume);
+            PlayerPrefs.Save();
+        }
+
+        public void SetMusicVolume(float volume)
+        {
+            _musicVolume = Mathf.Clamp01(volume);
+            PlayerPrefs.SetFloat(MusicVolumeKey, _musicVolume);
+            PlayerPrefs.Save();
+        }
+
+        public void SetSfxVolume(float volume)
+        {
+            _sfxVolume = Mathf.Clamp01(volume);
+            PlayerPrefs.SetFloat(SfxVolumeKey, _sfxVolume);
             PlayerPrefs.Save();
         }
 

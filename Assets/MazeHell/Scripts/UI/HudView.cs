@@ -25,7 +25,7 @@ namespace MazeHell.UI
         [SerializeField] private Image _damageOverlay;
         [SerializeField] private Image _screenFade;
         [SerializeField] private TMP_Text _healthText;
-        [SerializeField] private TMP_Text _enemyText;
+        [SerializeField] private MinimapGraphic _minimap;
         [SerializeField] private TMP_Text _splashText;
         [SerializeField] private TMP_Text _objectiveText;
         [SerializeField] private RectTransform _popupRoot;
@@ -74,7 +74,7 @@ namespace MazeHell.UI
         public Image DamageOverlay => _damageOverlay;
         public Image ScreenFade => _screenFade;
         public TMP_Text HealthText => _healthText;
-        public TMP_Text EnemyText => _enemyText;
+        public MinimapGraphic Minimap => _minimap;
         public TMP_Text SplashText => _splashText;
     }
 }

@@ -21,8 +21,11 @@ namespace MazeHell.Level
         private Vector3[] _pickupPositions;
         private NavMeshSurface _navMeshSurface;
         private ProximityDoor[] _doors;
+        private LevelMap _map;
 
-        public GeneratedLevel(GameObject root, Transform geometryRoot, Vector3 spawnPosition, Quaternion spawnRotation, MazeLayout layout, ExitGate exitGate, Vector3 corridorStart, Vector3 corridorEnd, Vector3 corridorDirection, float corridorHalfWidth, Vector3[] enemySpawnPositions, Vector3[] pickupPositions, NavMeshSurface navMeshSurface, ProximityDoor[] doors)
+        public LevelMap Map => _map;
+
+        public GeneratedLevel(GameObject root, Transform geometryRoot, Vector3 spawnPosition, Quaternion spawnRotation, MazeLayout layout, ExitGate exitGate, Vector3 corridorStart, Vector3 corridorEnd, Vector3 corridorDirection, float corridorHalfWidth, Vector3[] enemySpawnPositions, Vector3[] pickupPositions, NavMeshSurface navMeshSurface, ProximityDoor[] doors, LevelMap map)
         {
             if (root == null)
             {
@@ -59,6 +62,12 @@ namespace MazeHell.Level
                 throw new ArgumentNullException(nameof(navMeshSurface));
             }
 
+            if (map == null)
+            {
+                throw new ArgumentNullException(nameof(map));
+            }
+
+            _map = map;
             _root = root;
             _geometryRoot = geometryRoot;
             _spawnPosition = spawnPosition;

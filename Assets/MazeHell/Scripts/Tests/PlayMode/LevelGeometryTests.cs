@@ -42,6 +42,23 @@ namespace MazeHell.Tests
             Assert.AreEqual(generation.EnemyCountStart, _level.EnemySpawnPositions.Length);
             Assert.AreEqual(generation.HealPickupCount, _level.PickupPositions.Length);
             Assert.AreEqual(generation.RoomGridSideStart, _level.Layout.Side);
+            LevelMap map = _level.Map;
+            Assert.AreEqual(map.EntranceRoomIndex, map.CurrentRoomIndex);
+            Assert.IsTrue(map.IsRoomDiscovered(map.EntranceRoomIndex));
+            Assert.IsFalse(map.IsRoomDiscovered(map.ExitRoomIndex));
+            Assert.GreaterOrEqual(map.Rooms.Count, _level.Layout.Size + generation.SideRoomCountMin + 2);
+            Assert.IsFalse(map.VisitPosition(_level.SpawnPosition));
+
+            for (int roomIndex = 0; roomIndex < map.Rooms.Count; roomIndex++)
+            {
+                Assert.AreEqual(roomIndex == map.EntranceRoomIndex, map.IsRoomDiscovered(roomIndex));
+            }
+
+            foreach (LevelMapPassage passage in map.Passages)
+            {
+                Assert.IsFalse(passage.IsDiscovered);
+            }
+
             DecorationBillboard[] decorations = _level.GeometryRoot.GetComponentsInChildren<DecorationBillboard>();
             Assert.Greater(decorations.Length, 0);
 

@@ -2,6 +2,7 @@ using System;
 using MazeHell.Combat;
 using MazeHell.Configuration;
 using MazeHell.Player;
+using MazeHell.Level;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,8 +12,11 @@ namespace MazeHell.UI
     public class HudPresenter : MonoBehaviour
     {
         private const string LevelSplashFormatKey = "level_splash_format";
+        private const string KillObjectiveFormatKey = "level_objective_kill_format";
 
-        private const string EnemyCountFormatKey = "hud_enemy_format";
+        private ObjectiveBanner _objective;
+        private int _remainingEnemies;
+        private bool _isExitDiscovered;
 
         private const float MinimalDashCooldown = 0.01f;
 
@@ -80,8 +84,8 @@ namespace MazeHell.UI
             if (view.Spring == null || view.Portrait == null || view.WeaponAnimator == null ||
                 view.PortraitImage == null || view.WeaponImage == null || view.BarrelLeft == null ||
                 view.BarrelRight == null || view.DashImage == null || view.HealthFill == null ||
-                view.DamageOverlay == null || view.HealthText == null || view.EnemyText == null ||
-                view.SplashText == null || view.SplashPanel == null)
+                view.DamageOverlay == null || view.HealthText == null || view.Minimap == null ||
+                view.SplashText == null || view.SplashPanel == null || view.ObjectiveText == null)
             {
                 throw new InvalidOperationException($"{name}: hud view has unassigned bindings.");
             }
@@ -89,6 +93,7 @@ namespace MazeHell.UI
             UnsubscribeFromPlayer();
 
             _view = view;
+            _objective = new ObjectiveBanner(view.ObjectiveText);
             _player = player;
             _interface = ui;
             _movement = movement;
@@ -123,23 +128,19 @@ namespace MazeHell.UI
             _view.Portrait.Tick(clampedDeltaTime);
             _view.WeaponAnimator.Tick(clampedDeltaTime);
 
+            _view.Minimap.Tick(_player.transform.position);
+            UpdateObjective();
+            _objective.Tick(clampedDeltaTime);
             UpdateDashPip();
             UpdateVignette(clampedDeltaTime);
             UpdateSplash(clampedDeltaTime);
             _view.Screens.Tick(clampedDeltaTime);
         }
 
-        public void SetEnemyCount(int count)
+        public void ShowMap(LevelMap map)
         {
             AssertSetup();
-
-            if (_localization == null)
-            {
-                throw new InvalidOperationException(
-                    $"{name}: enemy count needs localization, call ShowLevel first.");
-            }
-
-            _view.EnemyText.text = string.Format(_localization.Get(EnemyCountFormatKey), count);
+            _view.Minimap.Setup(map);
         }
 
         public void ShowLevel(int level, Localization localization, LevelPresentationConfig presentation)
@@ -161,15 +162,49 @@ namespace MazeHell.UI
             _view.SplashText.text = string.Format(localization.Get(LevelSplashFormatKey), level);
             _splashRemaining = Mathf.Max(0f, presentation.LevelSplashDuration);
 
-            if (_view.ObjectiveText != null)
-            {
-                _view.ObjectiveText.text = localization.Get(presentation.ObjectiveKey);
-            }
+            _isExitDiscovered = false;
+            _remainingEnemies = 0;
+            _objective.Reset(localization.Get(presentation.ObjectiveKey));
 
             if (level == 1)
             {
                 _view.Screens.ShowMonologue(localization.Get(presentation.FirstLevelMonologueKey));
             }
+        }
+
+        public void SetEnemyCount(int count)
+        {
+            AssertSetup();
+
+            if (count < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(count));
+            }
+
+            _remainingEnemies = count;
+
+            if (_isExitDiscovered)
+            {
+                _objective.UpdateText(BuildKillObjective());
+            }
+        }
+
+        private void UpdateObjective()
+        {
+            LevelMap map = _view.Minimap.Map;
+
+            if (_isExitDiscovered || map == null || map.IsRoomDiscovered(map.ExitRoomIndex) == false)
+            {
+                return;
+            }
+
+            _isExitDiscovered = true;
+            _objective.Change(BuildKillObjective());
+        }
+
+        private string BuildKillObjective()
+        {
+            return string.Format(_localization.Get(KillObjectiveFormatKey), _remainingEnemies);
         }
 
         private void OnHealthChanged(Health health)

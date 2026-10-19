@@ -76,6 +76,34 @@ namespace MazeHell.Tests
         }
 
         [Test]
+        public void CrosshairStaysFixedWhileHudAndWeaponMove()
+        {
+            RectTransform hud = CreateRect("HUD");
+            RectTransform weapon = CreateRect("Weapon");
+            RectTransform crosshair = CreateRect("Crosshair");
+            crosshair.SetParent(hud, false);
+            HudSpring spring = hud.gameObject.AddComponent<HudSpring>();
+            spring.Setup(hud, weapon, crosshair, _motion, _hudConfig);
+            Vector3 initialPosition = crosshair.position;
+            Quaternion initialRotation = crosshair.rotation;
+            Vector3 initialScale = crosshair.lossyScale;
+
+            for (int frame = 0; frame < 90; frame++)
+            {
+                _motion.Tick(6f, true, 1f / 60f);
+                spring.Tick(1f / 60f);
+                Assert.Less(Vector3.Distance(initialPosition, crosshair.position), 0.001f);
+                Assert.Less(Quaternion.Angle(initialRotation, crosshair.rotation), 0.001f);
+                Assert.Less(Vector3.Distance(initialScale, crosshair.lossyScale), 0.001f);
+            }
+
+            Assert.Greater(hud.anchoredPosition.sqrMagnitude, 0.001f);
+            Assert.Greater(weapon.anchoredPosition.sqrMagnitude, 0.001f);
+            spring.ResetState();
+            Assert.Less(Vector3.Distance(initialPosition, crosshair.position), 0.001f);
+        }
+
+        [Test]
         public void GateShakeMovesCameraThenSettles()
         {
             _motion.ReactGateOpen();

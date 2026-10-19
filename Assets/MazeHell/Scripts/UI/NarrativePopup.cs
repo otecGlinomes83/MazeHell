@@ -25,12 +25,6 @@ namespace MazeHell.UI
         {
             _revealedCharacters += Mathf.Max(0f, deltaTime) * _charactersPerSecond;
             _text.maxVisibleCharacters = Mathf.FloorToInt(_revealedCharacters);
-
-            if (_revealedCharacters >= _text.text.Length && _portrait != null)
-            {
-                _portrait.SetSpeaking(false);
-                _portrait = null;
-            }
         }
 
         private void OnDisable()
