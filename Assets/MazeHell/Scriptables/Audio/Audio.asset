@@ -18,10 +18,13 @@ MonoBehaviour:
   _audioMixer: {fileID: 24100000, guid: ddacbaf22866ade25ac8f1ae123b2f0b, type: 2}
   _musicMixerGroup: {fileID: 2934108869881073407, guid: ddacbaf22866ade25ac8f1ae123b2f0b, type: 2}
   _sfxMixerGroup: {fileID: -538627474310297102, guid: ddacbaf22866ade25ac8f1ae123b2f0b, type: 2}
-  _menuMusicClip: {fileID: 0}
-  _gameplayMusicClips: []
+  _menuMusicClip: {fileID: 8300000, guid: 2f905da54edb4c9cb66a0d76a06d4fdf, type: 3}
+  _gameplayMusicClips:
+  - {fileID: 8300000, guid: eb0bfa45c2744ec19d1f1eef355f9b83, type: 3}
+  - {fileID: 8300000, guid: 110043e856a44c1f9c966e214403b130, type: 3}
   _musicLoopClip: {fileID: 8300000, guid: 728b39991a32bdb35adb48e1619b6bf8, type: 3}
   _musicFadeInDuration: 2
+  _musicCrossfadeDuration: 2
   _sfxPoolCapacity: 16
   _maxVoicesPerCue: 3
   _heartbeatIntervalHealthy: 1

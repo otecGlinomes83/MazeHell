@@ -31,6 +31,9 @@ namespace MazeHell.Configuration
         [Min(0f)]
         [SerializeField] private float _musicFadeInDuration = 2f;
 
+        [Min(0.01f)]
+        [SerializeField] private float _musicCrossfadeDuration = 2f;
+
         [Header("Pools")]
         [Range(1, 64)]
         [SerializeField] private int _sfxPoolCapacity = 16;
@@ -107,6 +110,8 @@ namespace MazeHell.Configuration
         public AudioClip MusicLoopClip => _musicLoopClip;
 
         public float MusicFadeInDuration => _musicFadeInDuration;
+
+        public float MusicCrossfadeDuration => _musicCrossfadeDuration;
 
         public int SfxPoolCapacity => _sfxPoolCapacity;
 

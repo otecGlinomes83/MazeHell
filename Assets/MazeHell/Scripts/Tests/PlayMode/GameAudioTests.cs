@@ -38,6 +38,65 @@ namespace MazeHell.Tests
         }
 
         [UnityTest]
+        public IEnumerator GameplayPlaylistCrossfadesAndWrapsWithoutRestartingOnPause()
+        {
+            yield return null;
+            AudioClip first = AudioClip.Create("First", 44100 * 3, 1, 44100, false);
+            AudioClip second = AudioClip.Create("Second", 44100 * 3, 1, 44100, false);
+            AudioSource otherMusic = _root.AddComponent<AudioSource>();
+            MusicChannel channel = new MusicChannel(_music, otherMusic, 0.1f, 0.5f);
+            AudioClip[] playlist = new AudioClip[] { first, second };
+
+            try
+            {
+                channel.Play(playlist);
+                channel.Tick(0.1f, 1f);
+                Assert.AreSame(first, _music.clip);
+                Assert.IsFalse(_music.loop);
+                _music.time = 2.75f;
+                AudioListener.pause = true;
+                channel.Tick(1f, 1f);
+                Assert.IsNull(otherMusic.clip);
+                AudioListener.pause = false;
+                channel.Tick(0.25f, 1f);
+                Assert.AreSame(first, _music.clip);
+                Assert.AreSame(second, otherMusic.clip);
+                Assert.IsFalse(otherMusic.loop);
+                Assert.AreEqual(0.5f, _music.volume, 0.01f);
+                Assert.AreEqual(0.5f, otherMusic.volume, 0.01f);
+                channel.Tick(0.25f, 1f);
+                Assert.IsNull(_music.clip);
+                Assert.AreEqual(1f, otherMusic.volume, 0.01f);
+                channel.Play(playlist);
+                Assert.AreSame(second, otherMusic.clip);
+                otherMusic.time = 2.75f;
+                channel.Tick(0.5f, 1f);
+                Assert.AreSame(first, _music.clip);
+                Assert.IsNull(otherMusic.clip);
+            }
+            finally
+            {
+                AudioListener.pause = false;
+                channel.Stop();
+                Object.DestroyImmediate(first);
+                Object.DestroyImmediate(second);
+            }
+        }
+
+        [UnityTest]
+        public IEnumerator SceneMusicUsesAssignedMenuAndGameplayTracks()
+        {
+            yield return null;
+            _audio.StartMenuMusic();
+            Assert.AreSame(_config.MenuMusicClip, _music.clip);
+            Assert.AreEqual("Infernal Stone Hall", _music.clip.name);
+            Assert.IsTrue(_music.loop);
+            Assert.AreEqual(2, _config.GameplayMusicClips.Length);
+            Assert.AreEqual("Reload Riff", _config.GameplayMusicClips[0].name);
+            Assert.AreEqual("Combat Riff", _config.GameplayMusicClips[1].name);
+        }
+
+        [UnityTest]
         public IEnumerator MixerRoutesAndControlsMusicAndEffectsIndependently()
         {
             yield return null;

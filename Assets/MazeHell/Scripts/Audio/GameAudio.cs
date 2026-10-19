@@ -24,8 +24,8 @@ namespace MazeHell.Audio
         private float _musicSetting = 1f;
         private float _sfxSetting = 1f;
         private bool _areMixerVolumesDirty;
-        private AudioClip[] _playlist;
-        private int _trackIndex;
+        private MusicChannel _music;
+        private AudioSource _secondMusicSource;
 
         private AudioConfig _config;
 
@@ -133,6 +133,15 @@ namespace MazeHell.Audio
             _musicSource.outputAudioMixerGroup = config.MusicMixerGroup;
             _musicSource.playOnAwake = false;
 
+            if (_secondMusicSource == null)
+            {
+                _secondMusicSource = gameObject.AddComponent<AudioSource>();
+            }
+
+            _secondMusicSource.outputAudioMixerGroup = config.MusicMixerGroup;
+            _music = new MusicChannel(_musicSource, _secondMusicSource, config.MusicFadeInDuration,
+                config.MusicCrossfadeDuration);
+
             foreach (AudioSource source in _sfxSources)
             {
                 source.outputAudioMixerGroup = config.SfxMixerGroup;
@@ -164,19 +173,12 @@ namespace MazeHell.Audio
                 return;
             }
 
-            if (_playlist != null && _playlist.Length > 1 && _musicSource.isPlaying == false &&
-                AudioListener.pause == false)
-            {
-                _trackIndex = (_trackIndex + 1) % _playlist.Length;
-                PlayMusicClip(_playlist[_trackIndex], false);
-            }
-
             float clampedDeltaTime = Mathf.Max(0f, deltaTime);
             float targetVolume = ComputeMusicTargetVolume();
             float fadeRate = 1f / Mathf.Max(MinimalFadeDuration, _config.MusicFadeInDuration);
 
             _musicVolumeCurrent = Mathf.MoveTowards(_musicVolumeCurrent, targetVolume, clampedDeltaTime * fadeRate);
-            _musicSource.volume = _musicVolumeCurrent;
+            _music.Tick(clampedDeltaTime, _musicVolumeCurrent);
         }
 
         public void StartMusic()
@@ -188,24 +190,17 @@ namespace MazeHell.Audio
                 return;
             }
 
-            _playlist = _config.GameplayMusicClips;
-            _trackIndex = 0;
+            AudioClip[] playlist = _config.GameplayMusicClips;
 
-            if (_playlist != null && _playlist.Length > 0)
+            if (playlist != null && playlist.Length > 0)
             {
-                foreach (AudioClip clip in _playlist)
-                {
-                    if (clip == null)
-                    {
-                        throw new InvalidOperationException($"{name}: gameplay playlist contains a missing clip.");
-                    }
-                }
-
-                PlayMusicClip(_playlist[0], _playlist.Length == 1);
+                _music.Play(playlist);
+                _isMusicPlaying = true;
                 return;
             }
 
-            PlayMusicClip(_config.MusicLoopClip, true);
+            _music.Play(new AudioClip[] { _config.MusicLoopClip });
+            _isMusicPlaying = true;
         }
 
         public void StartMenuMusic()
@@ -217,7 +212,6 @@ namespace MazeHell.Audio
                 return;
             }
 
-            _playlist = null;
             AudioClip clip = _config.MenuMusicClip;
 
             if (clip == null)
@@ -225,17 +219,8 @@ namespace MazeHell.Audio
                 clip = _config.MusicLoopClip;
             }
 
-            PlayMusicClip(clip, true);
-        }
-
-        private void PlayMusicClip(AudioClip clip, bool loop)
-        {
+            _music.Play(new AudioClip[] { clip });
             _isMusicPlaying = true;
-            _musicSource.loop = loop;
-            _musicSource.clip = clip;
-            _musicSource.volume = 0f;
-            _musicVolumeCurrent = 0f;
-            _musicSource.Play();
         }
 
         public void SetMusicVolume(float volume)
@@ -348,7 +333,7 @@ namespace MazeHell.Audio
         private void StopAllAudio()
         {
             _isMusicPlaying = false;
-            _musicSource.Stop();
+            _music.Stop();
             _heartbeatSource.Stop();
 
             for (int sourceIndex = 0; sourceIndex < _sourceCount; sourceIndex++)
